@@ -1,0 +1,126 @@
+{
+	"ProjectConfigOptions": {
+		"EnvironmentName": "dev",
+		"Debug": true,
+		"Url": "http://0.0.0.0:22020",
+		"FrameworkConfig": {
+			"SnowFlake": {
+				"DatacenterId": 1,
+				"WorkerId": 1
+			},
+			"ApiSecurity": true,
+			"ParamsSign": {
+				"Enable": true,
+				"signKey": "dd8404ec0e4b085798a5477c0640ca55"
+			},
+			"ApiLink": false,
+			"CheckIps": {
+				"Enable": false,
+				"AllowIps": "::1,::ffff:192.168.0.,::ffff:127.0.0.1",
+				"DisallowIps": ""
+			},
+			"WebUIConfig": {
+				"PageRecord": {
+					"PageSize": 20
+				}
+			}
+		},
+		"ApiVersion": {
+			"MajorVersion": 1,
+			"MinorVersion": 0
+		},
+		"SslCers": [
+			{
+				"ClientName": "",
+				"CerName": "",
+				"CerPassword": "",
+				"CerPath": ""
+			}
+		],
+		"CrossDomain": {
+			"AllowOrigin": {
+				"PolicyName": "AllowSpecificOrigin",
+				"WithOrigins": "http://127.0.0.1:20101,https://127.0.0.1:20102"
+			}
+		},
+
+		"Security": {
+			"Rsa": {
+				"RsaPublicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwjMngZz86VCgPydKjuYL+Y6h9qyuO92dIwVONWwxtkCt+190+MOl7lz+EeguCxnlxu1Hqv5B3kmLv6+Fclp3HN3y9qHrf+zsEkF9YRWeOAXKEY8l44qUAoKxFg8eH2Ywjf98A7yjjyXKmXcns9aqOLq7QNpv1lukfqKe8igzjnhZQwRBL7HzMwL4X95SDZnznnlb1pRyy9w3k0dvYRU+O5oL9gYOp8Ffjg2hznaLKdzSXML8nZHgd3CuBa6wT54YWkiTIcMz19IWP61jdydJ4e/ZCULwHnZ4edXSXnFriH571PPovtKeimjhZ8QEnOkjCDndgvAtAIMcfPQzHLoteQIDAQAB",
+				"RsaPrivateKey": "MIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQDCMyeBnPzpUKA/J0qO5gv5jqH2rK473Z0jBU41bDG2QK37X3T4w6XuXP4R6C4LGeXG7Ueq/kHeSYu/r4VyWncc3fL2oet/7OwSQX1hFZ44BcoRjyXjipQCgrEWDx4fZjCN/3wDvKOPJcqZdyez1qo4urtA2m/WW6R+op7yKDOOeFlDBEEvsfMzAvhf3lINmfOeeVvWlHLL3DeTR29hFT47mgv2Bg6nwV+ODaHOdosp3NJcwvydkeB3cK4FrrBPnhhaSJMhwzPX0hY/rWN3J0nh79kJQvAednh51dJecWuIfnvU8+i+0p6KaOFnxASc6SMIOd2C8C0Agxx89DMcui15AgMBAAECggEBAIBnnHaaG6wVcG9xhl3oBAD1a2gUE3xn8w+F4Yl3SYNtTtyH6GrXym5KNIAYmeEjNYgLujh4t4rH7ExJPR44bMu8gXrL41AJkqobfVBlH+GBCnQDx5SlO2pRic/BHTS7t90cEZ7S6v6qiURhwfGqPZEW/ttJ02rT23cUBa6uIDDRgaUDIGnBvhH5wZPIzVpLy/sZkSq9Wvi4/vnZG+1bw3pty8xdvtS93/pMTTJC9w7cKsS8usW9097Y0scN6Xz1CqvPqXmXJ1gj81SXqpgbYwIQw96UXOHTQ1JXdNKjqy7Ru5X60g0kr23qsJUb6+xqV8M52p9bn3LhNdr6+Z+uRgECgYEA4tKGHY0U8LJSUoHRnEheBGqJ1l9S/cAVe2jei4IFpOKjGVufgu5OdNiCReLc22oQryx2UGapW5RSoNrF3CCKlv+GKp5llXy5JT5EVi4NE133kL1j3hTVKBUtOGqtveZJJD3B4ZmWMVN/3qXBPiAApIIMAqyzIKJm6586owH4lzkCgYEA2y5W2CWWQhzr0ozhiRVvynaYZftQbdsXQNw7bO2XAuBVOliCI8HVbhWbww3k0DaYQ4i6v6Lncjh8av66M6dZRBwhJ6UKwEnErretB/hNaKJTPQKz4dXUigaILD60/6LURQxEQ9FxNvvbEkvgcf5T0a2XhwXFSzACFg5AhATyCEECgYEAgjZnZdmTNua4GcOLCNQGnTRoMtgAdcnqyzEV6TLYeKLfDPSraufRxIRyrRoivhdywo2c0mVNPlS05sERK2DHDw5cAGV0Xc//HeFUK8E+Imskb0Q6a8i74cnebu/XFBh6zsJhZljcfy63TqMLf9WxaL97k6F/J/Hzcbq0V9YO1wkCgYEAzjz9RKehipYyJE2iDt6X8VfEsPlYRfaJG+PfGvE5TmCOcbdExaanUM2OYmyZaH5mqe1nY9lClQynrfoAdYg7i8Y4QFihFCyVoJ1+eGhhVlqfnmIDpzYQpsvcqF1c7MpnmI0hUvsp38X+7mltSXY5oqwIT+nTKpuC6wQAGvmYUMECgYEAj7Kl6LFi/LBcqf1VrJuJMUev8l5qhLc/5/41lzikUAMgy52e4Pu6g5zNKhRsIAR+xTtqkLoHQzoD9/uV2sI00oy1JHNoAX5FyQsEGpAJVJsK58C//GrNrRUIJBTvYzDg2Bz2sJFGdzMhMS+jvxZB4tK6Ij1GXdCfPqVu5rkndx4="
+			}
+		},
+
+		"CacheManager": {
+			"MaxRetries": 1000,
+			"CacheName": "odinCache",
+			"RetryTimeout": 100,
+			"UpdateMode": "Up",
+			"Backplane": {
+				"Key": "redisConnection",
+				"KnownType": "Redis",
+				"ChannelName": "test"
+			},
+			"LoggerFactory": {
+				"KnownType": "Microsoft"
+			},
+			"Serializer": {
+				"KnownType": "Json"
+			},
+			"Handles": [
+				{
+					"KnownType": "SystemRuntime",
+					"EnablePerformanceCounters": true,
+					"EnableStatistics": true,
+					"ExpirationMode": "Sliding",
+					"ExpirationTimeout": 60000,
+					"IsBackplaneSource": false,
+					"HandleName": "SystemRuntime"
+				},
+				{
+					"HandleName": "Redis",
+					"KnownType": "Redis",
+					"Key": "Redis",
+					"IsBackplaneSource": true
+				}
+			]
+		},
+		"Cap": {
+			"AopRouteingKey": "cap.odinCore.Aop.RabbitMQ.{0}"
+		},
+		"Global": {
+			"Url": "http://127.0.0.1:20303",
+			"SysApi": {
+				"ApiInvokerRecord": {
+					"ApiName": "/api/v1/orbit/ApiInvokerRecord"
+				},
+				"ApiInvokerCatch": {
+					"ApiName": "/api/v1/orbit/ApiInvokerCatch"
+				},
+				"AopSysErrorRecord": {
+					"ApiName": "/api/v1/orbit/SysError"
+				},
+				"AopErrorNotifyMail": {
+					"ApiName": "/api/v1/orbit/ErrorMailNotify"
+				},
+				"AopSysErrorCodes": {
+					"ApiName": "/api/v1/ErrorCodes/GetErrorCodes"
+				}
+			},
+			"EnableAop": true,
+			"EnableErrorNotifyMail": true
+		},
+
+		"ValidateToken": {
+			"Enable": true
+		},
+
+		"AccountAuthen": {
+			"ExpireTime": 14400,
+			"RenewalTime": 1800
+		},
+		"UpLoad": {
+			"MaxRequestBodySize": 209715200
+		}
+	}
+}
