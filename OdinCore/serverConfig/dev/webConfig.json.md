@@ -1,7 +1,7 @@
 {
 	"ProjectConfigOptions": {
-		"ApiSecurity": {
-			"Enable": true
+		"FrameworkConfig": {
+			"ApiSecurity": true
 		},
 		"DbEntity": {
 			"ConnectionString": "Server=ip;database=dbname;uid=username;pwd=password",

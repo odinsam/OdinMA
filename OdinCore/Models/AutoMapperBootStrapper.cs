@@ -29,7 +29,7 @@ namespace OdinCore.Models
                 {
                     dto.Id = source.Id ?? (long)OdinInjectHelper.GetService<IOdinSnowFlake>().NextId();
                 })
-                .ForMember(dest => dest.StrParam, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.StrParam)))
+                .ForMember(dest => dest.StrParam, opt => opt.MapFrom(src => src.InputParams))
                 .ForMember(dest => dest.ExceptionMessage, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.Ex)));
 
             //ApiCommentConfig转TF_Api_DbModel.

@@ -76,7 +76,7 @@ namespace OdinWorkers
                 ass,
                 opt =>
                 {
-                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DatacenterId;
+                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
                     opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
                 });
 

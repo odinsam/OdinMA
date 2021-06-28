@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,12 @@ using Odin.Plugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 
 namespace OdinCore.Controllers
 {
+    public enum EnumTest
+    {
+        one,
+        two
+    }
+
     [OdinControllerRoute("LinkTrack", "2.0")]
     public partial class LinkTrackController : Controller
     {
@@ -24,16 +31,34 @@ namespace OdinCore.Controllers
             return this.OdinResult("2.0");
         }
 
+        /// <summary>
+        /// shwo method
+        /// </summary>
+        /// <param name="error">errorCode model</param>
+        /// <param name="id">雪花Id</param>
+        /// <returns>method test string</returns>
         [NoTokenFilter] // 跳过Token认证
         [NoCheckIpFilter] // 跳过访问Ip检测
         [NoApiSecurityFilter] // 跳过 api result 加密
         [ApiFilter]
-        [OdinActionRoute("Show/{id}", "2.0")]
+        [OdinActionRoute("Show", "2.0")]
         [HttpPost]
-        [Consumes("application/json")]
-        public IActionResult Show([FromBody][Required] ErrorCode_Model error, [FromRoute][Required][OdinSnowFlakeValidation] long id)
+        [Consumes("multipart/form-data")]
+        public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required][OdinSnowFlakeValidation] long id)
         {
-            return this.OdinResult("2.0");
+            throw new Exception("test exception");
+            try
+            {
+                System.Console.WriteLine(error);
+                System.Console.WriteLine(id);
+                return this.OdinResult("2.0");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                // return this.OdinResult("2.0 test exception");
+            }
+
         }
     }
 }

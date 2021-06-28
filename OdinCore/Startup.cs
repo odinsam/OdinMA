@@ -24,6 +24,23 @@ using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
+using Odin.Plugs.OdinCore.ConfigModel;
+using Odin.Plugs.OdinCore.Models.ErrorCode;
+using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
+using Odin.Plugs.OdinMAF.OdinCacheManager;
+using Odin.Plugs.OdinMAF.OdinCapService;
+using Odin.Plugs.OdinMAF.OdinMongoDb;
+using Odin.Plugs.OdinMAF.OdinRedis;
+using Odin.Plugs.OdinMAF.OdinSerilog;
+using Odin.Plugs.OdinMAF.OdinSerilog.Models;
+using Odin.Plugs.OdinMiddleware;
+using Odin.Plugs.OdinMvcCore.MvcCore;
+using Odin.Plugs.OdinMvcCore.OdinFilter;
+using Odin.Plugs.OdinMvcCore.OdinInject;
+using Odin.Plugs.OdinMvcCore.OdinMiddleware.MiddlewareExtensions;
+using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
+using Odin.Plugs.OdinUtils.OdinFiles;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using Serilog;
@@ -31,22 +48,6 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
-using Odin.Plugs.OdinCore.Models.ErrorCode;
-using Odin.Plugs.OdinMAF.OdinCacheManager;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinMvcCore.OdinFilter;
-using Odin.Plugs.OdinCore.ConfigModel;
-using Odin.Plugs.OdinUtils.OdinFiles;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using Odin.Plugs.OdinMAF.OdinMongoDb;
-using Odin.Plugs.OdinMAF.OdinRedis;
-using Odin.Plugs.OdinMvcCore.MvcCore;
-using Odin.Plugs.OdinMAF.OdinSerilog;
-using Odin.Plugs.OdinMAF.OdinSerilog.Models;
-using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
-using Odin.Plugs.OdinMiddleware;
-using Odin.Plugs.OdinMAF.OdinCapService;
 
 namespace OdinCore
 {
@@ -90,19 +91,27 @@ namespace OdinCore
                 ass,
                 opt =>
                 {
-                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DatacenterId;
+                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
                     opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
                 });
 
-            services
-                .AddOdinTransientInject(this.GetType().Assembly)
+            services.AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(ass)
-                .AddOdinTransientWithParamasInject<IOdinMongo>(ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
-                .AddOdinTransientWithParamasInject<IOdinRedisCache>(ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
-                .AddOdinTransientWithParamasInject<IOdinCacheManager>(ass, new Object[] { _Options })
-                .AddOdinTransientWithParamasInject<IMvcApiCore>(ass, new Object[] { _Options })
+                .AddOdinTransientWithParamasInject<IOdinMongo>(
+                    ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
+                .AddOdinTransientWithParamasInject<IOdinRedisCache>(
+                    ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
+                .AddOdinTransientWithParamasInject<IOdinCacheManager>(
+                    ass, new Object[] { _Options })
+                .AddOdinTransientWithParamasInject<IMvcApiCore>(
+                    ass, new Object[] { _Options })
                 .AddOdinHttpClient("OdinClient")
-                .AddOdinCapInject(new OdinCapEventBusOptions { MysqlConnectionString = _Options.DbEntity.ConnectionString, RabbitmqOptions = _Options.RabbitMQ });
+                .AddOdinCapInject(
+                    new OdinCapEventBusOptions
+                    {
+                        MysqlConnectionString = _Options.DbEntity.ConnectionString,
+                        RabbitmqOptions = _Options.RabbitMQ
+                    });
             services.SetServiceProvider();
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
@@ -114,13 +123,12 @@ namespace OdinCore
                 IsAutoCloseConnection = true, //自动释放
             });
             services.ConfigurationSugar(db =>
-                {
-                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
-                    //多租户 
-                    //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
-                    //也可以配置AOP
-                });
-
+            {
+                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
+                //多租户 
+                //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
+                //也可以配置AOP
+            });
 
             #region 初始化数据库
             //修改cnf.config Host配置的链接字符串  enable修改为true，即可自动化初识数据库
@@ -133,7 +141,6 @@ namespace OdinCore
             // {
             //     option.UseMySQL(_Options.DbEntity.ConnectionString);
             // });
-
 
             #region Log设置
             Log.Logger = new LoggerConfiguration()
@@ -208,31 +215,31 @@ namespace OdinCore
             string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
             string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
             services.AddCors(opts =>
+            {
+                opts.AddPolicy(policyName, policy =>
                 {
-                    opts.AddPolicy(policyName, policy =>
-                    {
-                        policy.WithOrigins(withOrigins.Split(','))
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials();
-                    });
+                    policy.WithOrigins(withOrigins.Split(','))
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
+            });
 
             Log.Logger.Information("启用【 版本控制 】---开始配置");
             services.AddApiVersioning(option =>
-                {
-                    //当设置为 true 时, API 将返回响应标头中支持的版本信息。
-                    option.ReportApiVersions = true;
-                    //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
-                    option.AssumeDefaultVersionWhenUnspecified = true;
-                    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
-                    // option.ApiVersionReader = ApiVersionReader.Combine(
-                    //         new QueryStringApiVersionReader(),
-                    //         new HeaderApiVersionReader()
-                    //         {
-                    //             HeaderNames = { "apiVersion" }
-                    //         });
-                }).AddResponseCompression();
+            {
+                //当设置为 true 时, API 将返回响应标头中支持的版本信息。
+                option.ReportApiVersions = true;
+                //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
+                // option.ApiVersionReader = ApiVersionReader.Combine(
+                //         new QueryStringApiVersionReader(),
+                //         new HeaderApiVersionReader()
+                //         {
+                //             HeaderNames = { "apiVersion" }
+                //         });
+            }).AddResponseCompression();
 
             Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
             services.AddHttpContextAccessor();
@@ -240,12 +247,12 @@ namespace OdinCore
 
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
-                {
-                    opt.Filters.Add<HttpGlobalExceptionFilter>();
-                    opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                    opt.Filters.Add<ApiInvokerResultFilter>();
-                })
+            {
+                // opt.Filters.Add<HttpGlobalExceptionFilter>();
+                opt.Filters.Add<OdinModelValidationFilter>(1);
+                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                opt.Filters.Add<ApiInvokerResultFilter>();
+            })
                 .AddNewtonsoftJson(opt =>
                 {
                     // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
@@ -261,58 +268,63 @@ namespace OdinCore
                     o.SuppressModelStateInvalidFilter = true;
                 });
 
-
             services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v1", Version = "v1.0" });
+                options.SwaggerDoc("v2.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2.0" });
+                // options.SwaggerDoc("LinkTrack-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
+                // options.SwaggerDoc("LinkTrack-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
+                // options.SwaggerDoc("Test-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
+                // options.SwaggerDoc("Test-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
+                // options.SwaggerDoc("WeatherForecast-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
+                // options.SwaggerDoc("WeatherForecast-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
+                // options.SwaggerDoc("Orbit-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
+                // options.SwaggerDoc("Orbit-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
+                options.AddServer(new OpenApiServer()
                 {
-                    options.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v1", Version = "v1.0" });
-                    options.SwaggerDoc("v2.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2.0" });
-                    // options.SwaggerDoc("LinkTrack-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                    // options.SwaggerDoc("LinkTrack-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                    // options.SwaggerDoc("Test-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                    // options.SwaggerDoc("Test-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                    // options.SwaggerDoc("WeatherForecast-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                    // options.SwaggerDoc("WeatherForecast-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                    // options.SwaggerDoc("Orbit-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                    // options.SwaggerDoc("Orbit-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                    options.AddServer(new OpenApiServer()
-                    {
-                        Url = "",
-                        Description = "vvv"
-                    });
-                    options.CustomOperationIds(apiDesc =>
-                    {
-                        var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
-                        return controllerAction.ControllerName + "-" + controllerAction.ActionName;
-                    });
-                    // options.DescribeAllParametersInCamelCase();
-
-                    options.UseOneOfForPolymorphism();
-                    //记得设置工程属性:生成xml文档
-                    var xmlPath = Path.Combine(AppContext.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml");
-                    if (File.Exists(xmlPath))
-                    {
-                        options.IncludeXmlComments(xmlPath, true);
-                    };
-                    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                    Url = "",
+                    Description = "vvv"
                 });
+                options.CustomOperationIds(apiDesc =>
+                {
+                    var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
+                    return controllerAction.ControllerName + "-" + controllerAction.ActionName;
+                });
+                // options.DescribeAllParametersInCamelCase();
+
+                options.UseOneOfForPolymorphism();
+                //记得设置工程属性:生成xml文档
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml");
+                if (File.Exists(xmlPath))
+                {
+                    options.IncludeXmlComments(xmlPath, true);
+                };
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
 
             services.SetServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory,
-                                IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IMapper mapper)
+            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IMapper mapper)
         {
-            app.UseOdinAop();
+
             var options = _iOptions.Value;
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            // }
+            // else
+            app.UseOdinAop();
+            app.UseStaticFiles();
+
+            app.UseSwagger();
 
             app.UseHttpsRedirection();
 
             loggerFactory.AddSerilog();
+
 
             app.UseRouting();
 
@@ -320,12 +332,14 @@ namespace OdinCore
 
             //app.UseOdinRequestParams();
 
-            app.UseStaticFiles();
-
             app.UseAuthorization();
 
-            app.UseSwagger();
-
+            // app.UseKnife4UI(c =>
+            // {
+            //     c.RoutePrefix = ""; // serve the UI at root
+            //     c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
+            //     c.SwaggerEndpoint("/v2/api-docs", "V2 Docs");
+            // });
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "swagger"; // serve the UI at root
@@ -344,13 +358,6 @@ namespace OdinCore
                 // c.SwaggerEndpoint("/Orbit-v1/api-docs", "v1");
                 // c.SwaggerEndpoint("/Orbit-v2/api-docs", "v2");
             });
-
-            // app.UseKnife4UI(c =>
-            // {
-            //     c.RoutePrefix = ""; // serve the UI at root
-            //     c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
-            //     c.SwaggerEndpoint("/v2/api-docs", "V2 Docs");
-            // });
 
             app.UseEndpoints(endpoints =>
             {

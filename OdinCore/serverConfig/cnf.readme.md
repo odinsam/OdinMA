@@ -4,17 +4,25 @@
 		"Debug": true,
 		"Url": "http://*:20303",
 		"FrameworkConfig": {
-			"Autofac": {
-				"Enable": true
+			"SnowFlake": {
+				"DataCenterId": 1,
+				"WorkerId": 1
 			},
-			"AspectCore": {
-				"Enable": true
+			"ApiSecurity": true,
+			"ParamsSign": {
+				"Enable": true,
+				"signKey": "验签秘钥"
 			},
-			"Ocelot": {
-				"Enable": true
+			"ApiLink": false,
+			"CheckIps": {
+				"Enable": false,
+				"AllowIps": "::1,::ffff:192.168.0.,::ffff:127.0.0.1",
+				"DisallowIps": ""
 			},
-			"Serilog": {
-				"WriteToMySql": true
+			"WebUIConfig": {
+				"PageRecord": {
+					"PageSize": 20
+				}
 			}
 		},
 		"ApiVersion": {
@@ -23,6 +31,7 @@
 		},
 		"SslCers": [
 			{
+				"ClientName": "",
 				"CerName": "",
 				"CerPassword": "",
 				"CerPath": ""
@@ -33,15 +42,7 @@
 				"Enable": true,
 				"PolicyName": "AllowSpecificOrigin",
 				"WithOrigins": "http://127.0.0.1:20101,https://127.0.0.1:20102"
-			},
-			"CheckIps": {
-				"Enable": false,
-				"AllowIps": "::1,::ffff:192.168.0.,::ffff:127.0.0.1",
-				"DisallowIps": ""
 			}
-		},
-		"ApiSecurity": {
-			"Enable": true
 		},
 		"Security": {
 			"Rsa": {
@@ -49,21 +50,12 @@
 				"RsaPrivateKey": "api内容加密私钥"
 			}
 		},
-		"ParamsSign": {
-			"Enable": true,
-			"signKey": "参数验签秘钥"
-		},
-		"WebUIConfig": {
-			"PageRecord": {
-				"PageSize": 20
-			}
-		},
 		"CacheManager": {
 			"MaxRetries": 1000,
 			"CacheName": "缓存管理名称",
 			"RetryTimeout": 100,
 			"UpdateMode": "Up",
-			"Backplane": {
+			"BackPlane": {
 				"Key": "redisConnection",
 				"KnownType": "Redis",
 				"ChannelName": "test"
@@ -81,14 +73,14 @@
 					"EnableStatistics": true,
 					"ExpirationMode": "Sliding",
 					"ExpirationTimeout": 60000,
-					"IsBackplaneSource": false,
+					"IsBackPlaneSource": false,
 					"HandleName": "SystemRuntime"
 				},
 				{
 					"HandleName": "Redis",
 					"KnownType": "Redis",
 					"Key": "Redis",
-					"IsBackplaneSource": true
+					"IsBackPlaneSource": true
 				}
 			]
 		},

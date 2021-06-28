@@ -49,7 +49,6 @@ namespace OdinCore
             var iHostBuilder = Host.CreateDefaultBuilder(args);
 
             iHostBuilder = iHostBuilder.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
-
             return iHostBuilder.ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseConfiguration(builder)
