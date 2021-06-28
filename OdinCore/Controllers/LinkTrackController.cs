@@ -167,7 +167,7 @@ namespace OdinCore.Controllers
             }
             catch (Exception ex)
             {
-                return this.OdinCatchResult(ex, requestParams, mvcCore, "", api);
+                return this.OdinCatchResult(ex, "sys-error");
             }
         }
         #endregion

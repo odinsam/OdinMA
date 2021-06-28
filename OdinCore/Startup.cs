@@ -5,10 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Unicode;
+using System.Threading.Tasks;
 using AspectCore.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -248,7 +251,7 @@ namespace OdinCore
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
             {
-                // opt.Filters.Add<HttpGlobalExceptionFilter>();
+                opt.Filters.Add<HttpGlobalExceptionFilter>();
                 opt.Filters.Add<OdinModelValidationFilter>(1);
                 opt.Filters.Add<ApiInvokerFilterAttribute>(2);
                 opt.Filters.Add<ApiInvokerResultFilter>();
@@ -316,7 +319,12 @@ namespace OdinCore
             //     app.UseDeveloperExceptionPage();
             // }
             // else
-            app.UseOdinAop();
+            // app.UseOdinException();
+            // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
+            // app.UseHsts();
+
+
+
             app.UseStaticFiles();
 
             app.UseSwagger();
@@ -326,7 +334,10 @@ namespace OdinCore
             loggerFactory.AddSerilog();
 
 
+
             app.UseRouting();
+
+
 
             app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
 
@@ -359,15 +370,43 @@ namespace OdinCore
                 // c.SwaggerEndpoint("/Orbit-v2/api-docs", "v2");
             });
 
+            // app.UseOdinAop();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapSwagger("{documentName}/api-docs");
             });
 
+
+
             Program.ApiComments = new OdinApiCommentCore(options).GetApiComments(actionProvider);
 
             InitErrorCode(mapper);
+        }
+
+        private async Task ExceptionHandlerDemo(HttpContext httpContext, Func<Task> next)
+        {
+            //该信息由ExceptionHandlerMiddleware中间件提供，里面包含了ExceptionHandlerMiddleware中间件捕获到的异常信息。
+            var exceptionDetails = httpContext.Features.Get<IExceptionHandlerFeature>();
+            var ex = exceptionDetails?.Error;
+
+            if (ex != null)
+            {
+                httpContext.Response.ContentType = "application/problem+json";
+                httpContext.Response.StatusCode = 200;
+                var title = "An error occured: " + ex.Message;
+                var details = ex.ToString();
+
+                var problem = new ProblemDetails
+                {
+                    Status = 500,
+                    Title = title,
+                    Detail = details
+                };
+
+                var stream = httpContext.Response.Body;
+                await JsonSerializer.SerializeAsync(stream, problem);
+            }
         }
 
         /// <summary>

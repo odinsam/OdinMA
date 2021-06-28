@@ -46,9 +46,11 @@ namespace OdinCore.Controllers
         [Consumes("multipart/form-data")]
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required][OdinSnowFlakeValidation] long id)
         {
-            throw new Exception("test exception");
+            // throw new Exception("test exception");
+            // 
             try
             {
+                throw new Exception("test exception");
                 System.Console.WriteLine(error);
                 System.Console.WriteLine(id);
                 return this.OdinResult("2.0");
@@ -56,7 +58,7 @@ namespace OdinCore.Controllers
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
-                // return this.OdinResult("2.0 test exception");
+                return this.OdinCatchResult(ex);
             }
 
         }
