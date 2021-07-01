@@ -1,4 +1,4 @@
-using Odin.Plugs.ConfigModel;
+using OdinPlugs.ConfigModel;
 
 namespace OdinServerManagerApi.Models
 {

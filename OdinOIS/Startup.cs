@@ -18,19 +18,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Odin.Plugs.ConfigModel;
-using Odin.Plugs.Files;
-using Odin.Plugs.OdinFilter;
-using Odin.Plugs.OdinMongo;
-using Odin.Plugs.OdinString;
-using Odin.Plugs.OdinInject;
-using Odin.Plugs.WebApi;
+using OdinPlugs.ConfigModel;
+using OdinPlugs.Files;
+using OdinPlugs.OdinFilter;
+using OdinPlugs.OdinMongo;
+using OdinPlugs.OdinString;
+using OdinPlugs.OdinInject;
+using OdinPlugs.WebApi;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Odin.Plugs.OdinCore;
+using OdinPlugs.OdinCore;
 using Newtonsoft.Json;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
@@ -42,16 +42,16 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.IdentityModel.Tokens;
 using IdentityServer4.EntityFramework.Options;
 using IdentityServer4.EntityFramework.Interfaces;
-using Odin.Plugs.OdinServices;
-using Odin.Plugs.OdinServices.IdentityServer;
+using OdinPlugs.OdinServices;
+using OdinPlugs.OdinServices.IdentityServer;
 using OdinOIS.Models.DbModels;
 using OdinOIS.Models;
 using Serilog.Events;
-using Odin.Plugs.OdinSerilog;
-using Odin.Plugs.OdinSerilog.Models;
-using Odin.Plugs.WebApi.HttpClientHelper;
-using Odin.Plugs.OdinRedis;
-using Odin.Plugs.OdinCacheManager;
+using OdinPlugs.OdinSerilog;
+using OdinPlugs.OdinSerilog.Models;
+using OdinPlugs.WebApi.HttpClientHelper;
+using OdinPlugs.OdinRedis;
+using OdinPlugs.OdinCacheManager;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 
@@ -234,7 +234,7 @@ namespace OdinOIS
                    // 驼峰命名法，首字母小写
                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                    // 自定义扩展，属性全为小写
-                   // opt.SerializerSettings.ContractResolver = new Odin.Plugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
+                   // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
@@ -298,7 +298,7 @@ namespace OdinOIS
 
 
 
-            Assembly ass = Assembly.Load("Odin.Plugs");
+            Assembly ass = Assembly.Load("OdinPlugs");
             services
                     .AddOdinSingletonInject(this.GetType().Assembly)
                     .AddOdinSingletonInject(ass)

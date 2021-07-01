@@ -1,7 +1,7 @@
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using Odin.Plugs.OdinSqlSugar.SqlSugarExtends;
-using Odin.Plugs.OdinSqlSugar.SqlSugarInterface;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinSqlSugar.SqlSugarExtends;
+using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
 using SqlSugar;
 
 namespace OdinCore.Models.DbModels

@@ -1,4 +1,4 @@
-using Odin.Plugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinCore.ConfigModel;
 
 namespace OdinWorkers.Models
 {

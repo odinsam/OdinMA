@@ -1,10 +1,10 @@
 using System.Data.Common;
 using System.Collections.Generic;
 using SqlSugar.IOC;
-using Odin.Plugs.OdinInject;
+using OdinPlugs.OdinInject;
 using Newtonsoft.Json;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
 
 namespace OdinCore.Models.DbModels
 {

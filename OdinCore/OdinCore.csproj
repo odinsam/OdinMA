@@ -6,6 +6,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\odinPlugs\Odin.Plugs\Odin.Plugs.csproj" />
+    <ProjectReference Include="..\..\odinPlugs\OdinPlugs\OdinPlugs.csproj" />
   </ItemGroup>
 </Project>

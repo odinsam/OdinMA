@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinWorkers.Models;
 using Serilog;
 

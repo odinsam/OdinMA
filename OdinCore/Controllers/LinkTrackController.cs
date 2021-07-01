@@ -12,21 +12,21 @@ using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
 using SqlSugar.IOC;
-using Odin.Plugs.OdinMvcCore.OdinRoute;
-using Odin.Plugs.OdinMvcCore.OdinFilter;
-using Odin.Plugs.OdinMvcCore.MvcCore;
-using Odin.Plugs.OdinMAF.OdinCacheManager;
-using Odin.Plugs.OdinMAF.OdinMongoDb;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinCore.Models.ErrorCode;
-using Odin.Plugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
-using Odin.Plugs.OdinCore.Models;
-using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
-using Odin.Plugs.OdinMvcCore.OdinExtensions;
-using Odin.Plugs.OdinBasicDataType.OdinEnum;
-using Odin.Plugs.OdinNetCore.WebApi.HttpClientHelper;
-using Odin.Plugs.OdinCore.OdinAttr;
-using Odin.Plugs.OdinMAF.OdinCapService;
+using OdinPlugs.OdinMvcCore.OdinRoute;
+using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMAF.OdinCacheManager;
+using OdinPlugs.OdinMAF.OdinMongoDb;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
+using OdinPlugs.OdinCore.Models;
+using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinBasicDataType.OdinEnum;
+using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
+using OdinPlugs.OdinCore.OdinAttr;
+using OdinPlugs.OdinMAF.OdinCapService;
 
 namespace OdinCore.Controllers
 {

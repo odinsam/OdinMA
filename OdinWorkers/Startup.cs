@@ -20,17 +20,17 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
-using Odin.Plugs.OdinCore.ConfigModel;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
-using Odin.Plugs.OdinMAF.OdinMongoDb;
-using Odin.Plugs.OdinMAF.OdinCacheManager;
-using Odin.Plugs.OdinMvcCore.MvcCore;
-using Odin.Plugs.OdinMAF.OdinCapService;
-using Odin.Plugs.OdinMAF.OdinRedis;
-using Odin.Plugs.OdinMAF.OdinSerilog;
-using Odin.Plugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
+using OdinPlugs.OdinMAF.OdinMongoDb;
+using OdinPlugs.OdinMAF.OdinCacheManager;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMAF.OdinCapService;
+using OdinPlugs.OdinMAF.OdinRedis;
+using OdinPlugs.OdinMAF.OdinSerilog;
+using OdinPlugs.OdinMAF.OdinSerilog.Models;
 
 namespace OdinWorkers
 {
@@ -62,7 +62,7 @@ namespace OdinWorkers
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Assembly ass = Assembly.Load("Odin.Plugs");
+            Assembly ass = Assembly.Load("OdinPlugs");
 
 
             Log.Logger.Information("启用【 强类型配置文件 】");

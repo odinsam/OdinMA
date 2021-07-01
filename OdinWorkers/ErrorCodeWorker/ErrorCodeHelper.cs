@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Odin.Plugs.OdinCore.Models.ErrorCode;
-using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
-using Odin.Plugs.OdinMAF.OdinCacheManager;
-using Odin.Plugs.OdinMAF.OdinCanalService;
-using Odin.Plugs.OdinMAF.OdinCanalService.OdinCanalModels;
+using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinMAF.OdinCacheManager;
+using OdinPlugs.OdinMAF.OdinCanalService;
+using OdinPlugs.OdinMAF.OdinCanalService.OdinCanalModels;
 
 namespace OdinWorkers.ErrorCodeWork
 {

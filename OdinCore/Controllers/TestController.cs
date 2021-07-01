@@ -2,11 +2,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Odin.Plugs.OdinMvcCore.OdinFilter;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinMvcCore.OdinRoute;
+using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinCore.Models;
-using Odin.Plugs.OdinCore.OdinAttr;
+using OdinPlugs.OdinCore.OdinAttr;
 
 namespace OdinCore.Controllers
 {

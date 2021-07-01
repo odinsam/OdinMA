@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Odin.Plugs.OdinCore.Models;
-using Odin.Plugs.OdinCore.Models.ErrorCode;
-using Odin.Plugs.OdinMvcCore.OdinFilter;
-using Odin.Plugs.OdinMvcCore.OdinRoute;
-using Odin.Plugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
+using OdinPlugs.OdinCore.Models;
+using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinMvcCore.OdinRoute;
+using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 
 namespace OdinCore.Controllers
 {

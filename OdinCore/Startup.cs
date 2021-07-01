@@ -27,23 +27,23 @@ using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
-using Odin.Plugs.OdinCore.ConfigModel;
-using Odin.Plugs.OdinCore.Models.ErrorCode;
-using Odin.Plugs.OdinExtensions.BasicExtensions.OdinString;
-using Odin.Plugs.OdinMAF.OdinCacheManager;
-using Odin.Plugs.OdinMAF.OdinCapService;
-using Odin.Plugs.OdinMAF.OdinMongoDb;
-using Odin.Plugs.OdinMAF.OdinRedis;
-using Odin.Plugs.OdinMAF.OdinSerilog;
-using Odin.Plugs.OdinMAF.OdinSerilog.Models;
-using Odin.Plugs.OdinMiddleware;
-using Odin.Plugs.OdinMvcCore.MvcCore;
-using Odin.Plugs.OdinMvcCore.OdinFilter;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinMvcCore.OdinMiddleware.MiddlewareExtensions;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
-using Odin.Plugs.OdinUtils.OdinFiles;
+using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinMAF.OdinCacheManager;
+using OdinPlugs.OdinMAF.OdinCapService;
+using OdinPlugs.OdinMAF.OdinMongoDb;
+using OdinPlugs.OdinMAF.OdinRedis;
+using OdinPlugs.OdinMAF.OdinSerilog;
+using OdinPlugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinMiddleware;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinMvcCore.OdinMiddleware.MiddlewareExtensions;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
+using OdinPlugs.OdinUtils.OdinFiles;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using Serilog;
@@ -82,7 +82,7 @@ namespace OdinCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Assembly ass = Assembly.Load("Odin.Plugs");
+            Assembly ass = Assembly.Load("OdinPlugs");
 
             // Log.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
@@ -263,7 +263,7 @@ namespace OdinCore
                     // 驼峰命名法，首字母小写
                     // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                     // 自定义扩展，属性全为小写
-                    // opt.SerializerSettings.ContractResolver = new Odin.Plugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
+                    // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
                 }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .ConfigureApiBehaviorOptions(o =>
                 {

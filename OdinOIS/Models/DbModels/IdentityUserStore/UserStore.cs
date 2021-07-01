@@ -1,6 +1,6 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Odin.Plugs.OdinSecurity;
+using OdinPlugs.OdinSecurity;
 
 namespace OdinOIS.Models.DbModels.IdentityUserStore
 {

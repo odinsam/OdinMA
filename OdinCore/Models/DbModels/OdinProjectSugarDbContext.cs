@@ -1,10 +1,10 @@
-using Odin.Plugs.OdinCore.OdinAssembly;
-using Odin.Plugs.OdinMAF.OdinEF.EFCore.EFExtensions;
-using Odin.Plugs.OdinMvcCore.OdinInject;
-using Odin.Plugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using Odin.Plugs.OdinSqlSugar.SqlSugarExtends;
-using Odin.Plugs.OdinSqlSugar.SqlSugarInterface;
-using Odin.Plugs.OdinSqlSugar.SqlSugarUtils;
+using OdinPlugs.OdinCore.OdinAssembly;
+using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinSqlSugar.SqlSugarExtends;
+using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
+using OdinPlugs.OdinSqlSugar.SqlSugarUtils;
 using SqlSugar;
 using SqlSugar.IOC;
 
