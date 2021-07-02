@@ -6,7 +6,7 @@ using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinCore.Models;
-using OdinPlugs.OdinCore.OdinAttr;
+using OdinPlugs.OdinMvcCore.OdinAttr;
 
 namespace OdinCore.Controllers
 {

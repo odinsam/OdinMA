@@ -25,8 +25,8 @@ using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinBasicDataType.OdinEnum;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
-using OdinPlugs.OdinCore.OdinAttr;
 using OdinPlugs.OdinMAF.OdinCapService;
+using OdinPlugs.OdinMvcCore.OdinAttr;
 
 namespace OdinCore.Controllers
 {
