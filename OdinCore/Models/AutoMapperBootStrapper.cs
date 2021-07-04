@@ -2,7 +2,6 @@ using AutoMapper;
 using Newtonsoft.Json;
 using OdinPlugs.OdinCore.Models.Aop;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
 using OdinCore.Models.DbModels;

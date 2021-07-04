@@ -52,6 +52,13 @@ using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinMAF.OdinAspectCore;
+using AspectCore.Configuration;
+using OdinCore.Services.InterfaceServices;
+using OdinCore.Services.ImplServices;
+using OdinCore.Models.OdinInterceptor;
+using Newtonsoft.Json;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
 
 namespace OdinCore
 {
@@ -84,9 +91,9 @@ namespace OdinCore
         public void ConfigureServices(IServiceCollection services)
         {
             Assembly ass = Assembly.Load("OdinPlugs");
-
             // Log.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
+            services.SetServiceProvider();
             _iOptions = services.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
@@ -98,6 +105,7 @@ namespace OdinCore
                     opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
                     opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
                 });
+
 
             services.AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(ass)
@@ -116,7 +124,15 @@ namespace OdinCore
                         MysqlConnectionString = _Options.DbEntity.ConnectionString,
                         RabbitmqOptions = _Options.RabbitMQ
                     });
+
+            // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
+
+
+
+
+
+
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
             SugarIocServices.AddSqlSugar(new IocConfig()
@@ -127,12 +143,12 @@ namespace OdinCore
                 IsAutoCloseConnection = true, //自动释放
             });
             services.ConfigurationSugar(db =>
-            {
-                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
-                //多租户 
-                //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
-                //也可以配置AOP
-            });
+                {
+                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
+                    //多租户 
+                    //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
+                    //也可以配置AOP
+                });
 
             #region 初始化数据库
             //修改cnf.config Host配置的链接字符串  enable修改为true，即可自动化初识数据库
@@ -177,14 +193,77 @@ namespace OdinCore
             Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
             services.AddAutoMapper(typeof(Startup));
 
-            Log.Logger.Information("启用【 AspectCore 全局注入 】---开始配置");
+
+
+
+
+            Log.Logger.Information("启用【 跨域配置 】---开始配置");
+            string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
+            string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
+            services.AddCors(opts =>
+                {
+                    opts.AddPolicy(policyName, policy =>
+                    {
+                        policy.WithOrigins(withOrigins.Split(','))
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+                });
+
+            Log.Logger.Information("启用【 版本控制 】---开始配置");
+            services.AddApiVersioning(option =>
+                {
+                    //当设置为 true 时, API 将返回响应标头中支持的版本信息。
+                    option.ReportApiVersions = true;
+                    //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
+                    option.AssumeDefaultVersionWhenUnspecified = true;
+                    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
+                    // option.ApiVersionReader = ApiVersionReader.Combine(
+                    //         new QueryStringApiVersionReader(),
+                    //         new HeaderApiVersionReader()
+                    //         {
+                    //             HeaderNames = { "apiVersion" }
+                    //         });
+                }).AddResponseCompression();
+
+            Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
+            services.AddControllers(opt =>
+                {
+                    opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    opt.Filters.Add<OdinModelValidationFilter>(1);
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerResultFilter>();
+                })
+                .AddNewtonsoftJson(opt =>
+                {
+                    // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
+                    opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    // 驼峰命名法，首字母小写
+                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+                    // 自定义扩展，属性全为小写
+                    // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .ConfigureApiBehaviorOptions(o =>
+                {
+                    // 关闭框架自带的模型验证
+                    o.SuppressModelStateInvalidFilter = true;
+                });
+            // services.AddTransient<ITestService, TestService>();
+            // services.SetInterceptableServiceProvider();
             services.ConfigureDynamicProxy(config =>
             {
+                // config.Interceptors.AddServiced<FoobarAttribute>();
                 // ~ 类型数注入
-                // config.Interceptors.AddTyped<type>();
+
+                // config.Interceptors.AddTyped<FoobarAttribute>();
 
                 // ~ 带参数注入
-                // config.Interceptors.AddTyped<type>(params);
+                // config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(new Object[] { "d" }, new AspectPredicate[] { });
 
                 // ~ App1命名空间下的Service不会被代理
                 // config.NonAspectPredicates.AddNamespace("App1");
@@ -208,69 +287,10 @@ namespace OdinCore
                 // config.Interceptors.AddTyped<CustomInterceptorAttribute>(method => method.Name.EndsWith("MethodName"));
 
                 // ~ 使用通配符的特定全局拦截器
-                // config.Interceptors.AddTyped<CustomInterceptorAttribute>(Predicates.ForService("*Service"));
+                config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(Predicates.ForService("*Service"));
             });
-
             Log.Logger.Information("启用【 AspectCore 依赖注入 和 代理注册 】---开始配置");
             // ! OdinAspectCoreInterceptorAttribute 需要继承  AbstractInterceptorAttribute
-            // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
-
-            Log.Logger.Information("启用【 跨域配置 】---开始配置");
-            string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
-            string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
-            services.AddCors(opts =>
-            {
-                opts.AddPolicy(policyName, policy =>
-                {
-                    policy.WithOrigins(withOrigins.Split(','))
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                });
-            });
-
-            Log.Logger.Information("启用【 版本控制 】---开始配置");
-            services.AddApiVersioning(option =>
-            {
-                //当设置为 true 时, API 将返回响应标头中支持的版本信息。
-                option.ReportApiVersions = true;
-                //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
-                option.AssumeDefaultVersionWhenUnspecified = true;
-                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
-                // option.ApiVersionReader = ApiVersionReader.Combine(
-                //         new QueryStringApiVersionReader(),
-                //         new HeaderApiVersionReader()
-                //         {
-                //             HeaderNames = { "apiVersion" }
-                //         });
-            }).AddResponseCompression();
-
-            Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
-            services.AddHttpContextAccessor();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
-            services.AddControllers(opt =>
-            {
-                opt.Filters.Add<HttpGlobalExceptionFilter>();
-                opt.Filters.Add<OdinModelValidationFilter>(1);
-                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                opt.Filters.Add<ApiInvokerResultFilter>();
-            })
-                .AddNewtonsoftJson(opt =>
-                {
-                    // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
-                    opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                    // 驼峰命名法，首字母小写
-                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-                    // 自定义扩展，属性全为小写
-                    // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .ConfigureApiBehaviorOptions(o =>
-                {
-                    // 关闭框架自带的模型验证
-                    o.SuppressModelStateInvalidFilter = true;
-                });
 
             services.AddSwaggerGen(options =>
             {
@@ -305,15 +325,20 @@ namespace OdinCore
                 };
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            // services.ConfigureDynamicProxy();
+            // services.AddSingleton<FoobarAttribute>();
+            // services.ConfigureDynamicProxy(config => { config.Interceptors.AddServiced<FoobarAttribute>(); });
 
+            // services.AddTransient<FoobarAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory,
-            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IMapper mapper)
+        public void Configure(IApplicationBuilder app, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, ILoggerFactory loggerFactory,
+            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IMapper mapper, IHttpContextAccessor svp)
         {
-
+            MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
             // if (env.IsDevelopment())
             // {
@@ -323,7 +348,7 @@ namespace OdinCore
             // app.UseOdinException();
             // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
             // app.UseHsts();
-
+            // app.UseOdinAop();
 
 
             app.UseStaticFiles();
@@ -385,37 +410,13 @@ namespace OdinCore
             InitErrorCode(mapper);
         }
 
-        private async Task ExceptionHandlerDemo(HttpContext httpContext, Func<Task> next)
-        {
-            //该信息由ExceptionHandlerMiddleware中间件提供，里面包含了ExceptionHandlerMiddleware中间件捕获到的异常信息。
-            var exceptionDetails = httpContext.Features.Get<IExceptionHandlerFeature>();
-            var ex = exceptionDetails?.Error;
-
-            if (ex != null)
-            {
-                httpContext.Response.ContentType = "application/problem+json";
-                httpContext.Response.StatusCode = 200;
-                var title = "An error occured: " + ex.Message;
-                var details = ex.ToString();
-
-                var problem = new ProblemDetails
-                {
-                    Status = 500,
-                    Title = title,
-                    Detail = details
-                };
-
-                var stream = httpContext.Response.Body;
-                await JsonSerializer.SerializeAsync(stream, problem);
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="mapper"></param>
         public void InitErrorCode(IMapper mapper)
         {
+            var errorCodes = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList();
             var errorCodelst = mapper.Map<List<ErrorCode_Model>>(DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList());
             var cacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
             foreach (var item in errorCodelst)

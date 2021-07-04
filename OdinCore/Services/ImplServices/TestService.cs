@@ -16,11 +16,15 @@ using OdinPlugs.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
+using OdinPlugs.OdinMAF.OdinAspectCore;
+using OdinCore.Models.OdinInterceptor;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
 
 namespace OdinCore.Services.ImplServices
 {
     public class TestService : SqlSugarBaseRepository<ErrorCode_DbModel>, ITestService
     {
+        private readonly IInerService innerService;
 
         #region 内部私有变量
         private readonly IOptionsSnapshot<ProjectExtendsOptions> iApiOptions;
@@ -35,6 +39,7 @@ namespace OdinCore.Services.ImplServices
 
         public TestService()
         {
+            this.innerService = MvcContext.GetRequiredServices<IInerService>();
             this.iApiOptions = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiOptions = iApiOptions.Value;
             this.mapper = OdinInjectHelper.GetService<IMapper>();
@@ -47,8 +52,10 @@ namespace OdinCore.Services.ImplServices
 
         public OdinActionResult SelectErrorCode(long id)
         {
-            return this.ServiceResult(base.QueryByIdAsync(id, true).Result);
+            return null;
+            //return this.ServiceResult(base.QueryByIdAsync(id, true).Result);
         }
+
 
         public OdinActionResult DeleteErrorCode(long id)
         {
@@ -69,10 +76,11 @@ namespace OdinCore.Services.ImplServices
         {
             throw new NotImplementedException();
         }
-
-        public OdinActionResult show()
+        public OdinActionResult show(long id)
         {
-            throw new NotImplementedException();
+
+            System.Console.WriteLine("this is TestService show method");
+            return this.innerService.show(id);
         }
 
         public OdinActionResult showPost()

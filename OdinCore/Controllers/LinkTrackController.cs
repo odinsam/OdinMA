@@ -52,7 +52,6 @@ namespace OdinCore.Controllers
         private readonly ICapPublisher capBus;
         private readonly IOdinCapEventBus odinCapEventBus;
         private readonly IOdinMongo mongoHelper;
-
         private string guid = string.Empty;
         #region 构造函数
         public LinkTrackController()

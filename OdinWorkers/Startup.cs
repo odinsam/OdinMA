@@ -31,6 +31,7 @@ using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinCore.ConfigModel.Utils;
 
 namespace OdinWorkers
 {
@@ -56,8 +57,6 @@ namespace OdinWorkers
             var rootPath = Directory.GetCurrentDirectory();
             ConfigLoadHelper.LoadConfigs(env, Path.Combine(rootPath, "serverConfig"), config, rootPath);
             Configuration = config.Build();
-
-
         }
 
         public void ConfigureServices(IServiceCollection services)

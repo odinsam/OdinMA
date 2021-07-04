@@ -2,9 +2,15 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using OdinCore.Models.OdinInterceptor;
+using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinMAF.OdinAspectCore;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 
@@ -44,20 +50,17 @@ namespace OdinCore.Controllers
         [OdinActionRoute("Show", "2.0")]
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required][OdinSnowFlakeValidation] long id)
+
+        public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
             // throw new Exception("test exception");
-            // 
             try
             {
-                throw new Exception("test exception");
-                System.Console.WriteLine(error);
-                System.Console.WriteLine(id);
-                return this.OdinResult("2.0");
+                this.GetDIServices<ITestService>().show(id);
+                return this.OdinResult($"{DateTime.Now.ToString()}");
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex.Message);
                 return this.OdinCatchResult(ex);
             }
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {}
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {}
   },
   "projects": {
-    "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
         "projectName": "OdinHangFire",
-        "projectPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

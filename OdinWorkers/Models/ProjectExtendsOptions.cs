@@ -1,3 +1,4 @@
+
 using OdinPlugs.OdinCore.ConfigModel;
 
 namespace OdinWorkers.Models

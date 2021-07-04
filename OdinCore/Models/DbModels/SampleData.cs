@@ -1,7 +1,6 @@
 using System.Data.Common;
 using System.Collections.Generic;
 using SqlSugar.IOC;
-using OdinPlugs.OdinInject;
 using Newtonsoft.Json;
 using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;

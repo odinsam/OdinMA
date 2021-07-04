@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using AspectCore.Extensions.DependencyInjection;
+using AspectCore.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -48,7 +49,7 @@ namespace OdinCore
             var builder = builderRoot.Build();
             var iHostBuilder = Host.CreateDefaultBuilder(args);
 
-            iHostBuilder = iHostBuilder.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
+            // iHostBuilder = iHostBuilder.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
             return iHostBuilder.ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseConfiguration(builder)
@@ -66,7 +67,7 @@ namespace OdinCore
                     .UseRealIp("X-Forwarded-For")
                     .UseStartup<Startup>()
                     .UseSerilog();
-                });
+                }).UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
         }
     }
 }
