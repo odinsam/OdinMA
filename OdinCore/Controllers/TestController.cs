@@ -11,7 +11,7 @@ using OdinPlugs.OdinMvcCore.OdinAttr;
 namespace OdinCore.Controllers
 {
     [Author("dingjj")]
-    [CreateTime("21-06-08 23:33:13")]
+    [CreateTime("2021-06-08 23:33:13", "yyyy-MM-dd HH:mm:ss")]
     [OdinControllerRoute("Test", "1.0")]
     [EnableCors("AllowSpecificOrigin")]
     [NoGuid]           // 请求链路检测

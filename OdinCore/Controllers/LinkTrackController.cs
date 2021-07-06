@@ -32,7 +32,7 @@ namespace OdinCore.Controllers
 {
     [ApiController]
     [Author("odinsam11")]
-    [CreateTime("21-06-07 14:09:07")]
+    [CreateTime("2021-06-07 14:09:07", "yyyy-MM-dd HH:mm:ss")]
     [OdinControllerRoute("LinkTrack", "1.0")]
     [EnableCors("AllowSpecificOrigin")]
     [NoToken] // 无需token检测

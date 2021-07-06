@@ -1,3 +1,4 @@
+using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,6 +60,8 @@ using OdinCore.Services.ImplServices;
 using OdinCore.Models.OdinInterceptor;
 using Newtonsoft.Json;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
+using Newtonsoft.Json.Serialization;
 
 namespace OdinCore
 {
@@ -241,8 +244,12 @@ namespace OdinCore
                 })
                 .AddNewtonsoftJson(opt =>
                 {
+                    // var contractResolver = new DefaultContractResolver();
+                    // contractResolver.ResolveContract(typeof(JsonConverterLongContractResolver));
+                    // opt.SerializerSettings.ContractResolver = contractResolver;
                     // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
-                    opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    opt.SerializerSettings.ContractResolver = new JsonConverterLongContractResolver();
+                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                     // 驼峰命名法，首字母小写
                     // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                     // 自定义扩展，属性全为小写

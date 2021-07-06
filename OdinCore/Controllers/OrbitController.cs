@@ -26,7 +26,7 @@ using Serilog;
 namespace OdinCore.Controllers
 {
     [Author("dingjj")]
-    [CreateTime("21-06-15 00:02:02")]
+    [CreateTime("2021-06-15 00:02:02", "yyyy-MM-dd HH:mm:ss")]
     [OdinControllerRoute("Orbit", "1.0")]
     [EnableCors("AllowSpecificOrigin")]
     [NoGuid]           // 请求链路检测
