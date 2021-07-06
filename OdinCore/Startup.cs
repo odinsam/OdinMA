@@ -244,11 +244,11 @@ namespace OdinCore
                 })
                 .AddNewtonsoftJson(opt =>
                 {
-                    // var contractResolver = new DefaultContractResolver();
+                    var contractResolver = new DefaultContractResolver();
                     // contractResolver.ResolveContract(typeof(JsonConverterLongContractResolver));
                     // opt.SerializerSettings.ContractResolver = contractResolver;
                     // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
-                    opt.SerializerSettings.ContractResolver = new JsonConverterLongContractResolver();
+                    // opt.SerializerSettings.ContractResolver = new JsonConverterLongContractResolver();
                     // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                     // 驼峰命名法，首字母小写
                     // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();

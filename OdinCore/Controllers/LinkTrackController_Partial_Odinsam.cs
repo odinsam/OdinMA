@@ -3,16 +3,21 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using OdinCore.Models.OdinInterceptor;
 using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinJson.ContractResolver;
 using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
+using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.Utils;
 
 namespace OdinCore.Controllers
 {
@@ -56,8 +61,17 @@ namespace OdinCore.Controllers
             // throw new Exception("test exception");
             try
             {
-                this.GetDIServices<ITestService>().show(id);
-                return this.OdinResult($"{DateTime.Now.ToString()}");
+                var stu = new Stu
+                {
+                    id=OdinSnowFlakeHelper.CreateSnowFlakeId(),
+                    name = "odinsam",
+                    age = 20
+                };
+                Console.WriteLine("student info");
+                Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
+                return this.OdinResult(stu);
+                // this.GetDIServices<ITestService>().show(id);
+                // return this.OdinResult($"{DateTime.Now.ToString()}");
             }
             catch (Exception ex)
             {
@@ -65,5 +79,13 @@ namespace OdinCore.Controllers
             }
 
         }
+    }
+
+    public class Stu
+    {
+        [JsonConverter(typeof(JsonConverterLong))]
+        public long id { get; set; }
+        public string name { get; set; }
+        public int age { get; set; }
     }
 }
