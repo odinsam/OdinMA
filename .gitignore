@@ -42,5 +42,14 @@ OdinWorkers/serverConfig/dev/rabbitmq.json
 OdinWorkers/serverConfig/dev/webConfig.json
 OdinWorkers/serverConfig/pro/rabbitmq.json
 OdinWorkers/serverConfig/pro/webConfig.json
+
+OdinHangFire/bin
+OdinHangFire/obj
+OdinHangFire/logs
+OdinHangFire/serverConfig/dev/rabbitmq.json
+OdinHangFire/serverConfig/dev/webConfig.json
+OdinHangFire/serverConfig/pro/rabbitmq.json
+OdinHangFire/serverConfig/pro/webConfig.json
+
 node_modules
 package-lock.json
