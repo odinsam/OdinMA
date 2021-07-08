@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.Mongo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using OdinHangFire.Models;
 using OdinPlugs.OdinCore.ConfigModel;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
@@ -47,6 +50,30 @@ namespace OdinHangFire
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mongoUrlBuilder = new MongoUrlBuilder("mongodb://localhost/jobs");
+            var mongoClient = new MongoClient(mongoUrlBuilder.ToMongoUrl());
+
+            // Add Hangfire services. Hangfire.AspNetCore nuget required
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseMongoStorage(mongoClient, mongoUrlBuilder.DatabaseName, new MongoStorageOptions
+                {
+                    MigrationOptions = new MongoMigrationOptions
+                    {
+                        MigrationStrategy = new MigrateMongoMigrationStrategy(),
+                        BackupStrategy = new CollectionMongoBackupStrategy()
+                    },
+                    Prefix = "hangfire.mongo",
+                    CheckConnection = true
+                })
+            );
+            // Add the processing server as IHostedService
+            services.AddHangfireServer(serverOptions =>
+            {
+                serverOptions.ServerName = "Hangfire.Mongo server 1";
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

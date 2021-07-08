@@ -5699,6 +5699,7 @@
           "Ocelot.Cache.CacheManager": "17.0.0",
           "Ocelot.Provider.Consul": "17.0.0",
           "Ocelot.Provider.Polly": "17.0.0",
+          "OdinPlugs.Utils": "1.0.0",
           "Polly": "7.2.2",
           "RabbitMQ.Client": "6.2.1",
           "Serilog": "2.10.0",
@@ -5729,6 +5730,28 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "OdinPlugs.Utils/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "Serilog": "2.10.0",
+          "Serilog.AspNetCore": "4.1.0",
+          "Serilog.Extensions.Logging": "3.0.1",
+          "Serilog.Sinks.Console": "3.1.1",
+          "Serilog.Sinks.Elasticsearch": "8.4.1",
+          "Serilog.Sinks.File": "4.1.0"
+        },
+        "compile": {
+          "bin/placeholder/OdinPlugs.Utils.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OdinPlugs.Utils.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
@@ -15225,6 +15248,11 @@
       "type": "project",
       "path": "../../odinplugs/OdinPlugs.csproj",
       "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
+    },
+    "OdinPlugs.Utils/1.0.0": {
+      "type": "project",
+      "path": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
+      "msbuildProject": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj"
     }
   },
   "projectFileDependencyGroups": {

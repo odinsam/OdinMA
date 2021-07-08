@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -13,6 +13,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using OdinPlugs.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinMAF.OdinCacheManager;
+using OdinPlugs.OdinMAF.OdinCapService;
+using OdinPlugs.OdinMAF.OdinMongoDb;
+using OdinPlugs.OdinMAF.OdinRedis;
+using OdinPlugs.OdinMAF.OdinSerilog;
+using OdinPlugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
 using Serilog;
@@ -20,19 +31,6 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
-using OdinPlugs.OdinCore.ConfigModel;
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
-using OdinPlugs.OdinMAF.OdinMongoDb;
-using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMAF.OdinCapService;
-using OdinPlugs.OdinMAF.OdinRedis;
-using OdinPlugs.OdinMAF.OdinSerilog;
-using OdinPlugs.OdinMAF.OdinSerilog.Models;
-using OdinPlugs.OdinCore.ConfigModel.Utils;
-
 namespace OdinWorkers
 {
     public class Startup
@@ -44,10 +42,10 @@ namespace OdinWorkers
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             var config = new ConfigurationBuilder()
-               .AddEnvironmentVariables(prefix: "ASPNETCORE_")
-               .Add(new JsonConfigurationSource { Path = "serverConfig/cnf.json", Optional = false, ReloadOnChange = true })
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddEnvironmentVariables();
+                .AddEnvironmentVariables(prefix: "ASPNETCORE_")
+                .Add(new JsonConfigurationSource { Path = "serverConfig/cnf.json", Optional = false, ReloadOnChange = true })
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddEnvironmentVariables();
 
             // ~ 按需加载对应项目环境的config
             // ^ 需要注意的是，如果多个配置文件有相同的配置信息，那么后加载的配置文件会覆盖先加载的配置文件(必须是.json格式的配置文件)
@@ -62,7 +60,6 @@ namespace OdinWorkers
         public void ConfigureServices(IServiceCollection services)
         {
             Assembly ass = Assembly.Load("OdinPlugs");
-
 
             Log.Logger.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
@@ -99,17 +96,16 @@ namespace OdinWorkers
                 IsAutoCloseConnection = true, //自动释放
             });
             services.ConfigurationSugar(db =>
-                {
-                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
-                    //多租户 
-                    //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
-                    //也可以配置AOP
-                });
+            {
+                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
+                //多租户 
+                //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
+                //也可以配置AOP
+            });
             // services.AddDbContext<OdinProjectEntities>(option =>
             // {
             //     option.UseMySQL(_Options.DbEntity.ConnectionString);
             // });
-
 
             #region Log设置
             Log.Logger = new LoggerConfiguration()
@@ -135,7 +131,6 @@ namespace OdinWorkers
             Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
             services.AddAutoMapper(typeof(Program));
 
-
             Log.Logger.Information("启用【 HttpClient 依赖注入 】---开始配置");
             var handler = new HttpClientHandler();
             foreach (var cerItem in _Options.SslCers)
@@ -155,12 +150,8 @@ namespace OdinWorkers
                     handlerWithCer.ClientCertificates.Add(clientCertificate);
                 }
             }
-            services.AddHttpClient("OdinClient", c =>
-            {
-            }).ConfigurePrimaryHttpMessageHandler(() => handler);
-            services.AddHttpClient("OdinClientCer", c =>
-            {
-            }).ConfigurePrimaryHttpMessageHandler(() => handlerWithCer);
+            services.AddHttpClient("OdinClient", c => { }).ConfigurePrimaryHttpMessageHandler(() => handler);
+            services.AddHttpClient("OdinClientCer", c => { }).ConfigurePrimaryHttpMessageHandler(() => handlerWithCer);
 
             services.AddHostedService<OdinBackgroundService>();
 
