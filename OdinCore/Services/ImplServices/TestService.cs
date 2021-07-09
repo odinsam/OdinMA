@@ -19,6 +19,7 @@ using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinCore.Models.OdinInterceptor;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
 
 namespace OdinCore.Services.ImplServices
 {
@@ -33,7 +34,6 @@ namespace OdinCore.Services.ImplServices
         private readonly IOdinMongo mongoHelper;
         private readonly IOdinRedisCache redisCacheHelper;
         private readonly IOdinCacheManager odinCacheManager;
-        private readonly IMvcApiCore mvcApiCore;
         private readonly IRabbitMQReceiveServer rabbitMQReceiveServer;
         #endregion
 
@@ -46,7 +46,6 @@ namespace OdinCore.Services.ImplServices
             this.mongoHelper = OdinInjectHelper.GetService<IOdinMongo>();
             this.redisCacheHelper = OdinInjectHelper.GetService<IOdinRedisCache>();
             this.odinCacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
-            this.mvcApiCore = OdinInjectHelper.GetService<IMvcApiCore>();
             this.rabbitMQReceiveServer = OdinInjectHelper.GetService<IRabbitMQReceiveServer>();
         }
 
@@ -97,7 +96,7 @@ namespace OdinCore.Services.ImplServices
         // {
 
         //     // get
-        //     // var str = OdinHttpClientFactory.GetRequestAsync<string>("OdinClient", "http://apis.juhe.cn/mobile/get?phone=17377770729&dtype=json&key=f0780781a15f693eadfc2165d3f22f78");
+        // var str = OdinHttpClientFactory<string>("OdinClient", "http://apis.juhe.cn/mobile/get?phone=17377770729&dtype=json&key=f0780781a15f693eadfc2165d3f22f78");
         //     // this.redisCacheHelper.Get<ErrorCode_Model>("sys-error")
 
         //     // rabbitmq

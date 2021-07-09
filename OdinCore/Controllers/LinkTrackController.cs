@@ -21,12 +21,12 @@ using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinBasicDataType.OdinEnum;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
 using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMvcCore.OdinAttr;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 
 namespace OdinCore.Controllers
 {
@@ -47,7 +47,6 @@ namespace OdinCore.Controllers
         public ProjectExtendsOptions apiOptions { get; set; }
         private readonly IMapper mapper;
         private readonly ITestService testService;
-        private readonly IMvcApiCore mvcCore;
         private readonly IOdinCacheManager cacheManager;
         private readonly ICapPublisher capBus;
         private readonly IOdinCapEventBus odinCapEventBus;
@@ -60,7 +59,6 @@ namespace OdinCore.Controllers
             this.apiOptions = iApiOptions.Value;
             this.mapper = OdinInjectHelper.GetService<IMapper>();
             this.testService = OdinInjectHelper.GetService<ITestService>();
-            this.mvcCore = OdinInjectHelper.GetService<IMvcApiCore>();
             this.cacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
             this.capBus = OdinInjectHelper.GetService<ICapPublisher>();
             this.odinCapEventBus = OdinInjectHelper.GetService<IOdinCapEventBus>();
@@ -156,10 +154,6 @@ namespace OdinCore.Controllers
             // ^    catch
             try
             {
-                var validate = mvcCore.ValidateParams(guid, api, obj, EnumMethod.Post, "errorCode");
-                if (validate != null)
-                    // ! 验证失败,返回失败错误码 
-                    return validate;
                 if (!cacheManager.Exists(errorCode))
                     throw new Exception("错误码不存在");
                 return this.OdinResult(cacheManager.Get<ErrorCode_Model>(errorCode));

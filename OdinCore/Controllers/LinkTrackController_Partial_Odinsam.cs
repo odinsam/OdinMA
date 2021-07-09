@@ -8,7 +8,6 @@ using OdinCore.Models.OdinInterceptor;
 using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinJson.ContractResolver;
 using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
@@ -18,6 +17,7 @@ using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
 using OdinPlugs.OdinNetCore.OdinSnowFlake.Utils;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 
 namespace OdinCore.Controllers
 {
@@ -63,12 +63,13 @@ namespace OdinCore.Controllers
             {
                 var stu = new Stu
                 {
-                    id=OdinSnowFlakeHelper.CreateSnowFlakeId(),
+                    id = OdinSnowFlakeHelper.CreateSnowFlakeId(),
                     name = "odinsam",
                     age = 20
                 };
                 Console.WriteLine("student info");
                 Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
+                throw new Exception("test exception");
                 return this.OdinResult(stu);
                 // this.GetDIServices<ITestService>().show(id);
                 // return this.OdinResult($"{DateTime.Now.ToString()}");

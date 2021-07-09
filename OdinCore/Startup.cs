@@ -30,7 +30,6 @@ using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using OdinPlugs.OdinCore.ConfigModel;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinMAF.OdinCacheManager;
 using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMAF.OdinMongoDb;
@@ -40,11 +39,9 @@ using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMiddleware;
 using OdinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinMiddleware.MiddlewareExtensions;
 using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
 using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
-using OdinPlugs.OdinUtils.OdinFiles;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using Serilog;
@@ -62,6 +59,11 @@ using Newtonsoft.Json;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
 using Newtonsoft.Json.Serialization;
+using OdinPlugs.OdinInject;
+using OdinPlugs.OdinUtils.Utils.OdinFiles;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.SnowFlake.SnowFlakeInterface;
+using OdinPlugs.SnowFlake.SnowFlakeModel;
 
 namespace OdinCore
 {
@@ -100,7 +102,7 @@ namespace OdinCore
             _iOptions = services.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
-
+            
             services.AddOdinSingletonWithParamasInject<IOdinSnowFlake, OdinSnowFlakeOption>(
                 ass,
                 opt =>
@@ -117,8 +119,6 @@ namespace OdinCore
                 .AddOdinTransientWithParamasInject<IOdinRedisCache>(
                     ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
                 .AddOdinTransientWithParamasInject<IOdinCacheManager>(
-                    ass, new Object[] { _Options })
-                .AddOdinTransientWithParamasInject<IMvcApiCore>(
                     ass, new Object[] { _Options })
                 .AddOdinHttpClient("OdinClient")
                 .AddOdinCapInject(
@@ -240,7 +240,7 @@ namespace OdinCore
                     opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
                     opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                    opt.Filters.Add<ApiInvokerResultFilter>();
+                    // opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
                 {
@@ -347,6 +347,7 @@ namespace OdinCore
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
+            app.UseOdinAop();
             // if (env.IsDevelopment())
             // {
             //     app.UseDeveloperExceptionPage();

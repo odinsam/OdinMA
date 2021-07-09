@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.Aop;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinMAF.OdinMongoDb;
 using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQSend;
 using OdinPlugs.OdinMvcCore.MvcCore;
@@ -22,6 +21,7 @@ using AutoMapper;
 using SqlSugar.IOC;
 using Newtonsoft.Json;
 using Serilog;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 
 namespace OdinCore.Controllers
 {
@@ -40,7 +40,6 @@ namespace OdinCore.Controllers
     public class OrbitController : Controller
     {
         private readonly ProjectExtendsOptions options;
-        private readonly IMvcApiCore mvcCore;
         private readonly IMapper mapper;
         private readonly SqlSugarClient entity;
         private readonly IOdinMongo mongoHelper;
@@ -52,8 +51,6 @@ namespace OdinCore.Controllers
         public OrbitController()
         {
             this.options = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>().Value;
-            this.mvcCore = OdinInjectHelper.GetService<IMvcApiCore>();
-            this.mapper = OdinInjectHelper.GetService<IMapper>();
             this.entity = DbScoped.Sugar;
             this.mongoHelper = OdinInjectHelper.GetService<IOdinMongo>();
             this.rabbitMQSendHelper = OdinInjectHelper.GetService<IRabbitMQSendServer>();

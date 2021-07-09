@@ -153,9 +153,69 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
+      "version": "1.0.1",
+      "restore": {
+        "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
+        "projectName": "OdinPlugs.SnowFlake",
+        "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
+        "packagesPath": "/Users/odin/.nuget/packages/",
+        "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/odin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "http://proget.aecg.com.cn/nuget/AIResearchCenter": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://proget.aecg.com.cn/nuget/AquariumPackage": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "OdinPlugs.OdinInject": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -193,6 +253,9 @@
             "projectReferences": {
               "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj": {
                 "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj"
+              },
+              "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
+                "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj"
               }
             }
           }
@@ -266,26 +329,6 @@
             "Consul": {
               "target": "Package",
               "version": "[1.6.10.1, )"
-            },
-            "DotNetCore.CAP": {
-              "target": "Package",
-              "version": "[5.1.0, )"
-            },
-            "DotNetCore.CAP.Dashboard": {
-              "target": "Package",
-              "version": "[5.1.0, )"
-            },
-            "DotNetCore.CAP.MongoDB": {
-              "target": "Package",
-              "version": "[5.1.0, )"
-            },
-            "DotNetCore.CAP.MySql": {
-              "target": "Package",
-              "version": "[5.1.0, )"
-            },
-            "DotNetCore.CAP.RabbitMQ": {
-              "target": "Package",
-              "version": "[5.1.0, )"
             },
             "IGeekFan.AspNetCore.Knife4jUI": {
               "target": "Package",
@@ -407,6 +450,10 @@
               "target": "Package",
               "version": "[5.0.3.1, )"
             },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[1.3.11, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
@@ -426,6 +473,10 @@
             "Ocelot.Provider.Polly": {
               "target": "Package",
               "version": "[17.0.0, )"
+            },
+            "OdinPlugs.OdinInject": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             },
             "Polly": {
               "target": "Package",
@@ -535,9 +586,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

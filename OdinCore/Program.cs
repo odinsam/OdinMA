@@ -9,8 +9,8 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinMvcCore.OdinWebHost;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using Serilog;
 using Unicorn.AspNetCore.Middleware.RealIp;
 
