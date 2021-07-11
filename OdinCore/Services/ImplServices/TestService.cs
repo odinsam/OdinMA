@@ -11,7 +11,6 @@ using OdinPlugs.OdinMAF.OdinMongoDb;
 using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQReceive;
 using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
@@ -20,6 +19,7 @@ using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinCore.Models.OdinInterceptor;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
+using OdinPlugs.OdinInject;
 
 namespace OdinCore.Services.ImplServices
 {
@@ -40,13 +40,13 @@ namespace OdinCore.Services.ImplServices
         public TestService()
         {
             this.innerService = MvcContext.GetRequiredServices<IInerService>();
-            this.iApiOptions = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
+            this.iApiOptions = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiOptions = iApiOptions.Value;
-            this.mapper = OdinInjectHelper.GetService<IMapper>();
-            this.mongoHelper = OdinInjectHelper.GetService<IOdinMongo>();
-            this.redisCacheHelper = OdinInjectHelper.GetService<IOdinRedisCache>();
-            this.odinCacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
-            this.rabbitMQReceiveServer = OdinInjectHelper.GetService<IRabbitMQReceiveServer>();
+            this.mapper = OdinInjectCore.GetService<IMapper>();
+            this.mongoHelper = OdinInjectCore.GetService<IOdinMongo>();
+            this.redisCacheHelper = OdinInjectCore.GetService<IOdinRedisCache>();
+            this.odinCacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
+            this.rabbitMQReceiveServer = OdinInjectCore.GetService<IRabbitMQReceiveServer>();
         }
 
         public OdinActionResult SelectErrorCode(long id)

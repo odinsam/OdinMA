@@ -8,16 +8,16 @@ using OdinCore.Models.OdinInterceptor;
 using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinInject;
 using OdinPlugs.OdinJson.ContractResolver;
 using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.Utils;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
 namespace OdinCore.Controllers
 {
@@ -63,7 +63,7 @@ namespace OdinCore.Controllers
             {
                 var stu = new Stu
                 {
-                    id = OdinSnowFlakeHelper.CreateSnowFlakeId(),
+                    id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),
                     name = "odinsam",
                     age = 20
                 };

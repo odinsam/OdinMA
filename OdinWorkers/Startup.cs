@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,10 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinInject.Models.EventBusModels;
+using OdinPlugs.OdinInject.Models.RabbitmqModels;
 using OdinPlugs.OdinMAF.OdinCacheManager;
 using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMAF.OdinMongoDb;
@@ -21,9 +26,8 @@ using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
+using OdinPlugs.SnowFlake.SnowFlakeModel;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
 using Serilog;
@@ -82,9 +86,12 @@ namespace OdinWorkers
                 .AddOdinTransientWithParamasInject<IOdinMongo>(ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
                 .AddOdinTransientWithParamasInject<IOdinRedisCache>(ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
                 .AddOdinTransientWithParamasInject<IOdinCacheManager>(ass, new Object[] { _Options })
-                .AddOdinTransientWithParamasInject<IMvcApiCore>(ass, new Object[] { _Options })
                 .AddOdinHttpClient("OdinClient")
-                .AddOdinCapInject(new OdinCapEventBusOptions { MysqlConnectionString = _Options.DbEntity.ConnectionString, RabbitmqOptions = _Options.RabbitMQ });
+                .AddOdinCapInject(opt =>
+                {
+                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
+                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
+                });
             services.SetServiceProvider();
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
@@ -97,7 +104,10 @@ namespace OdinWorkers
             });
             services.ConfigurationSugar(db =>
             {
-                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
+                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices
+                {
+                    DataInfoCacheService = services.GetService<IOdinCacheManager>()
+                };
                 //多租户 
                 //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
                 //也可以配置AOP
@@ -132,29 +142,8 @@ namespace OdinWorkers
             services.AddAutoMapper(typeof(Program));
 
             Log.Logger.Information("启用【 HttpClient 依赖注入 】---开始配置");
-            var handler = new HttpClientHandler();
-            foreach (var cerItem in _Options.SslCers)
-            {
-                if (!string.IsNullOrEmpty(cerItem.CerPath))
-                {
-                    var clientCertificate = new X509Certificate2(cerItem.CerPath, cerItem.CerPassword);
-                    handler.ClientCertificates.Add(clientCertificate);
-                }
-            }
-            var handlerWithCer = new HttpClientHandler();
-            foreach (var cerItem in _Options.SslCers)
-            {
-                if (!string.IsNullOrEmpty(cerItem.CerPath))
-                {
-                    var clientCertificate = new X509Certificate2(cerItem.CerPath, cerItem.CerPassword);
-                    handlerWithCer.ClientCertificates.Add(clientCertificate);
-                }
-            }
-            services.AddHttpClient("OdinClient", c => { }).ConfigurePrimaryHttpMessageHandler(() => handler);
-            services.AddHttpClient("OdinClientCer", c => { }).ConfigurePrimaryHttpMessageHandler(() => handlerWithCer);
-
+            services.AddOdinHttpClient("OdinClient");
             services.AddHostedService<OdinBackgroundService>();
-
             services.SetServiceProvider();
         }
 

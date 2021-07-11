@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinCore.Models;
 using OdinPlugs.OdinMvcCore.OdinAttr;
+using OdinPlugs.OdinInject;
 
 namespace OdinCore.Controllers
 {
@@ -30,9 +30,9 @@ namespace OdinCore.Controllers
         #region 构造函数
         public TestController()
         {
-            this.iApiOptions = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
+            this.iApiOptions = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiIOptions = iApiOptions.Value;
-            this.mapper = OdinInjectHelper.GetService<IMapper>();
+            this.mapper = OdinInjectCore.GetService<IMapper>();
         }
         #endregion
 

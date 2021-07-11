@@ -1,5 +1,5 @@
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using System.ComponentModel.DataAnnotations;
+using OdinPlugs.OdinInject;
 using OdinPlugs.OdinSqlSugar.SqlSugarExtends;
 using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
 using SqlSugar;
@@ -11,7 +11,7 @@ namespace OdinCore.Models.DbModels
     public class ErrorCode_DbModel : IDbTable
     {
         [SugarColumn(IsPrimaryKey = true, IsIdentity = false)]
-        public long Id { get; set; } = OdinInjectHelper.GetService<IOdinSnowFlake>().NextId();
+        public long Id { get; set; }
 
         [OdinSugarColumn(Length = 256, IsNullable = true)]
         public string ErrorCode { get; set; }

@@ -17,7 +17,6 @@ using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinMAF.OdinCacheManager;
 using OdinPlugs.OdinMAF.OdinMongoDb;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinCore.Models;
@@ -27,6 +26,7 @@ using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
 using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMvcCore.OdinAttr;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinInject;
 
 namespace OdinCore.Controllers
 {
@@ -55,14 +55,14 @@ namespace OdinCore.Controllers
         #region 构造函数
         public LinkTrackController()
         {
-            this.iApiOptions = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
+            this.iApiOptions = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiOptions = iApiOptions.Value;
-            this.mapper = OdinInjectHelper.GetService<IMapper>();
-            this.testService = OdinInjectHelper.GetService<ITestService>();
-            this.cacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
-            this.capBus = OdinInjectHelper.GetService<ICapPublisher>();
-            this.odinCapEventBus = OdinInjectHelper.GetService<IOdinCapEventBus>();
-            this.mongoHelper = OdinInjectHelper.GetService<IOdinMongo>();
+            this.mapper = OdinInjectCore.GetService<IMapper>();
+            this.testService = OdinInjectCore.GetService<ITestService>();
+            this.cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
+            this.capBus = OdinInjectCore.GetService<ICapPublisher>();
+            this.odinCapEventBus = OdinInjectCore.GetService<IOdinCapEventBus>();
+            this.mongoHelper = OdinInjectCore.GetService<IOdinMongo>();
         }
 
         public class SourceC

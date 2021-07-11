@@ -1,38 +1,41 @@
 {
   "format": 1,
   "restore": {
-    "/Users/odin/workSpace/github/odinmaf/odinma/OdinHangFire/OdinHangFire.csproj": {}
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {}
   },
   "projects": {
-    "/Users/odin/workSpace/github/odinmaf/odinma/OdinHangFire/OdinHangFire.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/odinma/OdinHangFire/OdinHangFire.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
         "projectName": "OdinHangFire",
-        "projectPath": "/Users/odin/workSpace/github/odinmaf/odinma/OdinHangFire/OdinHangFire.csproj",
-        "packagesPath": "/Users/odin/.nuget/packages/",
-        "outputPath": "/Users/odin/workSpace/github/odinmaf/odinma/OdinHangFire/obj/",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "/Users/odin/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\odinsam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "http://proget.aecg.com.cn/nuget/AIResearchCenter": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://proget.aecg.com.cn/nuget/AquariumPackage": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "/Users/odin/workSpace/github/odinmaf/OdinPlugs/OdinPlugs.csproj": {
-                "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs/OdinPlugs.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj"
               }
             }
           }
@@ -70,32 +73,193 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj": {
-      "version": "1.0.0",
+    "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+      "version": "1.0.5",
       "restore": {
-        "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
-        "projectName": "OdinPlugs.Utils",
-        "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
-        "packagesPath": "/Users/odin/.nuget/packages/",
-        "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/obj/",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
+        "projectName": "OdinPlugs.OdinInject",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "/Users/odin/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\odinsam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "http://proget.aecg.com.cn/nuget/AIResearchCenter": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://proget.aecg.com.cn/nuget/AquariumPackage": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "DotNetCore.CAP": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "DotNetCore.CAP.Dashboard": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "DotNetCore.CAP.InMemoryStorage": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "DotNetCore.CAP.MongoDB": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "DotNetCore.CAP.MySql": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "DotNetCore.CAP.RabbitMQ": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "SqlSugar.IOC": {
+              "target": "Package",
+              "version": "[1.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
+      "version": "1.0.5",
+      "restore": {
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
+        "projectName": "OdinPlugs.SnowFlake",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\odinsam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj": {
+      "version": "1.0.5",
+      "restore": {
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
+        "projectName": "OdinPlugs.Utils",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\odinsam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
@@ -116,30 +280,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
-            },
-            "Serilog": {
-              "target": "Package",
-              "version": "[2.10.0, )"
-            },
-            "Serilog.AspNetCore": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
-            "Serilog.Extensions.Logging": {
-              "target": "Package",
-              "version": "[3.0.1, )"
-            },
-            "Serilog.Sinks.Console": {
-              "target": "Package",
-              "version": "[3.1.1, )"
-            },
-            "Serilog.Sinks.Elasticsearch": {
-              "target": "Package",
-              "version": "[8.4.1, )"
-            },
-            "Serilog.Sinks.File": {
-              "target": "Package",
-              "version": "[4.1.0, )"
             }
           },
           "imports": [
@@ -157,105 +297,48 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
-      "version": "1.0.1",
+    "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
+      "version": "1.0.5",
       "restore": {
-        "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
-        "projectName": "OdinPlugs.SnowFlake",
-        "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
-        "packagesPath": "/Users/odin/.nuget/packages/",
-        "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/obj/",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
-        ],
-        "configFilePaths": [
-          "/Users/odin/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net5.0"
-        ],
-        "sources": {
-          "http://proget.aecg.com.cn/nuget/AIResearchCenter": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://proget.aecg.com.cn/nuget/AquariumPackage": {}
-        },
-        "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
-          "dependencies": {
-            "OdinPlugs.OdinInject": {
-              "target": "Package",
-              "version": "[1.0.1, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "/Users/odin/workSpace/github/odinmaf/OdinPlugs/OdinPlugs.csproj": {
-      "version": "1.0.6",
-      "restore": {
-        "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs/OdinPlugs.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj",
         "projectName": "OdinPlugs",
-        "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs/OdinPlugs.csproj",
-        "packagesPath": "/Users/odin/.nuget/packages/",
-        "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs/obj/",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "/Users/odin/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\odinsam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "http://proget.aecg.com.cn/nuget/AIResearchCenter": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://proget.aecg.com.cn/nuget/AquariumPackage": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj": {
-                "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
               },
-              "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
-                "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj"
+              },
+              "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj"
               }
             }
           }
@@ -474,10 +557,6 @@
               "target": "Package",
               "version": "[17.0.0, )"
             },
-            "OdinPlugs.OdinInject": {
-              "target": "Package",
-              "version": "[1.0.1, )"
-            },
             "Polly": {
               "target": "Package",
               "version": "[7.2.2, )"
@@ -514,9 +593,9 @@
               "target": "Package",
               "version": "[4.0.0, )"
             },
-            "SqlSugar.IOC": {
+            "SqlSugarCore": {
               "target": "Package",
-              "version": "[1.5.0, )"
+              "version": "[5.0.3.2, )"
             },
             "SqlSugarCore.MySqlConnector": {
               "target": "Package",
@@ -541,10 +620,6 @@
             "System.Reflection.Emit": {
               "target": "Package",
               "version": "[4.7.0, )"
-            },
-            "System.Security.Cryptography.Algorithms": {
-              "target": "Package",
-              "version": "[4.3.1, )"
             },
             "Unicorn.AspNetCore": {
               "target": "Package",
@@ -590,7 +665,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

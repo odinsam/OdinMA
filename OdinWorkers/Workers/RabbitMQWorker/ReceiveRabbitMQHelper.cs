@@ -1,11 +1,12 @@
 using System;
 using OdinPlugs.OdinBasicDataType.OdinEnum;
 using OdinPlugs.OdinCore.Models.RabbitMQModel;
-using OdinPlugs.OdinExtensions.BasicExtensions.OdinTime;
+using OdinPlugs.OdinInject;
 using OdinPlugs.OdinMAF.OdinCacheManager;
 using OdinPlugs.OdinMAF.OdinCanalService;
 using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQReceive;
-using OdinPlugs.OdinMvcCore.OdinInject;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinTime;
+using OdinPlugs.OdinUtils.Utils.OdinTime;
 using OdinWorkers.ErrorCodeWork;
 using OdinWorkers.Models;
 using RabbitMQ.Client;
@@ -21,9 +22,9 @@ namespace OdinWorkers.Workers.RabbitMQWorker
 
         public ReceiveRabbitMQHelper()
         {
-            this.rabbitMQReceiveServer = OdinInjectHelper.GetService<IRabbitMQReceiveServer>();
-            this.canalHelper = OdinInjectHelper.GetService<IOdinCanal>();
-            this.cacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
+            this.rabbitMQReceiveServer = OdinInjectCore.GetService<IRabbitMQReceiveServer>();
+            this.canalHelper = OdinInjectCore.GetService<IOdinCanal>();
+            this.cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
         }
 
         public void ReceiveMQ(ProjectExtendsOptions apiOptions)

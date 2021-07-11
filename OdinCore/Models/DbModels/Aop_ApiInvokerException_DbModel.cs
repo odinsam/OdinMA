@@ -1,7 +1,7 @@
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinInject;
 using OdinPlugs.OdinSqlSugar.SqlSugarExtends;
 using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using SqlSugar;
 
 namespace OdinCore.Models.DbModels
@@ -14,7 +14,7 @@ namespace OdinCore.Models.DbModels
         /// </summary>
         /// <returns></returns>
         [SugarColumn(IsPrimaryKey = true)]
-        public long Id { get; set; } = OdinInjectHelper.GetService<IOdinSnowFlake>().NextId();
+        public long Id { get; set; } = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId();
 
         [OdinSugarStringColumn(Length = 128)]
         public string Guid { get; set; }

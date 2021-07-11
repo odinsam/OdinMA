@@ -1,4 +1,3 @@
-using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,13 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Text.Json;
 using System.Text.Unicode;
-using System.Threading.Tasks;
 using AspectCore.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +17,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -31,17 +26,12 @@ using Ocelot.Provider.Polly;
 using OdinPlugs.OdinCore.ConfigModel;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMAF.OdinMongoDb;
 using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
-using OdinPlugs.OdinMiddleware;
 using OdinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinMiddleware.MiddlewareExtensions;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeModel;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using Serilog;
@@ -52,18 +42,17 @@ using SqlSugar.IOC;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinMAF.OdinAspectCore;
 using AspectCore.Configuration;
-using OdinCore.Services.InterfaceServices;
-using OdinCore.Services.ImplServices;
-using OdinCore.Models.OdinInterceptor;
-using Newtonsoft.Json;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
-using OdinPlugs.OdinNetCore.OdinJson.ContractResolver;
 using Newtonsoft.Json.Serialization;
 using OdinPlugs.OdinInject;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
-using OdinPlugs.SnowFlake.SnowFlakeInterface;
 using OdinPlugs.SnowFlake.SnowFlakeModel;
+using OdinPlugs.OdinInject.Models.RabbitmqModels;
+using Mapster;
+using OdinPlugs.SnowFlake.Inject;
+using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
 namespace OdinCore
 {
@@ -102,7 +91,7 @@ namespace OdinCore
             _iOptions = services.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
-            
+
             services.AddOdinSingletonWithParamasInject<IOdinSnowFlake, OdinSnowFlakeOption>(
                 ass,
                 opt =>
@@ -110,8 +99,6 @@ namespace OdinCore
                     opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
                     opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
                 });
-
-
             services.AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(ass)
                 .AddOdinTransientWithParamasInject<IOdinMongo>(
@@ -121,13 +108,17 @@ namespace OdinCore
                 .AddOdinTransientWithParamasInject<IOdinCacheManager>(
                     ass, new Object[] { _Options })
                 .AddOdinHttpClient("OdinClient")
-                .AddOdinCapInject(
-                    new OdinCapEventBusOptions
-                    {
-                        MysqlConnectionString = _Options.DbEntity.ConnectionString,
-                        RabbitmqOptions = _Options.RabbitMQ
-                    });
-
+                // .AddOdinSingletonWithParamasInject<IOdinSnowFlake, SnowFlake_Model>(Assembly.Load("OdinPlugs.SnowFlake"),opt=> {
+                //     opt.DatacenterId = 1;
+                //     opt.WorkerId = 1;
+                // })
+                .AddOdinCapInject(opt =>
+                {
+                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
+                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
+                })
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
+            // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
 
@@ -147,7 +138,10 @@ namespace OdinCore
             });
             services.ConfigurationSugar(db =>
                 {
-                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices { DataInfoCacheService = services.GetService<IOdinCacheManager>() };
+                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices
+                    {
+                        DataInfoCacheService = services.GetService<IOdinCacheManager>()
+                    };
                     //多租户 
                     //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
                     //也可以配置AOP
@@ -347,7 +341,7 @@ namespace OdinCore
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
-            app.UseOdinAop();
+            // app.UseOdinAop();
             // if (env.IsDevelopment())
             // {
             //     app.UseDeveloperExceptionPage();
@@ -425,8 +419,8 @@ namespace OdinCore
         public void InitErrorCode(IMapper mapper)
         {
             var errorCodes = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList();
-            var errorCodelst = mapper.Map<List<ErrorCode_Model>>(DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList());
-            var cacheManager = OdinInjectHelper.GetService<IOdinCacheManager>();
+            var errorCodelst = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList().Adapt<List<ErrorCode_Model>>();
+            var cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
             foreach (var item in errorCodelst)
             {
                 cacheManager.Cover(item.ErrorCode, item);

@@ -5,10 +5,9 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs\OdinPlugs.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="OdinPlugs.OdinInject" Version="1.0.1" />
+    <ProjectReference Include="..\..\OdinPlugs.Utils\OdinPlugs.OdinUtils.csproj" />
+    <ProjectReference Include="..\..\odinplugs\OdinPlugs.csproj" />
   </ItemGroup>
 </Project>

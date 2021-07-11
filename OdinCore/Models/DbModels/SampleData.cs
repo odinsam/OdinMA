@@ -2,8 +2,8 @@ using System.Data.Common;
 using System.Collections.Generic;
 using SqlSugar.IOC;
 using Newtonsoft.Json;
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
+using OdinPlugs.OdinInject;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
 namespace OdinCore.Models.DbModels
 {
@@ -15,23 +15,23 @@ namespace OdinCore.Models.DbModels
         }
         public static void Init()
         {
-            var odinSnowFlake = OdinInjectHelper.GetService<IOdinSnowFlake>();
+            var odinSnowFlake = OdinInjectCore.GetService<IOdinSnowFlake>();
             List<ErrorCode_DbModel> errorCodes = new List<ErrorCode_DbModel>
                 {
-                    new ErrorCode_DbModel {Id = odinSnowFlake.NextId(), ErrorCode = "ok", CodeErrorMessage = "", CodeShowMessage = "" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-error", CodeErrorMessage = "系统异常，请联系管理员", CodeShowMessage = "系统异常:[sys-error]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-error-undefind", CodeErrorMessage = "错误码不存在", CodeShowMessage = "错误码不存在:[sys-error-undefind]" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-requestparams-null", CodeErrorMessage = "请求参数不存在", CodeShowMessage = "请求参数不存在:[sys-requestparams-null]" },
-                    new ErrorCode_DbModel { ErrorCode = "sys-requestparams-undefind", CodeErrorMessage = "缺少请求参数不存在", CodeShowMessage = "缺少请求参数不存在:[sys-requestparams-undefind]" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-apilink", CodeErrorMessage = "请求缺少Guid", CodeShowMessage = "请求缺少Guid:[sys-apilink]" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-timeout", CodeErrorMessage = "请求超时", CodeShowMessage = "请求超时:[sys-timeout]" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-paramsign-undefind", CodeErrorMessage = "请求缺少签名[sign]", CodeShowMessage = "请求缺少签名-sign:[sys-paramsign-undefind]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-paramsign-error", CodeErrorMessage = "请求验签失败", CodeShowMessage = "请求验签失败:[sys-paramsign-error]" },
-                    new ErrorCode_DbModel { Id = odinSnowFlake.NextId(),ErrorCode = "sys-allowip", CodeErrorMessage = "ip不在白名单，无法请求接口", CodeShowMessage = "ip不在白名单，无法请求接口:[sys-allowip]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-allowip-disallowips", CodeErrorMessage = "ip在黑名单，无法请求接口", CodeShowMessage = "ip在黑名单，无法请求接口:[sys-allowip-disallowips]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-param-undefind", CodeErrorMessage = "方法调用缺少参数", CodeShowMessage = "方法调用缺少参数:[sys-param-undefind]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-token-undefind", CodeErrorMessage = "请求header缺少[Token]", CodeShowMessage = "请求header缺少-token:[sys-token-undefind]" },
-                    new ErrorCode_DbModel {  Id = odinSnowFlake.NextId(),ErrorCode = "sys-catcherror", CodeErrorMessage = "系统运行catch异常", CodeShowMessage = "系统运行catch异常，错误以记录会尽快处理:[sys-catcherror]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(), ErrorCode = "ok", CodeErrorMessage = "", CodeShowMessage = "" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-error", CodeErrorMessage = "系统异常，请联系管理员", CodeShowMessage = "系统异常:[sys-error]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-error-undefind", CodeErrorMessage = "错误码不存在", CodeShowMessage = "错误码不存在:[sys-error-undefind]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-requestparams-null", CodeErrorMessage = "请求参数不存在", CodeShowMessage = "请求参数不存在:[sys-requestparams-null]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-requestparams-undefind", CodeErrorMessage = "缺少请求参数不存在", CodeShowMessage = "缺少请求参数不存在:[sys-requestparams-undefind]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-apilink", CodeErrorMessage = "请求缺少Guid", CodeShowMessage = "请求缺少Guid:[sys-apilink]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-timeout", CodeErrorMessage = "请求超时", CodeShowMessage = "请求超时:[sys-timeout]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-paramsign-undefind", CodeErrorMessage = "请求缺少签名[sign]", CodeShowMessage = "请求缺少签名-sign:[sys-paramsign-undefind]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-paramsign-error", CodeErrorMessage = "请求验签失败", CodeShowMessage = "请求验签失败:[sys-paramsign-error]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-allowip", CodeErrorMessage = "ip不在白名单，无法请求接口", CodeShowMessage = "ip不在白名单，无法请求接口:[sys-allowip]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-allowip-disallowips", CodeErrorMessage = "ip在黑名单，无法请求接口", CodeShowMessage = "ip在黑名单，无法请求接口:[sys-allowip-disallowips]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-param-undefind", CodeErrorMessage = "方法调用缺少参数", CodeShowMessage = "方法调用缺少参数:[sys-param-undefind]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-token-undefind", CodeErrorMessage = "请求header缺少[Token]", CodeShowMessage = "请求header缺少-token:[sys-token-undefind]" },
+                    new ErrorCode_DbModel {Id = odinSnowFlake.CreateSnowFlakeId(),ErrorCode = "sys-catcherror", CodeErrorMessage = "系统运行catch异常", CodeShowMessage = "系统运行catch异常，错误以记录会尽快处理:[sys-catcherror]" },
 
                 };
             DbScoped.Sugar.Insertable<ErrorCode_DbModel>(errorCodes).ExecuteCommand();

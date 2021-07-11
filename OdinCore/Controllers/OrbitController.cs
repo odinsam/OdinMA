@@ -11,7 +11,6 @@ using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQSend;
 using OdinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinInject;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
@@ -22,6 +21,7 @@ using SqlSugar.IOC;
 using Newtonsoft.Json;
 using Serilog;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinInject;
 
 namespace OdinCore.Controllers
 {
@@ -50,10 +50,10 @@ namespace OdinCore.Controllers
 
         public OrbitController()
         {
-            this.options = OdinInjectHelper.GetService<IOptionsSnapshot<ProjectExtendsOptions>>().Value;
+            this.options = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>().Value;
             this.entity = DbScoped.Sugar;
-            this.mongoHelper = OdinInjectHelper.GetService<IOdinMongo>();
-            this.rabbitMQSendHelper = OdinInjectHelper.GetService<IRabbitMQSendServer>();
+            this.mongoHelper = OdinInjectCore.GetService<IOdinMongo>();
+            this.rabbitMQSendHelper = OdinInjectCore.GetService<IRabbitMQSendServer>();
         }
 
         [NoApiFilter]  // 跳过全局拦截

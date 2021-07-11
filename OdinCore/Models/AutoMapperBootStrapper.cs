@@ -2,9 +2,9 @@ using AutoMapper;
 using Newtonsoft.Json;
 using OdinPlugs.OdinCore.Models.Aop;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinMvcCore.OdinInject;
-using OdinPlugs.OdinNetCore.OdinSnowFlake.SnowFlakeInterface;
 using OdinCore.Models.DbModels;
+using OdinPlugs.OdinInject;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
 namespace OdinCore.Models
 {
@@ -19,14 +19,14 @@ namespace OdinCore.Models
             CreateMap<Aop_ApiInvokerRecord_Model, Aop_ApiInvokerRecord_DbModel>()
                 .BeforeMap((source, dto) =>
                 {
-                    dto.Id = source.Id ?? (long)OdinInjectHelper.GetService<IOdinSnowFlake>().NextId();
+                    dto.Id = source.Id ?? (long)OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId();
                 })
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<Aop_ApiInvokerCatch_Model, Aop_ApiInvokerCatch_DbModel>()
                 .BeforeMap((source, dto) =>
                 {
-                    dto.Id = source.Id ?? (long)OdinInjectHelper.GetService<IOdinSnowFlake>().NextId();
+                    dto.Id = source.Id ?? (long)OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId();
                 })
                 .ForMember(dest => dest.StrParam, opt => opt.MapFrom(src => src.InputParams))
                 .ForMember(dest => dest.ExceptionMessage, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.Ex)));
