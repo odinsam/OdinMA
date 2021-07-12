@@ -40,7 +40,6 @@ using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
-using OdinPlugs.OdinMAF.OdinAspectCore;
 using AspectCore.Configuration;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using Newtonsoft.Json.Serialization;
@@ -53,6 +52,9 @@ using Mapster;
 using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.Inject;
+using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 
 namespace OdinCore
 {
@@ -117,12 +119,13 @@ namespace OdinCore
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
                 })
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
+                // .AddTransientOdinAspectCoreInterceptorAttribute()
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"));
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
+
             services.SetServiceProvider();
-
-
 
 
 
@@ -233,7 +236,7 @@ namespace OdinCore
                 {
                     opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    // opt.Filters.Add<ApiInvokerFilterAttribute>(2);
                     // opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
@@ -351,6 +354,7 @@ namespace OdinCore
             // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
             // app.UseHsts();
             // app.UseOdinAop();
+            app.UseOdinApiLinkMonitor();
 
 
             app.UseStaticFiles();

@@ -239,7 +239,7 @@
       "version": "1.0.5",
       "restore": {
         "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
-        "projectName": "OdinPlugs.Utils",
+        "projectName": "OdinPlugs.OdinUtils",
         "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
         "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\obj\\",
@@ -277,6 +277,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.ViewFeatures": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
