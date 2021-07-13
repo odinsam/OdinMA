@@ -157,9 +157,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -172,7 +169,7 @@
       "version": "1.0.5",
       "restore": {
         "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
-        "projectName": "OdinPlugs.Utils",
+        "projectName": "OdinPlugs.OdinUtils",
         "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
         "packagesPath": "/Users/odin/.nuget/packages/",
         "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.OdinUtils/obj/",
@@ -207,6 +204,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.ViewFeatures": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
@@ -234,19 +239,11 @@
     "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
       "version": "1.0.5",
       "restore": {
-<<<<<<< HEAD
         "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
         "projectName": "OdinPlugs.SnowFlake",
         "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
         "packagesPath": "/Users/odin/.nuget/packages/",
         "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/obj/",
-=======
-        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
-        "projectName": "OdinPlugs.OdinUtils",
-        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
-        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\obj\\",
->>>>>>> eda2738036617260c3baebd35750455f91914a19
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -281,23 +278,6 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-<<<<<<< HEAD
-=======
-          "dependencies": {
-            "Microsoft.AspNetCore.Http.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.AspNetCore.Mvc.ViewFeatures": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.1, )"
-            }
-          },
->>>>>>> eda2738036617260c3baebd35750455f91914a19
           "imports": [
             "net461",
             "net462",
@@ -309,9 +289,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -413,10 +390,6 @@
             "CacheManager.Serialization.Json": {
               "target": "Package",
               "version": "[2.0.0-beta-1629, )"
-            },
-            "CacheManager.Serialization.Json": {
-              "target": "Package",
-              "version": "[1.2.0, )"
             },
             "CacheManager.StackExchange.Redis": {
               "target": "Package",
@@ -678,9 +651,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

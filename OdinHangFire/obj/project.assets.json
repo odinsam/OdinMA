@@ -5789,7 +5789,6 @@
           "Ocelot.Provider.Consul": "17.0.0",
           "Ocelot.Provider.Polly": "17.0.0",
           "OdinPlugs.OdinInject": "1.0.5",
-          "OdinPlugs.OdinUtils": "1.0.5",
           "OdinPlugs.SnowFlake": "1.0.5",
           "Polly": "7.2.2",
           "RabbitMQ.Client": "6.2.1",
@@ -5820,10 +5819,7 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "OdinPlugs.OdinInject/1.0.5": {
         "type": "project",
@@ -5843,10 +5839,7 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.OdinInject.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "OdinPlugs.OdinUtils/1.0.5": {
         "type": "project",
@@ -5860,16 +5853,8 @@
           "bin/placeholder/OdinPlugs.OdinUtils.dll": {}
         },
         "runtime": {
-<<<<<<< HEAD
-          "bin/placeholder/OdinPlugs.SnowFlake.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-=======
           "bin/placeholder/OdinPlugs.OdinUtils.dll": {}
         }
->>>>>>> eda2738036617260c3baebd35750455f91914a19
       },
       "OdinPlugs.SnowFlake/1.0.5": {
         "type": "project",
@@ -15532,7 +15517,7 @@
     },
     "OdinPlugs/1.0.5": {
       "type": "project",
-      "path": "../../odinplugs/OdinPlugs.csproj",
+      "path": "../../OdinPlugs/OdinPlugs.csproj",
       "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
     },
     "OdinPlugs.OdinInject/1.0.5": {
@@ -15542,21 +15527,13 @@
     },
     "OdinPlugs.OdinUtils/1.0.5": {
       "type": "project",
-      "path": "../../OdinPlugs.Utils/OdinPlugs.OdinUtils.csproj",
-      "msbuildProject": "../../OdinPlugs.Utils/OdinPlugs.OdinUtils.csproj"
+      "path": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
+      "msbuildProject": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj"
     },
     "OdinPlugs.SnowFlake/1.0.5": {
       "type": "project",
       "path": "../../OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
       "msbuildProject": "../../OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj"
-<<<<<<< HEAD
-    },
-    "OdinPlugs.Utils/1.0.5": {
-      "type": "project",
-      "path": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj",
-      "msbuildProject": "../../OdinPlugs.OdinUtils/OdinPlugs.OdinUtils.csproj"
-=======
->>>>>>> eda2738036617260c3baebd35750455f91914a19
     }
   },
   "projectFileDependencyGroups": {
