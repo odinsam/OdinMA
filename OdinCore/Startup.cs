@@ -52,6 +52,11 @@ using Mapster;
 using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
+<<<<<<< HEAD
+=======
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.Inject;
+>>>>>>> eda2738036617260c3baebd35750455f91914a19
 using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 
 namespace OdinCore
@@ -117,13 +122,18 @@ namespace OdinCore
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
                 })
+<<<<<<< HEAD
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
+=======
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
+                // .AddTransientOdinAspectCoreInterceptorAttribute()
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"));
+>>>>>>> eda2738036617260c3baebd35750455f91914a19
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
+
             services.SetServiceProvider();
-
-
 
 
 
@@ -234,7 +244,7 @@ namespace OdinCore
                 {
                     opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    // opt.Filters.Add<ApiInvokerFilterAttribute>(2);
                     // opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
@@ -352,6 +362,7 @@ namespace OdinCore
             // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
             // app.UseHsts();
             // app.UseOdinAop();
+            app.UseOdinApiLinkMonitor();
 
 
             app.UseStaticFiles();

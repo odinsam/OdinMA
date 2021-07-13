@@ -234,11 +234,19 @@
     "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj": {
       "version": "1.0.5",
       "restore": {
+<<<<<<< HEAD
         "projectUniqueName": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
         "projectName": "OdinPlugs.SnowFlake",
         "projectPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/OdinPlugs.SnowFlake.csproj",
         "packagesPath": "/Users/odin/.nuget/packages/",
         "outputPath": "/Users/odin/workSpace/github/odinmaf/OdinPlugs.SnowFlake/obj/",
+=======
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
+        "projectName": "OdinPlugs.OdinUtils",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\OdinPlugs.OdinUtils.csproj",
+        "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.Utils\\obj\\",
+>>>>>>> eda2738036617260c3baebd35750455f91914a19
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -273,6 +281,23 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+<<<<<<< HEAD
+=======
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.ViewFeatures": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+>>>>>>> eda2738036617260c3baebd35750455f91914a19
           "imports": [
             "net461",
             "net462",
