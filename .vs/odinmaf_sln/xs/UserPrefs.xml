@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{ACC6BDD2-4161-472D-A97C-0482C2DCEDA0}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../OdinPlugs.OdinInject/OdinCapService/IOdinCapEventBus.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../OdinPlugs.OdinInject/WebApi/OdinHttpClientFactory.cs">
     <Files>
-      <File FileName="../odinplugs/OdinMAF/OdinCapService/OdinCapEventBus.cs" Line="2" Column="34" />
-      <File FileName="../OdinPlugs.OdinInject/OdinCapService/IOdinCapEventBus.cs" Line="15" Column="89" />
-      <File FileName="../OdinPlugs.OdinInject/OdinCapService/OdinCapEventBus.cs" Line="1" Column="1" />
+      <File FileName="../odinplugs/OdinMAF/OdinCapService/OdinCapEventBus.cs" Line="11" Column="28" />
+      <File FileName="../OdinPlugs.OdinInject/OdinInjectCore.cs" Line="11" Column="1" />
+      <File FileName="../OdinPlugs.OdinInject/WebApi/OdinHttpClientFactory.cs" Line="139" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,11 +11,7 @@
           <Node name="odinmaf_sln" expanded="True">
             <Node name="OdinMAF" expanded="True" />
             <Node name="OdinPlugs" expanded="True">
-              <Node name="OdinPlugs.OdinInject" expanded="True">
-                <Node name="OdinCapService" expanded="True">
-                  <Node name="IOdinCapEventBus.cs" selected="True" />
-                </Node>
-              </Node>
+              <Node name="OdinPlugs.OdinInject" expanded="True" selected="True" />
             </Node>
           </Node>
         </State>
@@ -24,6 +20,9 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.OdinMAF.OdinCore PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <DisabledProjects>
+    <String>../OdinPlugs.Utils/OdinPlugs.OdinUtils.csproj</String>
+  </DisabledProjects>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
