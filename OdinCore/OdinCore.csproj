@@ -8,5 +8,6 @@
     <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
     <ProjectReference Include="..\..\odinplugs\OdinPlugs.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.ApiLinkMonitor\OdinPlugs.ApiLinkMonitor.csproj" />
   </ItemGroup>
 </Project>

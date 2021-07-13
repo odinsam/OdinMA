@@ -40,7 +40,6 @@ using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
-using OdinPlugs.OdinMAF.OdinAspectCore;
 using AspectCore.Configuration;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using Newtonsoft.Json.Serialization;
@@ -53,6 +52,7 @@ using Mapster;
 using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
+using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 
 namespace OdinCore
 {
@@ -117,6 +117,7 @@ namespace OdinCore
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
                 })
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();

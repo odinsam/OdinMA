@@ -15,7 +15,6 @@ using OdinPlugs.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
-using OdinPlugs.OdinMAF.OdinAspectCore;
 using OdinCore.Models.OdinInterceptor;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
