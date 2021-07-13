@@ -157,6 +157,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -289,6 +292,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -390,6 +396,10 @@
             "CacheManager.Serialization.Json": {
               "target": "Package",
               "version": "[2.0.0-beta-1629, )"
+            },
+            "CacheManager.Serialization.Json": {
+              "target": "Package",
+              "version": "[1.2.0, )"
             },
             "CacheManager.StackExchange.Redis": {
               "target": "Package",
@@ -651,6 +661,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

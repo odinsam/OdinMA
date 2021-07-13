@@ -5819,7 +5819,10 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "OdinPlugs.OdinInject/1.0.5": {
         "type": "project",
@@ -5839,7 +5842,10 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.OdinInject.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "OdinPlugs.OdinUtils/1.0.5": {
         "type": "project",
@@ -5867,7 +5873,10 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.SnowFlake.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -15517,7 +15526,7 @@
     },
     "OdinPlugs/1.0.5": {
       "type": "project",
-      "path": "../../OdinPlugs/OdinPlugs.csproj",
+      "path": "../../odinplugs/OdinPlugs.csproj",
       "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
     },
     "OdinPlugs.OdinInject/1.0.5": {

@@ -52,12 +52,9 @@ using Mapster;
 using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
-<<<<<<< HEAD
-=======
 using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
-using OdinPlugs.ApiLinkMonitor.OdinMiddleware.Inject;
->>>>>>> eda2738036617260c3baebd35750455f91914a19
 using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
+using IGeekFan.AspNetCore.Knife4jUI;
 
 namespace OdinCore
 {
@@ -122,14 +119,8 @@ namespace OdinCore
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
                 })
-<<<<<<< HEAD
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
-=======
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
-                // .AddTransientOdinAspectCoreInterceptorAttribute()
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"));
->>>>>>> eda2738036617260c3baebd35750455f91914a19
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
 
@@ -385,12 +376,12 @@ namespace OdinCore
 
             app.UseAuthorization();
 
-            // app.UseKnife4UI(c =>
-            // {
-            //     c.RoutePrefix = ""; // serve the UI at root
-            //     c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
-            //     c.SwaggerEndpoint("/v2/api-docs", "V2 Docs");
-            // });
+            app.UseKnife4UI(c =>
+            {
+                c.RoutePrefix = ""; // serve the UI at root
+                c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
+                c.SwaggerEndpoint("/v2/api-docs", "V2 Docs");
+            });
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "swagger"; // serve the UI at root
