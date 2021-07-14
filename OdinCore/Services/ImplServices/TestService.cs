@@ -78,6 +78,7 @@ namespace OdinCore.Services.ImplServices
         {
 
             System.Console.WriteLine("this is TestService show method");
+
             return this.innerService.show(id);
         }
 

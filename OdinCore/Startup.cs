@@ -101,7 +101,9 @@ namespace OdinCore
                     opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
                     opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
                 });
-            services.AddOdinTransientInject(this.GetType().Assembly)
+            services
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
+                .AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(ass)
                 .AddOdinTransientWithParamasInject<IOdinMongo>(
                     ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
@@ -119,8 +121,8 @@ namespace OdinCore
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
                 })
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId);
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"));
+
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
 
@@ -235,8 +237,8 @@ namespace OdinCore
                 {
                     opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
-                    // opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                    // opt.Filters.Add<ApiInvokerResultFilter>();
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
                 {
@@ -353,7 +355,14 @@ namespace OdinCore
             // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
             // app.UseHsts();
             // app.UseOdinAop();
-            app.UseOdinApiLinkMonitor();
+            app.UseOdinApiLinkMonitor(
+            // 添加需要过滤 无需链路监控的RequestPath
+            // opts =>
+            // {
+            //     opts.Add("/abc");
+            //     opts.Add("/npm/123");
+            // }
+            );
 
 
             app.UseStaticFiles();

@@ -2,9 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
@@ -51,7 +53,7 @@ namespace OdinCore.Controllers
 
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
-            // throw new Exception("test exception");
+
             try
             {
                 var stu = new Stu
@@ -62,8 +64,9 @@ namespace OdinCore.Controllers
                 };
                 Console.WriteLine("student info");
                 Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
-                throw new Exception("test exception");
-                return this.OdinResult(stu);
+                return this.GetDIServices<ITestService>().show(id);
+                // throw new Exception("test exception");
+                // return this.OdinResult(stu);
                 // this.GetDIServices<ITestService>().show(id);
                 // return this.OdinResult($"{DateTime.Now.ToString()}");
             }

@@ -171,10 +171,10 @@ namespace OdinCore.Controllers
         [OdinActionRoute("SubscribeAction", "1.0")]
         [CapSubscribe("cap.odinCore.Aop.RabbitMQ.#")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<Task> CheckReceivedMessage(DateTime time, [FromCap] CapHeader header)
+        public async Task CheckReceivedMessage(DateTime time, [FromCap] CapHeader header)
         {
             Console.WriteLine($"============{header["RouteingKey"]}==========={time.ToString("yyyy-MM-dd hh:mm:ss")}================");
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
     }
 }
