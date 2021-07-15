@@ -10,4 +10,7 @@
     <ProjectReference Include="..\..\OdinPlugs.ApiLinkMonitor\OdinPlugs.ApiLinkMonitor.csproj" />
     <ProjectReference Include="..\..\OdinPlugs\OdinPlugs.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
 </Project>
