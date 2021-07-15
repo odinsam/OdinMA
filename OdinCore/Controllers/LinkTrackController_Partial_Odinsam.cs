@@ -53,27 +53,20 @@ namespace OdinCore.Controllers
 
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
-            throw new Exception("test exception");
-            try
+            var stu = new Stu
             {
-                var stu = new Stu
-                {
-                    id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),
-                    name = "odinsam",
-                    age = 20
-                };
-                Console.WriteLine("student info");
-                Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
-                return this.GetDIServices<ITestService>().show(id);
-                // throw new Exception("test exception");
-                // return this.OdinResult(stu);
-                // this.GetDIServices<ITestService>().show(id);
-                // return this.OdinResult($"{DateTime.Now.ToString()}");
-            }
-            catch (Exception ex)
-            {
-                return this.OdinCatchResult(ex);
-            }
+                id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),
+                name = "odinsam",
+                age = 20
+            };
+            Console.WriteLine("student info");
+            Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
+            // throw new Exception("test exception");
+            return this.GetDIServices<ITestService>().show(id);
+
+            // return this.OdinResult(stu);
+            // this.GetDIServices<ITestService>().show(id);
+            // return this.OdinResult($"{DateTime.Now.ToString()}");
 
         }
     }

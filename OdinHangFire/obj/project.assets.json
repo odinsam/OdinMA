@@ -507,11 +507,11 @@
           "lib/netstandard2.0/CacheManager.Microsoft.Extensions.Logging.dll": {}
         }
       },
-      "CacheManager.Serialization.Json/1.2.0": {
+      "CacheManager.Serialization.Json/2.0.0-beta-1629": {
         "type": "package",
         "dependencies": {
-          "CacheManager.Core": "1.2.0",
-          "Newtonsoft.Json": "11.0.2"
+          "CacheManager.Core": "2.0.0-beta-1629",
+          "Newtonsoft.Json": "11.0.1"
         },
         "compile": {
           "lib/netstandard2.0/CacheManager.Serialization.Json.dll": {}
@@ -5748,7 +5748,7 @@
           "Autofac": "6.2.0",
           "Autofac.Extensions.DependencyInjection": "7.1.0",
           "CacheManager.Core": "2.0.0-beta-1629",
-          "CacheManager.Serialization.Json": "1.2.0",
+          "CacheManager.Serialization.Json": "2.0.0-beta-1629",
           "CacheManager.StackExchange.Redis": "2.0.0-beta-1629",
           "CacheManager.SystemRuntimeCaching": "2.0.0-beta-1629",
           "Consul": "1.6.10.1",
@@ -6318,21 +6318,17 @@
         "lib/netstandard2.0/CacheManager.Microsoft.Extensions.Logging.xml"
       ]
     },
-    "CacheManager.Serialization.Json/1.2.0": {
-      "sha512": "hVhUOets76MeXwMubIfg7c2RoGDMlS5H0BH/sP0sfcdPxZtXknD+oKK7dxPTRl7c7pm7TuhnsNBfjgehslWBWg==",
+    "CacheManager.Serialization.Json/2.0.0-beta-1629": {
+      "sha512": "5w0s2QiJ3IornP4nWEgp290L+LF/f3ICIIwl9QeWfoVcLA/TSG5QbAeUGVpmMR+glPk2pCQbHTAMSbfJmTJYzg==",
       "type": "package",
-      "path": "cachemanager.serialization.json/1.2.0",
+      "path": "cachemanager.serialization.json/2.0.0-beta-1629",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "cachemanager.serialization.json.1.2.0.nupkg.sha512",
+        "cachemanager.serialization.json.2.0.0-beta-1629.nupkg.sha512",
         "cachemanager.serialization.json.nuspec",
-        "lib/net40/CacheManager.Serialization.Json.dll",
-        "lib/net40/CacheManager.Serialization.Json.xml",
         "lib/net45/CacheManager.Serialization.Json.dll",
         "lib/net45/CacheManager.Serialization.Json.xml",
-        "lib/netstandard1.2/CacheManager.Serialization.Json.dll",
-        "lib/netstandard1.2/CacheManager.Serialization.Json.xml",
         "lib/netstandard2.0/CacheManager.Serialization.Json.dll",
         "lib/netstandard2.0/CacheManager.Serialization.Json.xml"
       ]
@@ -12415,6 +12411,7 @@
       "path": "system.net.networkinformation/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13627,6 +13624,7 @@
       "path": "system.runtime.interopservices.runtimeinformation/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -14829,6 +14827,7 @@
       "path": "system.threading.overlapped/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/net46/System.Threading.Overlapped.dll",
@@ -15521,13 +15520,8 @@
     },
     "OdinPlugs/1.0.5": {
       "type": "project",
-<<<<<<< HEAD
       "path": "../../odinplugs/OdinPlugs.csproj",
       "msbuildProject": "../../odinplugs/OdinPlugs.csproj"
-=======
-      "path": "../../OdinPlugs/OdinPlugs.csproj",
-      "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
->>>>>>> 9e0f6195f97e8b00a4109fc248d316d993016f92
     },
     "OdinPlugs.OdinInject/1.0.5": {
       "type": "project",
@@ -15559,11 +15553,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+      "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
       "projectName": "OdinHangFire",
-      "projectPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+      "projectPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
       "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-      "outputPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
+      "outputPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -15586,8 +15580,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "E:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
-              "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj"
+            "e:\\GitHub\\OdinMA\\odinplugs\\OdinPlugs.csproj": {
+              "projectPath": "e:\\GitHub\\OdinMA\\odinplugs\\OdinPlugs.csproj"
             }
           }
         }

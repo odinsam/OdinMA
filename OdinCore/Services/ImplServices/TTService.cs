@@ -13,7 +13,7 @@ namespace OdinCore.Services.ImplServices
         {
             System.Console.WriteLine("this is tt service");
 
-            // throw new System.Exception("ttservice throw");
+            throw new System.Exception("ttservice throw");
             return this.OdinResult("this is TTService method");
         }
 

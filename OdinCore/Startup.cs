@@ -61,6 +61,7 @@ using OdinPlugs.OdinUtils.Utils.OdinAdapterMapper;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.OdinInject.OdinMapster.IOdinMapster;
 using OdinPlugs.OdinInject.OdinMapster;
+using OdinPlugs.OdinCore.Models;
 
 namespace OdinCore
 {
@@ -131,7 +132,8 @@ namespace OdinCore
                 .AddOdinTypeAdapter(opt =>
                 {
                     opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
-                            .Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
+                            .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
+                            .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 });
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
@@ -346,7 +348,7 @@ namespace OdinCore
 
             // services.AddTransient<FoobarAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -452,23 +454,11 @@ namespace OdinCore
                             ,
                             OdinInjectCore.GetService<ITypeAdapterMapster>().GetConfig()
                         );
-            // var error = errorCodes[1]
-            //                 .OdinTypeAdapterBuilder<ErrorCode_DbModel, ErrorCode_Model>(
-            //                     opt =>
-            //                     {
-            //                         opt.Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
-            //                         opt.Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
-            //                     }
-            //                     , Models.TypeAdapter.GetAdapterConfig()
-            //                 );
-            // var error = Models.TypeAdapter.GetMapper().Map<ErrorCode_Model>(errorCodes[1]);
             var cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
-
-            System.Console.WriteLine(errorCodelst.ToJson(true));
-            // foreach (var item in errorCodelst)
-            // {
-            //     cacheManager.Cover(item.ErrorCode, item);
-            // }
+            foreach (var item in errorCodelst)
+            {
+                cacheManager.Cover(item.ErrorCode, item);
+            }
         }
     }
 #pragma warning restore CS1591
