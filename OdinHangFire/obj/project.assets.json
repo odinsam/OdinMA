@@ -5760,7 +5760,6 @@
           "IdentityServer4.EntityFramework": "4.1.2",
           "JWT": "8.2.2",
           "LitJson": "0.17.0",
-          "Mapster": "7.2.0",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.6",
           "Microsoft.AspNetCore.Http": "2.2.2",
@@ -5845,6 +5844,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
+          "Mapster": "7.2.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.2.0",
           "Newtonsoft.Json": "13.0.1"
@@ -15521,8 +15521,13 @@
     },
     "OdinPlugs/1.0.5": {
       "type": "project",
+<<<<<<< HEAD
       "path": "../../odinplugs/OdinPlugs.csproj",
       "msbuildProject": "../../odinplugs/OdinPlugs.csproj"
+=======
+      "path": "../../OdinPlugs/OdinPlugs.csproj",
+      "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
+>>>>>>> 9e0f6195f97e8b00a4109fc248d316d993016f92
     },
     "OdinPlugs.OdinInject/1.0.5": {
       "type": "project",
