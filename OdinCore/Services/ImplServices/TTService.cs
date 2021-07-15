@@ -1,3 +1,4 @@
+using System;
 using System.Xml;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
@@ -11,6 +12,7 @@ namespace OdinCore.Services.ImplServices
         public OdinActionResult show()
         {
             System.Console.WriteLine("this is tt service");
+
             // throw new System.Exception("ttservice throw");
             return this.OdinResult("this is TTService method");
         }

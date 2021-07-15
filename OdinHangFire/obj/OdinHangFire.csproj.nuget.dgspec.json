@@ -157,9 +157,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -207,6 +204,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            },
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -292,9 +293,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -397,10 +395,6 @@
               "target": "Package",
               "version": "[2.0.0-beta-1629, )"
             },
-            "CacheManager.Serialization.Json": {
-              "target": "Package",
-              "version": "[1.2.0, )"
-            },
             "CacheManager.StackExchange.Redis": {
               "target": "Package",
               "version": "[2.0.0-beta-1629, )"
@@ -444,10 +438,6 @@
             "LitJson": {
               "target": "Package",
               "version": "[0.17.0, )"
-            },
-            "Mapster": {
-              "target": "Package",
-              "version": "[7.2.0, )"
             },
             "Microsoft.AspNetCore": {
               "target": "Package",
@@ -661,9 +651,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

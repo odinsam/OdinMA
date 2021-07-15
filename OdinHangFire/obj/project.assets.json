@@ -5760,7 +5760,6 @@
           "IdentityServer4.EntityFramework": "4.1.2",
           "JWT": "8.2.2",
           "LitJson": "0.17.0",
-          "Mapster": "7.2.0",
           "Microsoft.AspNetCore": "2.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.6",
           "Microsoft.AspNetCore.Http": "2.2.2",
@@ -5819,10 +5818,7 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "OdinPlugs.OdinInject/1.0.5": {
         "type": "project",
@@ -5842,15 +5838,13 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.OdinInject.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "OdinPlugs.OdinUtils/1.0.5": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
+          "Mapster": "7.2.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.2.0",
           "Newtonsoft.Json": "13.0.1"
@@ -5873,10 +5867,7 @@
         },
         "runtime": {
           "bin/placeholder/OdinPlugs.SnowFlake.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       }
     }
   },
@@ -15526,7 +15517,7 @@
     },
     "OdinPlugs/1.0.5": {
       "type": "project",
-      "path": "../../odinplugs/OdinPlugs.csproj",
+      "path": "../../OdinPlugs/OdinPlugs.csproj",
       "msbuildProject": "../../OdinPlugs/OdinPlugs.csproj"
     },
     "OdinPlugs.OdinInject/1.0.5": {

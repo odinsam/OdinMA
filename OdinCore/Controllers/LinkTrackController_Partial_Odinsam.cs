@@ -53,7 +53,7 @@ namespace OdinCore.Controllers
 
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
-
+            throw new Exception("test exception");
             try
             {
                 var stu = new Stu
