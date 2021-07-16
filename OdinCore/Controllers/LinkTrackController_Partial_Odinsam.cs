@@ -6,6 +6,7 @@ using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.OdinRoute;

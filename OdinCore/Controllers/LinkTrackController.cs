@@ -15,18 +15,19 @@ using SqlSugar.IOC;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMAF.OdinMongoDb;
 using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinBasicDataType.OdinEnum;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
-using OdinPlugs.OdinMAF.OdinCapService;
 using OdinPlugs.OdinMvcCore.OdinAttr;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCapService;
+using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
+using OdinPlugs.OdinInject.InjectCore;
 
 namespace OdinCore.Controllers
 {

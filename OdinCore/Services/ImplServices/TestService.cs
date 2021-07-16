@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinMAF.OdinCacheManager;
 using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions;
 using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions.EFInterface;
-using OdinPlugs.OdinMAF.OdinMongoDb;
 using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQReceive;
-using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinCore.Models;
@@ -19,6 +16,10 @@ using OdinCore.Models.OdinInterceptor;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
 using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinRedisInject;
+using OdinPlugs.OdinInject.InjectCore;
 
 namespace OdinCore.Services.ImplServices
 {
@@ -31,7 +32,7 @@ namespace OdinCore.Services.ImplServices
         private readonly ProjectExtendsOptions apiOptions;
         private readonly IMapper mapper;
         private readonly IOdinMongo mongoHelper;
-        private readonly IOdinRedisCache redisCacheHelper;
+        private readonly IOdinRedis redisCacheHelper;
         private readonly IOdinCacheManager odinCacheManager;
         private readonly IRabbitMQReceiveServer rabbitMQReceiveServer;
         #endregion
@@ -43,7 +44,7 @@ namespace OdinCore.Services.ImplServices
             this.apiOptions = iApiOptions.Value;
             this.mapper = OdinInjectCore.GetService<IMapper>();
             this.mongoHelper = OdinInjectCore.GetService<IOdinMongo>();
-            this.redisCacheHelper = OdinInjectCore.GetService<IOdinRedisCache>();
+            this.redisCacheHelper = OdinInjectCore.GetService<IOdinRedis>();
             this.odinCacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
             this.rabbitMQReceiveServer = OdinInjectCore.GetService<IRabbitMQReceiveServer>();
         }

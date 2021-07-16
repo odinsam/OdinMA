@@ -16,13 +16,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinInject;
+using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinRedisInject;
 using OdinPlugs.OdinInject.Models.EventBusModels;
 using OdinPlugs.OdinInject.Models.RabbitmqModels;
-using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMAF.OdinCapService;
-using OdinPlugs.OdinMAF.OdinMongoDb;
-using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
@@ -84,7 +84,7 @@ namespace OdinWorkers
                 .AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(ass)
                 .AddOdinTransientWithParamasInject<IOdinMongo>(ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
-                .AddOdinTransientWithParamasInject<IOdinRedisCache>(ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
+                .AddOdinTransientWithParamasInject<IOdinRedis>(ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
                 .AddOdinTransientWithParamasInject<IOdinCacheManager>(ass, new Object[] { _Options })
                 .AddOdinHttpClient("OdinClient")
                 .AddOdinCapInject(opt =>

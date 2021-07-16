@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMAF.OdinCanalService;
-using OdinPlugs.OdinMAF.OdinCanalService.OdinCanalModels;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCanalInject;
+using OdinPlugs.OdinInject.Models.CanalModels;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 
 namespace OdinWorkers.ErrorCodeWork

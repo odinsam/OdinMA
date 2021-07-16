@@ -5,6 +5,7 @@ using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinCore.Models.DbModels;
 using OdinPlugs.OdinInject;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
+using OdinPlugs.OdinInject.InjectCore;
 
 namespace OdinCore.Models
 {

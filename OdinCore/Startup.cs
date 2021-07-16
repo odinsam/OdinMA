@@ -25,9 +25,6 @@ using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using OdinPlugs.OdinCore.ConfigModel;
 using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinMAF.OdinCacheManager;
-using OdinPlugs.OdinMAF.OdinMongoDb;
-using OdinPlugs.OdinMAF.OdinRedis;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
@@ -43,7 +40,6 @@ using OdinPlugs.OdinCore.ConfigModel.Utils;
 using AspectCore.Configuration;
 using OdinPlugs.OdinMvcCore.OdinExtensions;
 using Newtonsoft.Json.Serialization;
-using OdinPlugs.OdinInject;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.SnowFlake.SnowFlakeModel;
@@ -57,11 +53,12 @@ using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 using IGeekFan.AspNetCore.Knife4jUI;
 using OdinPlugs.ApiLinkMonitor.MiddlewareExtensions;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
-using OdinPlugs.OdinUtils.Utils.OdinAdapterMapper;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
-using OdinPlugs.OdinInject.OdinMapster.IOdinMapster;
-using OdinPlugs.OdinInject.OdinMapster;
-using OdinPlugs.OdinCore.Models;
+using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
+using OdinPlugs.OdinInject.Models.CacheManagerModels;
+using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinInject.Models.RedisModels;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinMAF.OdinInject;
 
 namespace OdinCore
 {
@@ -93,7 +90,6 @@ namespace OdinCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Assembly ass = Assembly.Load("OdinPlugs");
             // Log.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
             services.SetServiceProvider();
@@ -101,35 +97,13 @@ namespace OdinCore
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
 
-            services.AddOdinSingletonWithParamasInject<IOdinSnowFlake, OdinSnowFlakeOption>(
-                ass,
-                opt =>
-                {
-                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
-                    opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
-                });
+
             services
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddOdinTransientInject(ass)
-                .AddOdinTransientWithParamasInject<IOdinMongo>(
-                    ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
-                .AddOdinTransientWithParamasInject<IOdinRedisCache>(
-                    ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
-                .AddOdinTransientWithParamasInject<IOdinCacheManager>(
-                    ass, new Object[] { _Options })
+                .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
-                // .AddOdinSingletonWithParamasInject<IOdinSnowFlake, SnowFlake_Model>(Assembly.Load("OdinPlugs.SnowFlake"),opt=> {
-                //     opt.DatacenterId = 1;
-                //     opt.WorkerId = 1;
-                // })
-                .AddOdinCapInject(opt =>
-                {
-                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
-                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
-                })
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
-                .AddOdinTypeAdapter(opt =>
+                .AddOdinMapsterTypeAdapter(opt =>
                 {
                     opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
                             .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
@@ -137,7 +111,6 @@ namespace OdinCore
                 });
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
-
             services.SetServiceProvider();
 
 
@@ -357,28 +330,17 @@ namespace OdinCore
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
-            // app.UseOdinAop();
-            // if (env.IsDevelopment())
-            // {
-            //     app.UseDeveloperExceptionPage();
-            // }
-            // else
-            // app.UseOdinException();
-            // app.UseExceptionHandler(builder => builder.Use(ExceptionHandlerDemo));
-            // app.UseHsts();
-            // app.UseOdinAop();
-            app.UseOdinApiLinkMonitor(
-            // 添加需要过滤 无需链路监控的RequestPath
-            // opts =>
-            // {
-            //     opts.Add("/abc");
-            //     opts.Add("/npm/123");
-            // }
-            );
-            app.UseOdinException();
 
 
             app.UseStaticFiles();
+            app.UseOdinApiLinkMonitor(
+                // 添加需要过滤 无需链路监控的RequestPath
+                opts =>
+                {
+                    opts.Add(@"\/knife4j");
+                }
+            );
+            app.UseOdinException();
 
             app.UseSwagger();
 
@@ -386,51 +348,24 @@ namespace OdinCore
 
             loggerFactory.AddSerilog();
 
-
-
             app.UseRouting();
-
-
 
             app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
 
-            //app.UseOdinRequestParams();
-
             app.UseAuthorization();
 
-            app.UseKnife4UI(c =>
-            {
-                c.RoutePrefix = ""; // serve the UI at root
-                c.SwaggerEndpoint("/v1/api-docs", "V1 Docs");
-                c.SwaggerEndpoint("/v2/api-docs", "V2 Docs");
-            });
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "swagger"; // serve the UI at root
                 c.SwaggerEndpoint("/v1.0/api-docs", "v1");
                 c.SwaggerEndpoint("/v2.0/api-docs", "v2");
-
-                // c.SwaggerEndpoint("/LinkTrack-v1/api-docs", "LinkTrack-v1");
-                // c.SwaggerEndpoint("/LinkTrack-v2/api-docs", "LinkTrack-v2");
-
-                // c.SwaggerEndpoint("/Test-v1/api-docs", "v1");
-                // c.SwaggerEndpoint("/Test-v2/api-docs", "v2");
-
-                // c.SwaggerEndpoint("/WeatherForecast-v1/api-docs", "v1");
-                // c.SwaggerEndpoint("/WeatherForecast-v2/api-docs", "v2");
-
-                // c.SwaggerEndpoint("/Orbit-v1/api-docs", "v1");
-                // c.SwaggerEndpoint("/Orbit-v2/api-docs", "v2");
             });
 
-            // app.UseOdinAop();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapSwagger("{documentName}/api-docs");
             });
-
-
 
             Program.ApiComments = new OdinApiCommentCore(options).GetApiComments(actionProvider);
 
