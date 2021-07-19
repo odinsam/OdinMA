@@ -23,9 +23,12 @@ using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinRedisInject;
 using OdinPlugs.OdinInject.Models.EventBusModels;
 using OdinPlugs.OdinInject.Models.RabbitmqModels;
+using OdinPlugs.OdinInject.Models.RedisModels;
+using OdinPlugs.OdinMAF.OdinInject;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.SnowFlake.SnowFlakeModel;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using OdinWorkers.Models;
@@ -63,8 +66,6 @@ namespace OdinWorkers
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Assembly ass = Assembly.Load("OdinPlugs");
-
             Log.Logger.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
             var provider = services.BuildServiceProvider();
@@ -72,27 +73,36 @@ namespace OdinWorkers
             _Options = _iOptions.Value;
             services.AddSingleton<ProjectExtendsOptions>(_Options);
 
-            services.AddOdinSingletonWithParamasInject<IOdinSnowFlake, OdinSnowFlakeOption>(
-                ass,
-                opt =>
-                {
-                    opt.DatacenterId = _Options.FrameworkConfig.SnowFlake.DataCenterId;
-                    opt.WorkerId = _Options.FrameworkConfig.SnowFlake.WorkerId;
-                });
-
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddOdinTransientInject(ass)
-                .AddOdinTransientWithParamasInject<IOdinMongo>(ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
-                .AddOdinTransientWithParamasInject<IOdinRedis>(ass, new Object[] { _Options.Redis.Connection, _Options.Redis.InstanceName })
-                .AddOdinTransientWithParamasInject<IOdinCacheManager>(ass, new Object[] { _Options })
-                .AddOdinHttpClient("OdinClient")
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
+                .AddOdinTransientMongoDb(
+                    opt => { opt.ConnectionString = _Options.MongoDb.MongoConnection; opt.DbName = _Options.MongoDb.Database; })
+                .AddOdinTransientRedis(
+                    opt => { opt.ConnectionString = _Options.Redis.Connection; opt.InstanceName = _Options.Redis.InstanceName; })
+                .AddOdinSingletonCacheManager(
+                    opt =>
+                    {
+                        opt.OptCm = _Options.CacheManager.Adapt<OdinPlugs.OdinInject.Models.CacheManagerModels.CacheManagerModel>();
+                        opt.OptRbmq = _Options.Redis.Adapt<RedisModel>();
+                    })
+                .AddOdinSingletonCanal()
                 .AddOdinCapInject(opt =>
                 {
                     opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
                     opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
-                });
+                })
+                .AddOdinHttpClient("OdinClient")
+                // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
+                .AddOdinMapsterTypeAdapter(opt =>
+                {
+                    // opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
+                    //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
+                    //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
+                })
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
             services.SetServiceProvider();
+
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
             SugarIocServices.AddSqlSugar(new IocConfig()
@@ -138,11 +148,6 @@ namespace OdinWorkers
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-            Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
-            services.AddAutoMapper(typeof(Program));
-
-            Log.Logger.Information("启用【 HttpClient 依赖注入 】---开始配置");
-            services.AddOdinHttpClient("OdinClient");
             services.AddHostedService<OdinBackgroundService>();
             services.SetServiceProvider();
         }

@@ -100,15 +100,32 @@ namespace OdinCore
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddOdinInject(_Options)
+                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
+                .AddOdinTransientMongoDb(
+                    opt => { opt.ConnectionString = _Options.MongoDb.MongoConnection; opt.DbName = _Options.MongoDb.Database; })
+                .AddOdinTransientRedis(
+                    opt => { opt.ConnectionString = _Options.Redis.Connection; opt.InstanceName = _Options.Redis.InstanceName; })
+                .AddOdinSingletonCacheManager(
+                    opt =>
+                    {
+                        opt.OptCm = _Options.CacheManager.Adapt<OdinPlugs.OdinInject.Models.CacheManagerModels.CacheManagerModel>();
+                        opt.OptRbmq = _Options.Redis.Adapt<RedisModel>();
+                    })
+                .AddOdinSingletonCanal()
+                .AddOdinCapInject(opt =>
+                {
+                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
+                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
+                })
                 .AddOdinHttpClient("OdinClient")
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
+                // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinMapsterTypeAdapter(opt =>
                 {
-                    opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
-                            .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
-                            .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
-                });
+                    // opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
+                    //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
+                    //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
+                })
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
