@@ -28,6 +28,7 @@ using OdinPlugs.OdinMAF.OdinInject;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.SnowFlake.Inject;
 using OdinPlugs.SnowFlake.SnowFlakeModel;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
@@ -75,23 +76,7 @@ namespace OdinWorkers
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
-                .AddOdinTransientMongoDb(
-                    opt => { opt.ConnectionString = _Options.MongoDb.MongoConnection; opt.DbName = _Options.MongoDb.Database; })
-                .AddOdinTransientRedis(
-                    opt => { opt.ConnectionString = _Options.Redis.Connection; opt.InstanceName = _Options.Redis.InstanceName; })
-                .AddOdinSingletonCacheManager(
-                    opt =>
-                    {
-                        opt.OptCm = _Options.CacheManager.Adapt<OdinPlugs.OdinInject.Models.CacheManagerModels.CacheManagerModel>();
-                        opt.OptRbmq = _Options.Redis.Adapt<RedisModel>();
-                    })
-                .AddOdinSingletonCanal()
-                .AddOdinCapInject(opt =>
-                {
-                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
-                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
-                })
+                .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
                 // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinMapsterTypeAdapter(opt =>
@@ -100,7 +85,7 @@ namespace OdinWorkers
                     //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
                     //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 })
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs")); ;
             services.SetServiceProvider();
 
 
@@ -148,7 +133,12 @@ namespace OdinWorkers
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-            services.AddHostedService<OdinBackgroundService>();
+            services.AddHostedService<OdinBackgroundService>(
+                ss =>
+                {
+                    return new OdinBackgroundService(_Options);
+                }
+            );
             services.SetServiceProvider();
         }
 

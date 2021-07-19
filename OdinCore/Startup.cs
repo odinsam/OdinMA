@@ -100,23 +100,7 @@ namespace OdinCore
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddSingletonSnowFlake(_Options.FrameworkConfig.SnowFlake.DataCenterId, _Options.FrameworkConfig.SnowFlake.WorkerId)
-                .AddOdinTransientMongoDb(
-                    opt => { opt.ConnectionString = _Options.MongoDb.MongoConnection; opt.DbName = _Options.MongoDb.Database; })
-                .AddOdinTransientRedis(
-                    opt => { opt.ConnectionString = _Options.Redis.Connection; opt.InstanceName = _Options.Redis.InstanceName; })
-                .AddOdinSingletonCacheManager(
-                    opt =>
-                    {
-                        opt.OptCm = _Options.CacheManager.Adapt<OdinPlugs.OdinInject.Models.CacheManagerModels.CacheManagerModel>();
-                        opt.OptRbmq = _Options.Redis.Adapt<RedisModel>();
-                    })
-                .AddOdinSingletonCanal()
-                .AddOdinCapInject(opt =>
-                {
-                    opt.MysqlConnectionString = _Options.DbEntity.ConnectionString;
-                    opt.RabbitmqOptions = _Options.RabbitMQ.Adapt<RabbitMQOptions>();
-                })
+                .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
                 // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinMapsterTypeAdapter(opt =>
