@@ -7,25 +7,19 @@ using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinWorkers.Models;
 using Serilog;
 
-namespace OdinWorkers.Workers.RabbitMQWorker
+namespace OdinWorkers.Workers.TestService
 {
-    public class OdinBackgroundService : BackgroundService
+    public class OdinTestBackgroundService : BackgroundService
     {
-        private readonly ProjectExtendsOptions apiOptions;
-        private readonly ReceiveRabbitMQHelper receiveRabbitMQHelper;
-        private int executionCount = 0;
         private Timer _timer1;
-        public OdinBackgroundService(ProjectExtendsOptions options)
+        public OdinTestBackgroundService()
         {
-            this.apiOptions = options;
-            this.receiveRabbitMQHelper = new ReceiveRabbitMQHelper();
         }
-
         private void DoWork(object state)
         {
             try
             {
-                receiveRabbitMQHelper.ReceiveMQ(apiOptions);
+                Log.Information($"OdinTestBackgroundService:【 Run 】\tTime:【{DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
             }
             catch (Exception ex)
             {
@@ -42,7 +36,7 @@ namespace OdinWorkers.Workers.RabbitMQWorker
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _timer1 = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
+            _timer1 = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(5000));
             return Task.CompletedTask;
         }
 

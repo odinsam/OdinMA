@@ -34,6 +34,7 @@ using OdinPlugs.SnowFlake.SnowFlakeModel;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
+using OdinWorkers.Workers.TestService;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -139,6 +140,7 @@ namespace OdinWorkers
                     return new OdinBackgroundService(_Options);
                 }
             );
+            services.AddHostedService<OdinTestBackgroundService>();
             services.SetServiceProvider();
         }
 
