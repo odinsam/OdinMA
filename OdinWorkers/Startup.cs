@@ -134,13 +134,8 @@ namespace OdinWorkers
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-            services.AddHostedService<OdinBackgroundService>(
-                ss =>
-                {
-                    return new OdinBackgroundService(_Options);
-                }
-            );
-            services.AddHostedService<OdinTestBackgroundService>();
+            services.AddHostedService<OdinBackgroundService>(provider => new OdinBackgroundService(_Options));
+            // services.AddHostedService<OdinTestBackgroundService>();
             services.SetServiceProvider();
         }
 

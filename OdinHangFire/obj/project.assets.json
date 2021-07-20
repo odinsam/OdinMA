@@ -5778,7 +5778,7 @@
           "Ocelot.Cache.CacheManager": "17.0.0",
           "Ocelot.Provider.Consul": "17.0.0",
           "Ocelot.Provider.Polly": "17.0.0",
-          "OdinPlugs.OdinInject": "1.0.5",
+          "OdinPlugs.OdinInject": "1.0.6",
           "OdinPlugs.SnowFlake": "1.0.5",
           "Polly": "7.2.2",
           "RabbitMQ.Client": "6.2.1",
@@ -5808,7 +5808,7 @@
           "bin/placeholder/OdinPlugs.dll": {}
         }
       },
-      "OdinPlugs.OdinInject/1.0.5": {
+      "OdinPlugs.OdinInject/1.0.6": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
@@ -5861,7 +5861,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
-          "OdinPlugs.OdinInject": "1.0.5"
+          "OdinPlugs.OdinInject": "1.0.6"
         },
         "compile": {
           "bin/placeholder/OdinPlugs.SnowFlake.dll": {}
@@ -15524,7 +15524,7 @@
       "path": "../../odinplugs/OdinPlugs.csproj",
       "msbuildProject": "../../odinplugs/OdinPlugs.csproj"
     },
-    "OdinPlugs.OdinInject/1.0.5": {
+    "OdinPlugs.OdinInject/1.0.6": {
       "type": "project",
       "path": "../../OdinPlugs.OdinInject/OdinPlugs.OdinInject.csproj",
       "msbuildProject": "../../OdinPlugs.OdinInject/OdinPlugs.OdinInject.csproj"

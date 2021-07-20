@@ -15,47 +15,59 @@ namespace OdinWorkers.Workers.RabbitMQWorker
         private readonly ReceiveRabbitMQHelper receiveRabbitMQHelper;
         private int executionCount = 0;
         private Timer _timer1;
+        Task worker;
+        int i = 10;
         public OdinBackgroundService(ProjectExtendsOptions options)
         {
             this.apiOptions = options;
             this.receiveRabbitMQHelper = new ReceiveRabbitMQHelper();
         }
-
-        private void DoWork(object state)
+        private async Task DoWorkAsync()
         {
-            try
+            await Task.Run(() =>
             {
-                receiveRabbitMQHelper.ReceiveMQ(apiOptions);
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine("");
-                System.Console.WriteLine(JsonConvert.SerializeObject(ex.Message).ToJsonFormatString());
-                System.Console.WriteLine("");
-            }
+                try
+                {
+                    int count = Interlocked.Increment(ref executionCount);
+                    receiveRabbitMQHelper.ReceiveMQ(apiOptions);
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(JsonConvert.SerializeObject(ex.Message).ToJsonFormatString());
+                    throw ex;
+                }
+                finally
+                {
+                    Thread.Sleep(1000);
+                }
+            }).ContinueWith(t => DoWorkAsync());
+
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             Log.Information("后台服务 【 OdinBackgroundService 】 【 running 】");
+            worker = DoWorkAsync();
             return ExecuteAsync(cancellationToken);
         }
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _timer1 = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
-            return Task.CompletedTask;
+            await worker;
+            // return Task.CompletedTask;
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             Log.Information($"Service:【 Stop 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
-            _timer1?.Change(Timeout.Infinite, 0);
+            // _timer1?.Change(Timeout.Infinite, 0);
             return base.StopAsync(cancellationToken);
         }
 
         public override void Dispose()
         {
-            _timer1?.Dispose();
+            worker?.Dispose();
+            // _timer1?.Dispose();
         }
     }
 }
