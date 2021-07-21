@@ -11,16 +11,15 @@ namespace OdinWorkers.Workers.RabbitMQWorker
 {
     public class OdinBackgroundService : BackgroundService
     {
-        private readonly ProjectExtendsOptions apiOptions;
+        private readonly Action action;
         private readonly ReceiveRabbitMQHelper receiveRabbitMQHelper;
         private int executionCount = 0;
         private Timer _timer1;
         Task worker;
         int i = 10;
-        public OdinBackgroundService(ProjectExtendsOptions options)
+        public OdinBackgroundService(Action action)
         {
-            this.apiOptions = options;
-            this.receiveRabbitMQHelper = new ReceiveRabbitMQHelper();
+            this.action = action;
         }
         private async Task DoWorkAsync()
         {
@@ -29,7 +28,8 @@ namespace OdinWorkers.Workers.RabbitMQWorker
                 try
                 {
                     int count = Interlocked.Increment(ref executionCount);
-                    receiveRabbitMQHelper.ReceiveMQ(apiOptions);
+                    this.action();
+                    // receiveRabbitMQHelper.ReceiveMQ(apiOptions);
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +54,7 @@ namespace OdinWorkers.Workers.RabbitMQWorker
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await worker;
-            // return Task.CompletedTask;
+            // return Task.CompletedTask;   
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)

@@ -30,7 +30,7 @@ namespace OdinWorkers.Workers.RabbitMQWorker
 
         public void ReceiveMQ(ProjectExtendsOptions apiOptions)
         {
-            Log.Information($"ReceiveRabbitMQ:【 Run 】\tTime:【{DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
+            // Log.Information($"ReceiveRabbitMQ:【 Run 】\tTime:【{DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
             rabbitMQReceiveServer.ReceiveJsonMessage(
                 apiOptions.RabbitMQ,
                 new RabbitMQReceivedModel[]
