@@ -100,6 +100,7 @@ namespace OdinCore
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
                 // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
