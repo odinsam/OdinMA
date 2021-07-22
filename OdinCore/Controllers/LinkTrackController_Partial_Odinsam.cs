@@ -17,6 +17,7 @@ using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
 namespace OdinCore.Controllers
 {
+
     public enum EnumTest
     {
         one,

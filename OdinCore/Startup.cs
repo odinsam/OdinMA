@@ -166,6 +166,7 @@ namespace OdinCore
                 .CreateLogger();
             #endregion
 
+
             Log.Logger.Information("启用【 Ocelot 】---开始配置");
             var ocelotBuilder = services.AddOcelot(Configuration);
             if (_Options.Consul.Enable)
@@ -177,11 +178,9 @@ namespace OdinCore
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
+
             Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
             services.AddAutoMapper(typeof(Startup));
-
-
-
 
 
             Log.Logger.Information("启用【 跨域配置 】---开始配置");
@@ -197,6 +196,7 @@ namespace OdinCore
                             .AllowCredentials();
                     });
                 });
+
 
             Log.Logger.Information("启用【 版本控制 】---开始配置");
             services.AddApiVersioning(option =>
@@ -214,16 +214,18 @@ namespace OdinCore
                     //         });
                 }).AddResponseCompression();
 
+
             Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
                 {
-                    opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    // opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    // opt.Filters.Add<ApiInvokerFilterAttribute>(2);
                     opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
