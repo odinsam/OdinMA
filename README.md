@@ -44,3 +44,5 @@
 |  5  | OdinPlugs.OdinInject               | [核心注入框架](https://github.com/odinsam/OdinPlugs.OdinInject)                | 基本完成 |  1.0.5  |
 |  5  | OdinPlugs.OdinUtils                | [核心工具扩展框架](https://github.com/odinsam/OdinPlugs.OdinUtils)             | 基本完成 |  1.0.5  |
 |  5  | OdinPlugs.SnowFlake                | [雪花 Id 封装](https://github.com/odinsam/OdinPlugs.SnowFlake)                 | 基本完成 |  1.0.5  |
+
+具体内容可以参见对应项目的 readme 和 changelog
