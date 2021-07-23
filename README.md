@@ -38,7 +38,7 @@
 |     | 名称                               | 说明                                                                           |   状态   | version |
 | :-: | :--------------------------------- | :----------------------------------------------------------------------------- | :------: | :-----: |
 |  1  | OdinPlugs                          | [综合使用封装框架](https://github.com/odinsam/OdinPlugs)                       |  更新中  |  1.0.5  |
-|  2  | OdinPlugs.ApiLinkMonitor           | [链路监控框架](https://github.com/odinsam/OdinPlugs)                           | 基本完成 |  1.0.5  |
+|  2  | OdinPlugs.ApiLinkMonitor           | [链路监控框架](https://github.com/odinsam/OdinPlugs.ApiLinkMonitor)            | 基本完成 |  1.0.5  |
 |  3  | OdinPlugs.ApiLinkMonitor.Dashboard | [链路监控 - UI](https://github.com/odinsam/OdinPlugs.ApiLinkMonitor.Dashboard) |  未开始  |  1.0.0  |
 |  4  | OdinPlugs.OdinHostedService        | [后台服务框架](https://github.com/odinsam/OdinPlugs.OdinHostedService)         | 基本完成 |  1.0.5  |
 |  5  | OdinPlugs.OdinInject               | [核心注入框架](https://github.com/odinsam/OdinPlugs.OdinInject)                | 基本完成 |  1.0.5  |
