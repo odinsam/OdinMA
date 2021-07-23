@@ -98,10 +98,10 @@ namespace OdinWorkers.ErrorCodeWork
                 var codeErrorMessage = obj.data[i].GetValue("CodeErrorMessage").ToString();
                 ErrorCode_Model model = new ErrorCode_Model()
                 {
-                    Id = id,
+                    Id = id.ToString(),
                     ErrorCode = errorCode,
                     ErrorMessage = codeErrorMessage,
-                    ShowMessage = codeErrorMessage,
+                    ShowMessage = codeShowMessage,
                 };
                 models.Add(model);
             }

@@ -399,6 +399,7 @@ namespace OdinCore
                         .OdinTypeAdapterBuilder<ErrorCode_DbModel, ErrorCode_Model, List<ErrorCode_Model>>(
                             opt =>
                             {
+                                opt.Map(dest => dest.Id, src => src.Id.ToString());
                                 opt.Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                                 opt.Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
                             }

@@ -8,6 +8,7 @@ using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinInject;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinMvcCore.OdinValidate.ApiParamsValidate;
@@ -55,6 +56,8 @@ namespace OdinCore.Controllers
 
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
+            return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));
+
             var stu = new Stu
             {
                 id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),

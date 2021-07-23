@@ -125,7 +125,7 @@ namespace OdinWorkers
                     opt.ActionJob = () =>
                     {
 #if DEBUG
-                        Log.Information($"Service:【 BgService - LoopJob - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
+                        // Log.Information($"Service:【 BgService - LoopJob - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
 #endif
                         new ReceiveRabbitMQHelper().ReceiveMQ(_Options);
                         Thread.Sleep(1000);
