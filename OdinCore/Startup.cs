@@ -224,9 +224,9 @@ namespace OdinCore
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
                 {
-                    // opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    opt.Filters.Add<HttpGlobalExceptionFilter>();
                     opt.Filters.Add<OdinModelValidationFilter>(1);
-                    // opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
                     opt.Filters.Add<ApiInvokerResultFilter>();
                 })
                 .AddNewtonsoftJson(opt =>
@@ -290,14 +290,6 @@ namespace OdinCore
             {
                 options.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v1", Version = "v1.0" });
                 options.SwaggerDoc("v2.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2.0" });
-                // options.SwaggerDoc("LinkTrack-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                // options.SwaggerDoc("LinkTrack-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                // options.SwaggerDoc("Test-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                // options.SwaggerDoc("Test-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                // options.SwaggerDoc("WeatherForecast-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                // options.SwaggerDoc("WeatherForecast-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
-                // options.SwaggerDoc("Orbit-v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v1" });
-                // options.SwaggerDoc("Orbit-v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "MyAPI v2", Version = "v2" });
                 options.AddServer(new OpenApiServer()
                 {
                     Url = "",
@@ -317,6 +309,26 @@ namespace OdinCore
                 {
                     options.IncludeXmlComments(xmlPath, true);
                 };
+                //添加Authorization
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new List<string>()
+                    }
+                });
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
             // services.ConfigureDynamicProxy();

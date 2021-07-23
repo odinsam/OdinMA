@@ -40,7 +40,7 @@ namespace OdinCore.Controllers
         }
 
         /// <summary>
-        /// shwo method
+        /// show method
         /// </summary>
         /// <param name="error">errorCode model</param>
         /// <param name="id">雪花Id</param>

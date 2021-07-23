@@ -1,16 +1,10 @@
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading;
-using System.Threading.Tasks;
-using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,26 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinHostedService.BgServiceInject;
-using OdinPlugs.OdinInject;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
-using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
-using OdinPlugs.OdinInject.InjectPlugs.OdinRedisInject;
-using OdinPlugs.OdinInject.Models.EventBusModels;
-using OdinPlugs.OdinInject.Models.RabbitmqModels;
-using OdinPlugs.OdinInject.Models.RedisModels;
 using OdinPlugs.OdinMAF.OdinInject;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
-using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
-using OdinPlugs.SnowFlake.Inject;
-using OdinPlugs.SnowFlake.SnowFlakeModel;
-using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
-using OdinWorkers.Workers.TestService;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -137,72 +119,16 @@ namespace OdinWorkers
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-            services
-                .AddOdinBgServiceJob(opt =>
-                {
-                    Timer timer = null;
-                    void worker(object state)
-                    {
-#if DEBUG
-                        Log.Information($"Service:【 BgService - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
-#endif
-                    }
-                    opt.StartAsyncAction = () =>
-                    {
-                        timer = new Timer(worker, null, 0, 2000);
-                    };
-                    opt.ExecuteAsyncAction = () =>
-                    {
-
-                    };
-                    opt.StopAsyncAction = () =>
-                    {
-                        timer?.Change(Timeout.Infinite, 0);
-                    };
-                    opt.DisposeAction = () =>
-                    {
-                        timer?.Dispose();
-                    };
-                })
-                .AddOdinBgServiceLoopJob(opt =>
+            // 注入 后台服务
+            services.AddOdinBgServiceLoopJob(opt =>
                 {
                     opt.ActionJob = () =>
                     {
-                        // new ReceiveRabbitMQHelper().ReceiveMQ(_Options);
 #if DEBUG
                         Log.Information($"Service:【 BgService - LoopJob - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
 #endif
+                        new ReceiveRabbitMQHelper().ReceiveMQ(_Options);
                         Thread.Sleep(1000);
-                    };
-                })
-                .AddOdinBgServiceRecurringJob(opt =>
-                {
-                    opt.Period = TimeSpan.FromSeconds(1);
-                    opt.ActionJob = () =>
-                    {
-                        // new ReceiveRabbitMQHelper().ReceiveMQ(_Options);
-#if DEBUG
-                        Log.Information($"Service:【 BgService - RecurringJob - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
-#endif
-                    };
-                })
-                .AddOdinBgServiceNomalJob(opt =>
-                {
-                    opt.ActionJob = () =>
-                    {
-#if DEBUG
-                        Log.Information($"Service:【 BgService - Job - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
-#endif
-                    };
-                })
-                .AddOdinBgServiceScheduleJob(opt =>
-                {
-                    opt.DueTime = 5000;
-                    opt.ActionJob = () =>
-                    {
-#if DEBUG
-                        Log.Information($"Service:【 BgService - ScheduleJob - Running 】\tTime:【 {DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
-#endif
                     };
                 });
             services.SetServiceProvider();

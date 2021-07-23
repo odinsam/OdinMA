@@ -1,20 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AspectCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinMvcCore.OdinWebHost;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using Serilog;
-using Unicorn.AspNetCore.Middleware.RealIp;
 
 namespace OdinWorkers
 {
