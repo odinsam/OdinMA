@@ -56,7 +56,7 @@ namespace OdinCore.Controllers
 
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
-            return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));
+            //return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));
 
             var stu = new Stu
             {

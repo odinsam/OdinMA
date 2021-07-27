@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using System.Threading.Tasks;
 using AspectCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -18,42 +15,32 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OdinPlugs.ConfigModel;
-using OdinPlugs.Files;
-using OdinPlugs.OdinFilter;
-using OdinPlugs.OdinMongo;
-using OdinPlugs.OdinString;
-using OdinPlugs.OdinInject;
-using OdinPlugs.WebApi;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using OdinPlugs.OdinCore;
-using Newtonsoft.Json;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-using Microsoft.IdentityModel.Tokens;
-using IdentityServer4.EntityFramework.Options;
-using IdentityServer4.EntityFramework.Interfaces;
-using OdinPlugs.OdinServices;
-using OdinPlugs.OdinServices.IdentityServer;
 using OdinOIS.Models.DbModels;
 using OdinOIS.Models;
 using Serilog.Events;
-using OdinPlugs.OdinSerilog;
-using OdinPlugs.OdinSerilog.Models;
-using OdinPlugs.WebApi.HttpClientHelper;
-using OdinPlugs.OdinRedis;
-using OdinPlugs.OdinCacheManager;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMAF.OdinSerilog;
+using OdinPlugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinUtils.Utils.OdinFiles;
+using OdinPlugs.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinMAF.OdinId4Services.OdinId4Extensions;
+using OdinPlugs.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinMAF.OdinInject;
+using OdinPlugs.OdinInject.InjectPlugs;
 
 namespace OdinOIS
 {
@@ -104,6 +91,23 @@ namespace OdinOIS
             _iOptions = services.GetRegisteredRequiredService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
 
+            services
+                .AddOdinTransientInject(this.GetType().Assembly)
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
+                .AddOdinInject(_Options)
+                .AddOdinHttpClient("OdinClient")
+                // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
+                .AddOdinMapsterTypeAdapter(opt =>
+                {
+                    // opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
+                    //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
+                    //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
+                })
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
+            // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
+            // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
+            services.SetServiceProvider();
+
 
             Log.Logger.Information("启用【 数据库配置 】---开始配置");
             services.AddDbContext<OdinIdentityEntities>(option =>
@@ -113,14 +117,11 @@ namespace OdinOIS
 
 
 
-            if (_Options.FrameworkConfig.Ocelot.Enable)
+            Log.Logger.Information("启用【 Ocelot 】---开始配置");
+            var ocelotBuilder = services.AddOcelot(Configuration);
+            if (_Options.Consul.Enable)
             {
-                Log.Logger.Information("启用【 Ocelot 】---开始配置");
-                var ocelotBuilder = services.AddOcelot(Configuration);
-                if (_Options.Consul.Enable)
-                {
-                    ocelotBuilder.AddConsul().AddPolly();
-                }
+                ocelotBuilder.AddConsul().AddPolly();
             }
 
 
@@ -128,10 +129,6 @@ namespace OdinOIS
             Log.Logger.Information("启用【 中文乱码设置 】---开始配置");
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
-
-
-            Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
-            services.AddAutoMapper(typeof(Startup));
 
 
             Log.Logger.Information("启用【 AspectCore 全局注入 】---开始配置");
@@ -169,63 +166,62 @@ namespace OdinOIS
             });
 
 
-            if (_Options.FrameworkConfig.AspectCore.Enable)
-            {
-                Log.Logger.Information("启用【 AspectCore 依赖注入 和 代理注册 】---开始配置");
-                // ! OdinAspectCoreInterceptorAttribute 需要继承  AbstractInterceptorAttribute
-                // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
-            }
+            Log.Logger.Information("启用【 AspectCore 依赖注入 和 代理注册 】---开始配置");
+            // ! OdinAspectCoreInterceptorAttribute 需要继承  AbstractInterceptorAttribute
+            // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
 
-            if (_Options.IdentityServer.Enable)
+            services.AddDbContext<OdinIdentityEntities>(opt =>
             {
-                // 启用 Identity 服务 添加指定的用户和角色类型的默认标识系统配置
-                var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-                services.AddIdentityServer()
-                    .AddDeveloperSigningCredential()
-                    // 客户端和资源的数据库存储
-                    // ConfigurationDbContext
-                    // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
-                    // dotnet ef database update -c ConfigurationDbContext
-                    .AddConfigurationStore(opt =>
+                opt.UseMySQL(_Options.DbEntity.ConnectionString);
+            });
+            // 启用 Identity 服务 添加指定的用户和角色类型的默认标识系统配置
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                // 客户端和资源的数据库存储
+                // ConfigurationDbContext
+                // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
+                // dotnet ef database update -c ConfigurationDbContext
+                .AddConfigurationStore(opt =>
+                {
+                    opt.ConfigureDbContext = context =>
                     {
-                        opt.ConfigureDbContext = context =>
-                        {
-                            context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-                        };
+                        context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    };
+                })
+                // 令牌和授权码的数据库存储
+                // PersistedGrantDbContext
+                // dotnet ef migrations add OperationContext -c PersistedGrantDbContext  -o Data/Migrations/IdentityServer/OperationDb
+                // dotnet ef database update -c PersistedGrantDbContext
+                .AddOperationalStore(opt =>
+                {
+                    opt.ConfigureDbContext = context =>
+                        context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    opt.EnableTokenCleanup = true;
+                    opt.TokenCleanupInterval = 30;
+                });
+
+            services.AddIdentityServerDbContext<ConfigurationDbContext>(options =>
+                    {
+                        options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
                     })
-                    // 令牌和授权码的数据库存储
-                    // PersistedGrantDbContext
-                    // dotnet ef migrations add OperationContext -c PersistedGrantDbContext  -o Data/Migrations/IdentityServer/OperationDb
-                    // dotnet ef database update -c PersistedGrantDbContext
-                    .AddOperationalStore(opt =>
+                    .AddIdentityServerDbContext<PersistedGrantDbContext>(options =>
                     {
-                        opt.ConfigureDbContext = context =>
-                            context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-                        opt.EnableTokenCleanup = true;
-                        opt.TokenCleanupInterval = 30;
+                        options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
                     });
 
-                services.AddIdentityServerDbContext<ConfigurationDbContext>(options =>
-                        {
-                            options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
-                        })
-                        .AddIdentityServerDbContext<PersistedGrantDbContext>(options =>
-                        {
-                            options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
-                        });
-
-                // 更改Identity中关于用户和角色的处理到Entityframework
-                // dotnet ef migrations add UserStoreContext -c OdinIdentityEntities -o Data/Migrations/IdentityServer/UserDb
-                // dotnet ef database update -c OdinIdentityEntities
-            }
+            // 更改Identity中关于用户和角色的处理到Entityframework
+            // dotnet ef migrations add UserStoreContext -c OdinIdentityEntities -o Data/Migrations/IdentityServer/UserDb
+            // dotnet ef database update -c OdinIdentityEntities
 
 
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
                {
-                   opt.Filters.Add(new HttpGlobalExceptionFilter(_Options));
-                   opt.Filters.Add(new ApiInvokerFilterAttribute(_Options));
-                   // opt.Filters.Add(new AuthenFilterAttribute(_apiCnfOptions)); //自定义token全局拦截器
+                   opt.Filters.Add<HttpGlobalExceptionFilter>();
+                   opt.Filters.Add<OdinModelValidationFilter>(1);
+                   opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                   opt.Filters.Add<ApiInvokerResultFilter>();
                })
                .AddNewtonsoftJson(opt =>
                {
@@ -238,53 +234,19 @@ namespace OdinOIS
                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
-            if (_Options.CrossDomain.AllowOrigin.Enable)
+            Log.Logger.Information("启用【 跨域配置 】---开始配置");
+            string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
+            string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
+            services.AddCors(opts =>
             {
-                Log.Logger.Information("启用【 跨域配置 】---开始配置");
-                string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
-                string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
-                services.AddCors(opts =>
+                opts.AddPolicy(policyName, policy =>
                 {
-                    opts.AddPolicy(policyName, policy =>
-                    {
-                        policy.WithOrigins(withOrigins.Split(','))
-                            .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
-                    });
+                    policy.WithOrigins(withOrigins.Split(','))
+                        .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .AllowCredentials();
                 });
-            }
-
-
-
-            Log.Logger.Information("启用【 HttpClient 依赖注入 】---开始配置");
-            var handler = new HttpClientHandler();
-            foreach (var cerItem in _Options.SslCers)
-            {
-                if (!string.IsNullOrEmpty(cerItem.CerPath))
-                {
-                    var clientCertificate = new X509Certificate2(cerItem.CerPath, cerItem.CerPassword);
-                    handler.ClientCertificates.Add(clientCertificate);
-                }
-            }
-            var handlerWithCer = new HttpClientHandler();
-            foreach (var cerItem in _Options.SslCers)
-            {
-                if (!string.IsNullOrEmpty(cerItem.CerPath))
-                {
-                    var clientCertificate = new X509Certificate2(cerItem.CerPath, cerItem.CerPassword);
-                    handlerWithCer.ClientCertificates.Add(clientCertificate);
-                }
-            }
-            services.AddHttpClient("OdinClient", c =>
-            {
-            }).ConfigurePrimaryHttpMessageHandler(() => handler);
-            services.AddHttpClient("OdinClientCer", c =>
-            {
-            }).ConfigurePrimaryHttpMessageHandler(() => handlerWithCer);
-
-
-
+            });
 
             Log.Logger.Information("启用【 版本控制 】---开始配置");
             services.AddApiVersioning(option =>
@@ -298,15 +260,8 @@ namespace OdinOIS
 
 
 
-            Assembly ass = Assembly.Load("OdinPlugs");
-            services
-                    .AddOdinSingletonInject(this.GetType().Assembly)
-                    .AddOdinSingletonInject(ass)
-                    .AddOdinSingletonWithParamasInject<IMongoHelper>(ass, new Object[] { _Options.MongoDb.MongoConnection, _Options.MongoDb.Database })
-                    .AddOdinSingletonWithParamasInject<IOdinCacheManager>(ass, new Object[] { _Options })
-                    .AddOdinSingletonWithParamasInject<IMvcApiCore>(ass, new Object[] { _Options });
 
-            OdinInjectHelper.ServiceProvider = services.BuildServiceProvider();
+            services.SetServiceProvider();
 
         }
 
@@ -314,7 +269,7 @@ namespace OdinOIS
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IOptionsSnapshot<ProjectExtendsOptions> _iOptions, OdinIdentityEntities entity, IActionDescriptorCollectionProvider actionProvider, IMapper mapper)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IOptionsSnapshot<ProjectExtendsOptions> _iOptions, OdinIdentityEntities entity, IActionDescriptorCollectionProvider actionProvider)
         {
             var options = _iOptions.Value;
             if (env.IsDevelopment())
@@ -322,7 +277,7 @@ namespace OdinOIS
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseIdentityServer();
+            // app.UseIdentityServer();
 
             app.UseHttpsRedirection();
 
@@ -331,10 +286,7 @@ namespace OdinOIS
             app.UseRouting();
 
 
-            if (options.CrossDomain.AllowOrigin.Enable)
-            {
-                app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
-            }
+            app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
 
             #region 初始化数据库
             InitializeDatabase(app);

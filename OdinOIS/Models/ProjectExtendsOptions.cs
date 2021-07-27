@@ -1,4 +1,4 @@
-using OdinPlugs.ConfigModel;
+using OdinPlugs.OdinCore.ConfigModel;
 
 namespace OdinOIS.Models
 {

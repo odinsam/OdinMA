@@ -9,15 +9,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using OdinPlugs.OdinString;
-using OdinPlugs.OdinSerilog;
-using OdinPlugs.OdinSerilog.Models;
-using OdinPlugs.OdinWebHost;
+using OdinPlugs.OdinCore.Models;
+using OdinPlugs.OdinMvcCore.OdinWebHost;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
 using Unicorn.AspNetCore.Middleware.RealIp;
 
 namespace OdinOIS
@@ -40,7 +36,7 @@ namespace OdinOIS
             catch (Exception ex)
             {
                 System.Console.WriteLine("服务器启动失败");
-                System.Console.WriteLine(JsonConvert.SerializeObject(ex).ToJsonFormatString());
+                System.Console.WriteLine(JsonConvert.SerializeObject(ex).ToJson());
             }
         }
 
