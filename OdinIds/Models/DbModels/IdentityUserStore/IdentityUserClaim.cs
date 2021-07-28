@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OdinOIS.Models.DbModels.IdentityUserStore
+namespace OdinIds.Models.DbModels.IdentityUserStore
 {
     public class IdentityUserClaim
     {

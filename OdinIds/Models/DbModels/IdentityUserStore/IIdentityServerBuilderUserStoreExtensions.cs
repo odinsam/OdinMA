@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace OdinOIS.Models.DbModels.IdentityUserStore
+namespace OdinIds.Models.DbModels.IdentityUserStore
 {
     public static class IIdentityServerBuilderUserStoreExtensions
     {

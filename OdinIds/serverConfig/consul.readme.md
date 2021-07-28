@@ -7,15 +7,15 @@
 	"ProjectConfigOptions": {
 		"Domain": {
 			"Protocol": "Http",
-			"IpAddress": "121.42.15.95",
-			"Port": 20101
+			"IpAddress": "ip",
+			"Port": port
 		},
 		"Consul": {
 			"Enable": true,
 			"Protocol": "Http",
 			"ConsulName": "Odin-ConfigCore",
-			"ConsulIpAddress": "121.42.15.95",
-			"ConsulPort": 8500,
+			"ConsulIpAddress": "consul ip",
+			"ConsulPort": consul port,
 			"DataCenter": "dc1",
 			"Weight": 100, // 服务权重
 			"ConsulCheck": {

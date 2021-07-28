@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using AspectCore.Extensions.DependencyInjection;
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,13 +51,13 @@ using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
 using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 using IGeekFan.AspNetCore.Knife4jUI;
 using OdinPlugs.ApiLinkMonitor.MiddlewareExtensions;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
 using OdinPlugs.OdinInject.Models.CacheManagerModels;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.Models.RedisModels;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinMAF.OdinInject;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 
 namespace OdinCore
 {
@@ -161,8 +160,8 @@ namespace OdinCore
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .OdinWriteLog(
                     new LogWriteFileModel { },
-                    new LogWriteToConsoleModel { ConsoleTheme = SystemConsoleTheme.Colored },
-                    new LogWriteMySqlModel { LogLevels = new int[] { 1, 3, 4, 5 }, ConnectionString = _Options.DbEntity.ConnectionString }
+                    new LogWriteToConsoleModel { ConsoleTheme = SystemConsoleTheme.Colored }
+                    // new LogWriteMySqlModel { LogLevels = new int[] { 1, 3, 4, 5 }, ConnectionString = _Options.DbEntity.ConnectionString }
                 )
                 .CreateLogger();
             #endregion
@@ -178,10 +177,6 @@ namespace OdinCore
             Log.Logger.Information("启用【 中文乱码设置 】---开始配置");
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
-
-
-            Log.Logger.Information("启用【 AutoMapper自动映射 】---开始配置");
-            services.AddAutoMapper(typeof(Startup));
 
 
             Log.Logger.Information("启用【 跨域配置 】---开始配置");
@@ -342,7 +337,7 @@ namespace OdinCore
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, ILoggerFactory loggerFactory,
-            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IMapper mapper, IHttpContextAccessor svp)
+            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IHttpContextAccessor svp)
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
@@ -385,14 +380,14 @@ namespace OdinCore
 
             Program.ApiComments = new OdinApiCommentCore(options).GetApiComments(actionProvider);
 
-            InitErrorCode(mapper);
+            InitErrorCode();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="mapper"></param>
-        public void InitErrorCode(IMapper mapper)
+        public void InitErrorCode()
         {
             var errorCodes = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList();
             var errorCodelst = errorCodes
@@ -404,7 +399,7 @@ namespace OdinCore
                                 opt.Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
                             }
                             ,
-                            OdinInjectCore.GetService<ITypeAdapterMapster>().GetConfig()
+                            OdinInjectCore.GetService<IOdinMapster>().GetConfig()
                         );
             var cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
             foreach (var item in errorCodelst)

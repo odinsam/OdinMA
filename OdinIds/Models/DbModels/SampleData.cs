@@ -1,7 +1,4 @@
-using System.Data.Common;
-using System.Collections.Generic;
-
-namespace OdinOIS.Models.DbModels
+namespace OdinIds.Models.DbModels
 {
     public class SampleData
     {
@@ -9,9 +6,14 @@ namespace OdinOIS.Models.DbModels
         {
 
         }
+
         public static void Init(OdinIdentityEntities context)
         {
-
+            context.Stus.Add(new Student_DbModel
+            {
+                Id = 1,
+                StudentName = "odinsam"
+            });
             context.SaveChanges();
         }
     }

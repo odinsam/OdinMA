@@ -1,10 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AspectCore.Extensions.DependencyInjection;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -16,15 +13,13 @@ using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using Serilog;
 using Unicorn.AspNetCore.Middleware.RealIp;
 
-namespace OdinOIS
+namespace OdinIds
 {
     public class Program
     {
         public static IEnumerable<ApiCommentConfig> ApiComments { get; set; }
         public static void Main(string[] args)
         {
-
-
             try
             {
                 var odinWebHostManager = OdinWebHostManager.Load();
@@ -36,7 +31,8 @@ namespace OdinOIS
             catch (Exception ex)
             {
                 System.Console.WriteLine("服务器启动失败");
-                System.Console.WriteLine(JsonConvert.SerializeObject(ex).ToJson());
+                System.Console.WriteLine(ex.ToJson(enumStringFormat.Json));
+                // System.Console.WriteLine(JsonConvert.SerializeObject(ex).ToJson(enumStringFormat.Json));
             }
         }
 
@@ -52,15 +48,8 @@ namespace OdinOIS
             }
             var builder = builderRoot.Build();
             var iHostBuilder = Host.CreateDefaultBuilder(args);
-            if (builder.GetValue<bool>("ProjectConfigOptions:FrameworkConfig:Autofac:Enable"))
-            {
-                iHostBuilder = iHostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-            }
-            if (builder.GetValue<bool>("ProjectConfigOptions:FrameworkConfig:AspectCore:Enable"))
-            {
-                iHostBuilder = iHostBuilder.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
-            }
 
+            // iHostBuilder = iHostBuilder.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
             return iHostBuilder.ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseConfiguration(builder)
@@ -78,7 +67,7 @@ namespace OdinOIS
                     .UseRealIp("X-Forwarded-For")
                     .UseStartup<Startup>()
                     .UseSerilog();
-                });
+                }).UseServiceProviderFactory(new DynamicProxyServiceProviderFactory());
         }
     }
 }

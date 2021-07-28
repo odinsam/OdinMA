@@ -1,22 +1,26 @@
 using System.Collections.Generic;
+using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
-using OdinOIS.Models.DbModels.IdentityUserStore;
+using OdinIds.Models.DbModels;
+using OdinIds.Models.DbModels.IdentityUserStore;
+using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 
-namespace OdinOIS.Models
+namespace OdinIds.Models
 {
     public static class IdentityConfig
     {
-        public static IEnumerable<IdentityResource> GetIdentityResources()
+        public static IEnumerable<IdentityServer4.Models.IdentityResource> GetIdentityResources()
         {
-            return new IdentityResource[]
+            return new IdentityServer4.Models.IdentityResource[]
             {
                 new IdentityResources.OpenId()
             };
         }
-        public static IEnumerable<ApiScope> ApiScopes =>
-        new List<ApiScope>
+        public static IEnumerable<IdentityServer4.Models.ApiScope> ApiScopes =>
+        new List<IdentityServer4.Models.ApiScope>
         {
-            new ApiScope("api1", "My API")
+            new IdentityServer4.Models.ApiScope("api1", "My API")
         };
 
         // public static IEnumerable<ApiResource> GetApis()
@@ -27,11 +31,11 @@ namespace OdinOIS.Models
         //     };
         // }
 
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<IdentityServer4.Models.Client> GetClients()
         {
-            return new List<Client>
+            return new List<IdentityServer4.Models.Client>
             {
-                new Client
+                new IdentityServer4.Models.Client
                 {
                     ClientId = "client",
 
@@ -41,7 +45,7 @@ namespace OdinOIS.Models
                     // secret for authentication
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new IdentityServer4.Models.Secret("secret".Sha256())
                     },
 
                     // scopes that client has access to
@@ -56,15 +60,29 @@ namespace OdinOIS.Models
             {
                 new IdUser
                 {
+                    Id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId().ToString(),
                     SubjectId = "1",
                     UserName = "alice",
                     Password = "password"
                 },
                 new IdUser
                 {
+                    Id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId().ToString(),
                     SubjectId = "2",
                     UserName = "bob",
                     Password = "password"
+                }
+            };
+        }
+
+        public static List<Student_DbModel> GetStus()
+        {
+            return new List<Student_DbModel>
+            {
+                new Student_DbModel
+                {
+                    Id = 1,
+                    StudentName = "odinsam",
                 }
             };
         }

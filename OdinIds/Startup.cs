@@ -1,58 +1,62 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using System.Threading.Tasks;
+using AspectCore.Configuration;
 using AspectCore.Extensions.DependencyInjection;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using AutoMapper;
-using Ocelot.DependencyInjection;
-using Ocelot.Provider.Consul;
-using Ocelot.Provider.Polly;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
-using OdinOIS.Models.DbModels;
-using OdinOIS.Models;
-using Serilog.Events;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using OdinPlugs.OdinMvcCore.MvcCore;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
+using OdinIds.Models;
+using OdinIds.Models.DbModels;
+using OdinPlugs.ApiLinkMonitor.MiddlewareExtensions;
+using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
+using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinMAF.OdinId4Services.OdinId4Extensions;
+using OdinPlugs.OdinMAF.OdinInject;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
-using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
-using OdinPlugs.OdinCore.ConfigModel.Utils;
-using OdinPlugs.OdinMAF.OdinId4Services.OdinId4Extensions;
-using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinInject.InjectCore;
-using OdinPlugs.OdinMAF.OdinInject;
-using OdinPlugs.OdinInject.InjectPlugs;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
-namespace OdinOIS
+namespace OdinIds
 {
     public class Startup
     {
         private IOptionsSnapshot<ProjectExtendsOptions> _iOptions;
         private ProjectExtendsOptions _Options;
         public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            EnumEnvironment enumEnvironment = configuration.GetSection("ProjectConfigOptions:EnvironmentName").Value.ToUpper().ToEnum<EnumEnvironment>();
+            var enumEnvironment = configuration.GetSection("ProjectConfigOptions:EnvironmentName").Value.ToUpper().ToEnum<EnumEnvironment>();
             var config = new ConfigurationBuilder()
                 .AddEnvironmentVariables(prefix: "ASPNETCORE_")
                 .Add(new JsonConfigurationSource { Path = "serverConfig/cnf.json", Optional = false, ReloadOnChange = true })
@@ -66,30 +70,15 @@ namespace OdinOIS
             ConfigLoadHelper.LoadConfigs(enumEnvironment.ToString().ToLower(), Path.Combine(Directory.GetCurrentDirectory(), "serverConfig"), config, rootPath);
             Configuration = config.Build();
 
-
-            #region Log设置
-            Log.Logger = new LoggerConfiguration()
-                // 最小的日志输出级别
-                .MinimumLevel.Information()
-                //.MinimumLevel.Information ()
-                // 日志调用类命名空间如果以 System 开头，覆盖日志输出最小级别为 Information
-                .MinimumLevel.Override("System", LogEventLevel.Information)
-                // 日志调用类命名空间如果以 Microsoft 开头，覆盖日志输出最小级别为 Information
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .OdinWriteLog(
-                    new LogWriteFileModel { }, new LogWriteToConsoleModel { }, new LogWriteMySqlModel { ConnectionString = Configuration.GetSection("ProjectConfigOptions:DbEntity:ConnectionString").Value }
-                )
-                .CreateLogger();
-            #endregion
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             Log.Logger.Information("启用【 强类型配置文件 】");
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
             _iOptions = services.GetRegisteredRequiredService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
+
+
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
@@ -109,36 +98,92 @@ namespace OdinOIS
             services.SetServiceProvider();
 
 
+
             Log.Logger.Information("启用【 数据库配置 】---开始配置");
             services.AddDbContext<OdinIdentityEntities>(option =>
             {
                 option.UseMySQL(_Options.DbEntity.ConnectionString);
             });
 
-
-
-            Log.Logger.Information("启用【 Ocelot 】---开始配置");
-            var ocelotBuilder = services.AddOcelot(Configuration);
-            if (_Options.Consul.Enable)
-            {
-                ocelotBuilder.AddConsul().AddPolly();
-            }
-
-
+            #region Log设置
+            Log.Logger = new LoggerConfiguration()
+                // 最小的日志输出级别
+                .MinimumLevel.Information()
+                //.MinimumLevel.Information ()
+                // 日志调用类命名空间如果以 System 开头，覆盖日志输出最小级别为 Information
+                .MinimumLevel.Override("System", LogEventLevel.Information)
+                // 日志调用类命名空间如果以 Microsoft 开头，覆盖日志输出最小级别为 Information
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .OdinWriteLog(
+                    new LogWriteFileModel { },
+                    new LogWriteToConsoleModel { ConsoleTheme = SystemConsoleTheme.Colored }
+                    // new LogWriteMySqlModel { LogLevels = new int[] { 1, 3, 4, 5 }, ConnectionString = _Options.DbEntity.ConnectionString }
+                )
+                .CreateLogger();
+            #endregion
 
             Log.Logger.Information("启用【 中文乱码设置 】---开始配置");
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
 
+            Log.Logger.Information("启用【 版本控制 】---开始配置");
+            services.AddApiVersioning(option =>
+                {
+                    //当设置为 true 时, API 将返回响应标头中支持的版本信息。
+                    option.ReportApiVersions = true;
+                    //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
+                    option.AssumeDefaultVersionWhenUnspecified = true;
+                    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
+                    // option.ApiVersionReader = ApiVersionReader.Combine(
+                    //         new QueryStringApiVersionReader(),
+                    //         new HeaderApiVersionReader()
+                    //         {
+                    //             HeaderNames = { "apiVersion" }
+                    //         });
+                }).AddResponseCompression();
+
+            Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
+            services.AddControllers(opt =>
+                {
+                    opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    opt.Filters.Add<OdinModelValidationFilter>(1);
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerResultFilter>();
+                })
+                .AddNewtonsoftJson(opt =>
+                {
+                    var contractResolver = new DefaultContractResolver();
+                    // contractResolver.ResolveContract(typeof(JsonConverterLongContractResolver));
+                    // opt.SerializerSettings.ContractResolver = contractResolver;
+                    // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
+                    // opt.SerializerSettings.ContractResolver = new JsonConverterLongContractResolver();
+                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    // 驼峰命名法，首字母小写
+                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+                    // 自定义扩展，属性全为小写
+                    // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .ConfigureApiBehaviorOptions(o =>
+                {
+                    // 关闭框架自带的模型验证
+                    o.SuppressModelStateInvalidFilter = true;
+                });
+
             Log.Logger.Information("启用【 AspectCore 全局注入 】---开始配置");
             services.ConfigureDynamicProxy(config =>
             {
+                // config.Interceptors.AddServiced<FoobarAttribute>();
                 // ~ 类型数注入
-                // config.Interceptors.AddTyped<type>();
+
+                // config.Interceptors.AddTyped<FoobarAttribute>();
 
                 // ~ 带参数注入
-                // config.Interceptors.AddTyped<type>(params);
+                // config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(new Object[] { "d" }, new AspectPredicate[] { });
 
                 // ~ App1命名空间下的Service不会被代理
                 // config.NonAspectPredicates.AddNamespace("App1");
@@ -162,9 +207,8 @@ namespace OdinOIS
                 // config.Interceptors.AddTyped<CustomInterceptorAttribute>(method => method.Name.EndsWith("MethodName"));
 
                 // ~ 使用通配符的特定全局拦截器
-                // config.Interceptors.AddTyped<CustomInterceptorAttribute>(Predicates.ForService("*Service"));
+                config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(Predicates.ForService("*Service"));
             });
-
 
             Log.Logger.Information("启用【 AspectCore 依赖注入 和 代理注册 】---开始配置");
             // ! OdinAspectCoreInterceptorAttribute 需要继承  AbstractInterceptorAttribute
@@ -215,69 +259,73 @@ namespace OdinOIS
             // dotnet ef database update -c OdinIdentityEntities
 
 
-            Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
-            services.AddControllers(opt =>
-               {
-                   opt.Filters.Add<HttpGlobalExceptionFilter>();
-                   opt.Filters.Add<OdinModelValidationFilter>(1);
-                   opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                   opt.Filters.Add<ApiInvokerResultFilter>();
-               })
-               .AddNewtonsoftJson(opt =>
-               {
-                   // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
-                   opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                   // 驼峰命名法，首字母小写
-                   // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-                   // 自定义扩展，属性全为小写
-                   // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
-               }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-
-            Log.Logger.Information("启用【 跨域配置 】---开始配置");
-            string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
-            string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
-            services.AddCors(opts =>
+            services.AddSwaggerGen(options =>
             {
-                opts.AddPolicy(policyName, policy =>
+                options.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "odinIds", Version = "v1.0" });
+                options.AddServer(new OpenApiServer()
                 {
-                    policy.WithOrigins(withOrigins.Split(','))
-                        .AllowAnyMethod()
-                       .AllowAnyHeader()
-                       .AllowCredentials();
+                    Url = "http://0.0.0.0:20505/swagger/index.html",
+                    Description = "vvv"
                 });
+                options.CustomOperationIds(apiDesc =>
+                {
+                    var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
+                    return controllerAction.ControllerName + "-" + controllerAction.ActionName;
+                });
+                // options.DescribeAllParametersInCamelCase();
+
+                options.UseOneOfForPolymorphism();
+                //记得设置工程属性:生成xml文档
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml");
+                if (File.Exists(xmlPath))
+                {
+                    options.IncludeXmlComments(xmlPath, true);
+                };
+                //添加Authorization
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new List<string>()
+                    }
+                });
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
-
-            Log.Logger.Information("启用【 版本控制 】---开始配置");
-            services.AddApiVersioning(option =>
-            {
-                option.ReportApiVersions = true;
-                option.AssumeDefaultVersionWhenUnspecified = true;
-                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(
-                    _Options.ApiVersion.MajorVersion,
-                    _Options.ApiVersion.MinorVersion);
-            }).AddResponseCompression();
-
-
-
-
             services.SetServiceProvider();
-
         }
 
-
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IOptionsSnapshot<ProjectExtendsOptions> _iOptions, OdinIdentityEntities entity, IActionDescriptorCollectionProvider actionProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, OdinIdentityEntities entity,
+             IHttpContextAccessor svp)
         {
+            MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
+
+            app.UseStaticFiles();
+            app.UseOdinApiLinkMonitor(
+                // 添加需要过滤 无需链路监控的RequestPath
+                opts =>
+                {
+                    opts.Add(@"\/knife4j");
+                }
+            );
+            app.UseOdinException();
             // app.UseIdentityServer();
+
+            app.UseSwagger();
 
             app.UseHttpsRedirection();
 
@@ -286,7 +334,20 @@ namespace OdinOIS
             app.UseRouting();
 
 
-            app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
+
+            app.UseAuthorization();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = "swagger"; // serve the UI at root
+                c.SwaggerEndpoint("/v1.0/api-docs", "v1");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapSwagger("{documentName}/api-docs");
+            });
 
             #region 初始化数据库
             InitializeDatabase(app);
@@ -303,18 +364,7 @@ namespace OdinOIS
             }
             // 
             #endregion
-
-            if (options.IdentityServer.Enable)
-            {
-                app.UseAuthorization();
-            }
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
-
 
         private void InitializeDatabase(IApplicationBuilder app)
         {
@@ -352,6 +402,14 @@ namespace OdinOIS
                     {
                         // System.Console.WriteLine(JsonConvert.SerializeObject(user).ToJsonFormatString());
                         userContext.IdentityUsers.Add(user);
+                    }
+                }
+                if (!userContext.Stus.Any())
+                {
+                    foreach (var stu in IdentityConfig.GetStus())
+                    {
+                        // System.Console.WriteLine(JsonConvert.SerializeObject(user).ToJsonFormatString());
+                        userContext.Stus.Add(stu);
                     }
                 }
                 //添加config中的ApiResources数据到数据库

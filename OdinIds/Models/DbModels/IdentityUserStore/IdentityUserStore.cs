@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using OdinPlugs.OdinSecurity.StringSecurity.StringSecurityExtensions;
 
-namespace OdinOIS.Models.DbModels.IdentityUserStore
+namespace OdinIds.Models.DbModels.IdentityUserStore
 {
     public class UserStore
     {
@@ -18,7 +18,10 @@ namespace OdinOIS.Models.DbModels.IdentityUserStore
         /// <returns></returns>
         public IdUser FindBySubjectId(string subjectId)
         {
-            return _dbContext.Set<IdUser>().Where(r => r.SubjectId.Equals(subjectId)).Include(r => r.IdentityUserClaims).SingleOrDefault();
+            return _dbContext.Set<IdUser>()
+                                .Where(r => r.SubjectId.Equals(subjectId))
+                                // .Include(r => r.IdentityUserClaims)
+                                .SingleOrDefault();
         }
         /// <summary>
         /// 根据用户名查询用户
@@ -27,7 +30,10 @@ namespace OdinOIS.Models.DbModels.IdentityUserStore
         /// <returns></returns>
         public IdUser FindByUsername(string username)
         {
-            return _dbContext.Set<IdUser>().Where(r => r.UserName.Equals(username)).Include(r => r.IdentityUserClaims).SingleOrDefault();
+            return _dbContext.Set<IdUser>()
+                                .Where(r => r.UserName.Equals(username))
+                                // .Include(r => r.IdentityUserClaims)
+                                .SingleOrDefault();
         }
         /// <summary>
         /// 验证登录密码
@@ -38,8 +44,10 @@ namespace OdinOIS.Models.DbModels.IdentityUserStore
         public bool ValidateCredentials(string username, string password)
         {
             password = password.ToMd5Lower();
-            var user = _dbContext.Set<IdUser>().Where(r => r.UserName.Equals(username)
-            && r.Password.Equals(password)).Include(r => r.IdentityUserClaims).SingleOrDefault();
+            var user = _dbContext.Set<IdUser>()
+                                    .Where(r => r.UserName.Equals(username) && r.Password.Equals(password))
+                                    // .Include(r => r.IdentityUserClaims)
+                                    .SingleOrDefault();
             return user != null;
         }
     }

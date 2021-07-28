@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-namespace OdinOIS.Models.DbModels.IdentityUserStore
+
+namespace OdinIds.Models.DbModels.IdentityUserStore
 {
     public class IdUser : IdentityUser
     {
@@ -13,7 +13,7 @@ namespace OdinOIS.Models.DbModels.IdentityUserStore
         public string ProviderName { get; set; }
         public string ProviderSubjectId { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<IdentityUserClaim> IdentityUserClaims { get; set; }
+        // public ICollection<IdentityUserClaim> IdentityUserClaims { get; set; }
 
     }
 }

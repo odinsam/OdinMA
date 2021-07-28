@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
-using OdinOIS.Models.DbModels.IdentityUserStore;
+using OdinIds.Models.DbModels.IdentityUserStore;
 
-namespace OdinOIS.Models.DbModels
+namespace OdinIds.Models.DbModels
 {
     public class OdinIdentityEntities : IdentityDbContext
     {
@@ -12,7 +11,9 @@ namespace OdinOIS.Models.DbModels
         }
         public DbSet<IdUser> IdentityUsers { get; set; }
         public DbSet<IdUser> IdentityRoles { get; set; }
-        public DbSet<IdentityUserClaim> IdentityUserClaim { get; set; }
+        public DbSet<Student_DbModel> Stus { get; set; }
+
+        // public DbSet<IdentityUserClaim> IdentityUserClaim { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -44,12 +45,12 @@ namespace OdinOIS.Models.DbModels
                     b.Property<string>("Name")
                         .HasColumnType("varchar(256)");
                 });
-            builder.Entity("OdinOIS.Models.DbModels.IdentityUserStore.IdentityUserClaim", b =>
-            {
-                b.Property<string>("ClaimId")
-                    .HasColumnType("varchar(256)");
+            // builder.Entity("OdinOIS.Models.DbModels.IdentityUserStore.IdentityUserClaim", b =>
+            // {
+            //     b.Property<string>("ClaimId")
+            //         .HasColumnType("varchar(256)");
 
-            });
+            // });
         }
     }
 }

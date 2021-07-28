@@ -1,6 +1,6 @@
 using OdinPlugs.OdinCore.ConfigModel;
 
-namespace OdinOIS.Models
+namespace OdinIds.Models
 {
     public class ProjectExtendsOptions : ConfigOptions
     {

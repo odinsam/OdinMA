@@ -4,13 +4,13 @@
 .vs/
 
 
-OdinOIS/bin
-OdinOIS/obj
-OdinOIS/logs
-OdinOIS/Data
-OdinOIS/serverConfig/cnf.json
-OdinOIS/serverConfig/dev
-OdinOIS/serverConfig/pro
+OdinIds/bin
+OdinIds/obj
+OdinIds/logs
+OdinIds/Data
+OdinIds/serverConfig/cnf.json
+OdinIds/serverConfig/dev
+OdinIds/serverConfig/pro
 
 
 
