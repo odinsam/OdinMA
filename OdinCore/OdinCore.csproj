@@ -22,7 +22,7 @@
     <PackageIcon>icon.png</PackageIcon>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
+    <NoWarn>$(OdinNoWarn)</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />

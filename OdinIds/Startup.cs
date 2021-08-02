@@ -66,7 +66,7 @@ namespace OdinIds
             // ^ 需要注意的是，如果多个配置文件有相同的配置信息，那么后加载的配置文件会覆盖先加载的配置文件(必须是.json格式的配置文件)
             // ~ 按运行环境 加载对应配置文件 
             // ~ 递归serviceConfig文件夹内所有的配置文件 加载及 cnf.config文件 以外的所有配置,
-            var rootPath = webHostEnvironment.ContentRootPath + FileHelper.DirectorySeparatorChar;  // 获取项目绝对路径
+            var rootPath = webHostEnvironment.ContentRootPath + FileHelper.DirectorySeparatorChar; // 获取项目绝对路径
             ConfigLoadHelper.LoadConfigs(enumEnvironment.ToString().ToLower(), Path.Combine(Directory.GetCurrentDirectory(), "serverConfig"), config, rootPath);
             Configuration = config.Build();
 
@@ -77,8 +77,6 @@ namespace OdinIds
             services.Configure<ProjectExtendsOptions>(Configuration.GetSection("ProjectConfigOptions"));
             _iOptions = services.GetRegisteredRequiredService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
-
-
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
@@ -96,8 +94,6 @@ namespace OdinIds
             // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
-
-
 
             Log.Logger.Information("启用【 数据库配置 】---开始配置");
             services.AddDbContext<OdinIdentityEntities>(option =>
@@ -126,22 +122,21 @@ namespace OdinIds
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-
             Log.Logger.Information("启用【 版本控制 】---开始配置");
             services.AddApiVersioning(option =>
-                {
-                    //当设置为 true 时, API 将返回响应标头中支持的版本信息。
-                    option.ReportApiVersions = true;
-                    //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
-                    option.AssumeDefaultVersionWhenUnspecified = true;
-                    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
-                    // option.ApiVersionReader = ApiVersionReader.Combine(
-                    //         new QueryStringApiVersionReader(),
-                    //         new HeaderApiVersionReader()
-                    //         {
-                    //             HeaderNames = { "apiVersion" }
-                    //         });
-                }).AddResponseCompression();
+            {
+                //当设置为 true 时, API 将返回响应标头中支持的版本信息。
+                option.ReportApiVersions = true;
+                //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
+                // option.ApiVersionReader = ApiVersionReader.Combine(
+                //         new QueryStringApiVersionReader(),
+                //         new HeaderApiVersionReader()
+                //         {
+                //             HeaderNames = { "apiVersion" }
+                //         });
+            }).AddResponseCompression();
 
             Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
             services.AddHttpContextAccessor();
@@ -149,12 +144,12 @@ namespace OdinIds
 
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
-                {
-                    opt.Filters.Add<HttpGlobalExceptionFilter>();
-                    opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                    opt.Filters.Add<ApiInvokerResultFilter>();
-                })
+            {
+                opt.Filters.Add<HttpGlobalExceptionFilter>();
+                opt.Filters.Add<OdinModelValidationFilter>(1);
+                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                opt.Filters.Add<ApiInvokerResultFilter>();
+            })
                 .AddNewtonsoftJson(opt =>
                 {
                     var contractResolver = new DefaultContractResolver();
@@ -218,21 +213,31 @@ namespace OdinIds
             {
                 opt.UseMySQL(_Options.DbEntity.ConnectionString);
             });
+
             // 启用 Identity 服务 添加指定的用户和角色类型的默认标识系统配置
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                // 客户端和资源的数据库存储
-                // ConfigurationDbContext
-                // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
-                // dotnet ef database update -c ConfigurationDbContext
-                .AddConfigurationStore(opt =>
+            var ids = services.AddIdentityServer();
+            if (!File.Exists("rsaCers/odin_ids.rsa"))
+            {
+                Log.Logger.Information("新建 ids 秘钥文件");
+                ids = ids.AddDeveloperSigningCredential(true, "rsaCers/odin_ids.rsa");
+            }
+            else
+            {
+                Log.Logger.Information("ids 秘钥文件已存在。");
+                ids = ids.AddDeveloperSigningCredential(filename: "rsaCers/odin_ids.rsa");
+            }
+            // 客户端和资源的数据库存储
+            // ConfigurationDbContext
+            // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
+            // dotnet ef database update -c ConfigurationDbContext
+            ids.AddConfigurationStore(opt =>
+            {
+                opt.ConfigureDbContext = context =>
                 {
-                    opt.ConfigureDbContext = context =>
-                    {
-                        context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-                    };
-                })
+                    context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                };
+            })
                 // 令牌和授权码的数据库存储
                 // PersistedGrantDbContext
                 // dotnet ef migrations add OperationContext -c PersistedGrantDbContext  -o Data/Migrations/IdentityServer/OperationDb
@@ -246,18 +251,17 @@ namespace OdinIds
                 });
 
             services.AddIdentityServerDbContext<ConfigurationDbContext>(options =>
-                    {
-                        options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
-                    })
-                    .AddIdentityServerDbContext<PersistedGrantDbContext>(options =>
-                    {
-                        options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
-                    });
+            {
+                options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
+            })
+                .AddIdentityServerDbContext<PersistedGrantDbContext>(options =>
+                {
+                    options.ConfigureDbContext = builder => builder.UseMySQL(_Options.DbEntity.ConnectionString, db => db.MigrationsAssembly(migrationsAssembly));
+                });
 
             // 更改Identity中关于用户和角色的处理到Entityframework
             // dotnet ef migrations add UserStoreContext -c OdinIdentityEntities -o Data/Migrations/IdentityServer/UserDb
             // dotnet ef database update -c OdinIdentityEntities
-
 
             services.AddSwaggerGen(options =>
             {
@@ -291,14 +295,12 @@ namespace OdinIds
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT"
                 });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
                     {
-                        new OpenApiSecurityScheme
-                        {
+                        new OpenApiSecurityScheme {
                             Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
                         },
-                        new List<string>()
+                        new List<string> ()
                     }
                 });
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
@@ -308,12 +310,12 @@ namespace OdinIds
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, OdinIdentityEntities entity,
-             IHttpContextAccessor svp)
+            IHttpContextAccessor svp)
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
 
-
+            app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseOdinApiLinkMonitor(
                 // 添加需要过滤 无需链路监控的RequestPath
@@ -332,8 +334,6 @@ namespace OdinIds
             loggerFactory.AddSerilog();
 
             app.UseRouting();
-
-
 
             app.UseAuthorization();
 

@@ -1,5 +1,4 @@
 using System;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OdinPlugs.OdinCore.Models;
@@ -30,7 +29,6 @@ namespace OdinCore.Services.ImplServices
         #region 内部私有变量
         private readonly IOptionsSnapshot<ProjectExtendsOptions> iApiOptions;
         private readonly ProjectExtendsOptions apiOptions;
-        private readonly IMapper mapper;
         private readonly IOdinMongo mongoHelper;
         private readonly IOdinRedis redisCacheHelper;
         private readonly IOdinCacheManager odinCacheManager;
@@ -42,7 +40,6 @@ namespace OdinCore.Services.ImplServices
             this.innerService = MvcContext.GetRequiredServices<IInerService>();
             this.iApiOptions = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiOptions = iApiOptions.Value;
-            this.mapper = OdinInjectCore.GetService<IMapper>();
             this.mongoHelper = OdinInjectCore.GetService<IOdinMongo>();
             this.redisCacheHelper = OdinInjectCore.GetService<IOdinRedis>();
             this.odinCacheManager = OdinInjectCore.GetService<IOdinCacheManager>();

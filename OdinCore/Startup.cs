@@ -6,7 +6,10 @@ using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using AspectCore.Configuration;
 using AspectCore.Extensions.DependencyInjection;
+using IGeekFan.AspNetCore.Knife4jUI;
+using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,46 +21,44 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
+using OdinCore.Models;
+using OdinCore.Models.DbModels;
+using OdinPlugs.ApiLinkMonitor.MiddlewareExtensions;
+using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
+using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
 using OdinPlugs.OdinCore.ConfigModel;
+using OdinPlugs.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
+using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
+using OdinPlugs.OdinInject.Models.CacheManagerModels;
+using OdinPlugs.OdinInject.Models.RabbitmqModels;
+using OdinPlugs.OdinInject.Models.RedisModels;
+using OdinPlugs.OdinMAF.OdinInject;
 using OdinPlugs.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinMAF.OdinSerilog.Models;
 using OdinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinCore.Models;
-using OdinCore.Models.DbModels;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinUtils.Utils.OdinFiles;
+using OdinPlugs.SnowFlake.Inject;
+using OdinPlugs.SnowFlake.SnowFlakeModel;
+using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
-using OdinPlugs.OdinCore.ConfigModel.Utils;
-using AspectCore.Configuration;
-using OdinPlugs.OdinMvcCore.OdinExtensions;
-using Newtonsoft.Json.Serialization;
-using OdinPlugs.OdinUtils.Utils.OdinFiles;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
-using OdinPlugs.SnowFlake.SnowFlakeModel;
-using OdinPlugs.OdinInject.Models.RabbitmqModels;
-using Mapster;
-using OdinPlugs.SnowFlake.Inject;
-using OdinPlugs.OdinInject.InjectPlugs;
-using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
-using OdinPlugs.ApiLinkMonitor.OdinMiddleware.MiddlewareExtensions;
-using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
-using IGeekFan.AspNetCore.Knife4jUI;
-using OdinPlugs.ApiLinkMonitor.MiddlewareExtensions;
-using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
-using OdinPlugs.OdinInject.Models.CacheManagerModels;
-using OdinPlugs.OdinInject.InjectCore;
-using OdinPlugs.OdinInject.Models.RedisModels;
-using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
-using OdinPlugs.OdinMAF.OdinInject;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 
 namespace OdinCore
 {
@@ -96,7 +97,6 @@ namespace OdinCore
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
 
-
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
@@ -114,10 +114,6 @@ namespace OdinCore
             // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
 
-
-
-
-
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
             SugarIocServices.AddSqlSugar(new IocConfig()
             {
@@ -127,15 +123,15 @@ namespace OdinCore
                 IsAutoCloseConnection = true, //自动释放
             });
             services.ConfigurationSugar(db =>
+            {
+                db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices
                 {
-                    db.CurrentConnectionConfig.ConfigureExternalServices = new ConfigureExternalServices
-                    {
-                        DataInfoCacheService = services.GetService<IOdinCacheManager>()
-                    };
-                    //多租户 
-                    //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
-                    //也可以配置AOP
-                });
+                    DataInfoCacheService = services.GetService<IOdinCacheManager>()
+                };
+                //多租户 
+                //db.GetConnection("1").CurrentConnectionConfig.ConfigureExternalServices =xxx
+                //也可以配置AOP
+            });
 
             #region 初始化数据库
             //修改cnf.config Host配置的链接字符串  enable修改为true，即可自动化初识数据库
@@ -166,7 +162,6 @@ namespace OdinCore
                 .CreateLogger();
             #endregion
 
-
             Log.Logger.Information("启用【 Ocelot 】---开始配置");
             var ocelotBuilder = services.AddOcelot(Configuration);
             if (_Options.Consul.Enable)
@@ -178,52 +173,48 @@ namespace OdinCore
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-
             Log.Logger.Information("启用【 跨域配置 】---开始配置");
             string withOrigins = _Options.CrossDomain.AllowOrigin.WithOrigins;
             string policyName = _Options.CrossDomain.AllowOrigin.PolicyName;
             services.AddCors(opts =>
+            {
+                opts.AddPolicy(policyName, policy =>
                 {
-                    opts.AddPolicy(policyName, policy =>
-                    {
-                        policy.WithOrigins(withOrigins.Split(','))
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials();
-                    });
+                    policy.WithOrigins(withOrigins.Split(','))
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
-
+            });
 
             Log.Logger.Information("启用【 版本控制 】---开始配置");
             services.AddApiVersioning(option =>
-                {
-                    //当设置为 true 时, API 将返回响应标头中支持的版本信息。
-                    option.ReportApiVersions = true;
-                    //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
-                    option.AssumeDefaultVersionWhenUnspecified = true;
-                    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
-                    // option.ApiVersionReader = ApiVersionReader.Combine(
-                    //         new QueryStringApiVersionReader(),
-                    //         new HeaderApiVersionReader()
-                    //         {
-                    //             HeaderNames = { "apiVersion" }
-                    //         });
-                }).AddResponseCompression();
-
+            {
+                //当设置为 true 时, API 将返回响应标头中支持的版本信息。
+                option.ReportApiVersions = true;
+                //此选项将用于不提供版本的请求。默认情况下, 假定的 API 版本为1.0。
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(_Options.ApiVersion.MajorVersion, _Options.ApiVersion.MinorVersion);
+                // option.ApiVersionReader = ApiVersionReader.Combine(
+                //         new QueryStringApiVersionReader(),
+                //         new HeaderApiVersionReader()
+                //         {
+                //             HeaderNames = { "apiVersion" }
+                //         });
+            }).AddResponseCompression();
 
             Log.Logger.Information("启用【 真实Ip获取 】---开始配置");
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
-                {
-                    opt.Filters.Add<HttpGlobalExceptionFilter>();
-                    opt.Filters.Add<OdinModelValidationFilter>(1);
-                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                    opt.Filters.Add<ApiInvokerResultFilter>();
-                })
+            {
+                opt.Filters.Add<HttpGlobalExceptionFilter>();
+                opt.Filters.Add<OdinModelValidationFilter>(1);
+                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                opt.Filters.Add<ApiInvokerResultFilter>();
+            })
                 .AddNewtonsoftJson(opt =>
                 {
                     var contractResolver = new DefaultContractResolver();
@@ -314,14 +305,12 @@ namespace OdinCore
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT"
                 });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
                     {
-                        new OpenApiSecurityScheme
-                        {
+                        new OpenApiSecurityScheme {
                             Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
                         },
-                        new List<string>()
+                        new List<string> ()
                     }
                 });
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
@@ -331,6 +320,18 @@ namespace OdinCore
             // services.ConfigureDynamicProxy(config => { config.Interceptors.AddServiced<FoobarAttribute>(); });
 
             // services.AddTransient<FoobarAttribute>().ConfigureDynamicProxy();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://127.0.0.1:20505";
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
             services.SetServiceProvider();
 
         }
@@ -341,7 +342,6 @@ namespace OdinCore
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
-
 
             app.UseStaticFiles();
             app.UseOdinApiLinkMonitor(
@@ -360,6 +360,9 @@ namespace OdinCore
             loggerFactory.AddSerilog();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(options.CrossDomain.AllowOrigin.PolicyName);
 
@@ -391,16 +394,15 @@ namespace OdinCore
         {
             var errorCodes = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList();
             var errorCodelst = errorCodes
-                        .OdinTypeAdapterBuilder<ErrorCode_DbModel, ErrorCode_Model, List<ErrorCode_Model>>(
-                            opt =>
-                            {
-                                opt.Map(dest => dest.Id, src => src.Id.ToString());
-                                opt.Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
-                                opt.Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
-                            }
-                            ,
-                            OdinInjectCore.GetService<IOdinMapster>().GetConfig()
-                        );
+                .OdinTypeAdapterBuilder<ErrorCode_DbModel, ErrorCode_Model, List<ErrorCode_Model>>(
+                    opt =>
+                    {
+                        opt.Map(dest => dest.Id, src => src.Id.ToString());
+                        opt.Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
+                        opt.Map(dest => dest.ShowMessage, src => src.CodeShowMessage);
+                    },
+                    OdinInjectCore.GetService<IOdinMapster>().GetConfig()
+                );
             var cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
             foreach (var item in errorCodelst)
             {

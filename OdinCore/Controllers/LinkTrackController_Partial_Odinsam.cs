@@ -53,7 +53,7 @@ namespace OdinCore.Controllers
         [OdinActionRoute("Show", "2.0")]
         [HttpPost]
         [Consumes("multipart/form-data")]
-
+        [OdinAuthorize]
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
             //return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));

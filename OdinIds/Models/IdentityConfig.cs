@@ -38,16 +38,12 @@ namespace OdinIds.Models
                 new IdentityServer4.Models.Client
                 {
                     ClientId = "client",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
                     // secret for authentication
                     ClientSecrets =
                     {
                         new IdentityServer4.Models.Secret("secret".Sha256())
                     },
-
+                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     // scopes that client has access to
                     AllowedScopes = { "api1" }
                 }

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using AutoMapper;
 using DotNetCore.CAP;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +45,6 @@ namespace OdinCore.Controllers
     {
         private readonly IOptionsSnapshot<ProjectExtendsOptions> iApiOptions;
         public ProjectExtendsOptions apiOptions { get; set; }
-        private readonly IMapper mapper;
         private readonly ITestService testService;
         private readonly IOdinCacheManager cacheManager;
         private readonly ICapPublisher capBus;
@@ -58,7 +56,6 @@ namespace OdinCore.Controllers
         {
             this.iApiOptions = OdinInjectCore.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             this.apiOptions = iApiOptions.Value;
-            this.mapper = OdinInjectCore.GetService<IMapper>();
             this.testService = OdinInjectCore.GetService<ITestService>();
             this.cacheManager = OdinInjectCore.GetService<IOdinCacheManager>();
             this.capBus = OdinInjectCore.GetService<ICapPublisher>();
