@@ -54,6 +54,7 @@ namespace OdinCore.Controllers
         [HttpPost]
         [Consumes("multipart/form-data")]
         [OdinAuthorize]
+        [ProducesResponseType(typeof(Stu), 200)]
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
             //return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));
@@ -67,7 +68,8 @@ namespace OdinCore.Controllers
             Console.WriteLine("student info");
             Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
             // throw new Exception("test exception");
-            return this.GetDIServices<ITestService>().show(id);
+            // return this.GetDIServices<ITestService>().show(id);
+            return this.OdinResult(stu);
 
             // return this.OdinResult(stu);
             // this.GetDIServices<ITestService>().show(id);
@@ -78,9 +80,21 @@ namespace OdinCore.Controllers
 
     public class Stu
     {
+        /// <summary>
+        /// stu id
+        /// </summary>
+        /// <value></value>
         [JsonConverter(typeof(JsonConverterLong))]
         public long id { get; set; }
+        /// <summary>
+        /// stu name
+        /// </summary>
+        /// <value></value>
         public string name { get; set; }
+        /// <summary>
+        /// stu age
+        /// </summary>
+        /// <value></value>
         public int age { get; set; }
     }
 }
