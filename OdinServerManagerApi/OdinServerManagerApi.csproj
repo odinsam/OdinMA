@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\odinPlugs\OdinPlugs\OdinPlugs.csproj"/>
+    <ProjectReference Include="..\..\odinPlugs\OdinPlugs\OdinPlugs.csproj" />
   </ItemGroup>
 
 </Project>
