@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {}
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {}
   },
   "projects": {
-    "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
         "projectName": "OdinHangFire",
-        "projectPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\OdinHangFire.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinMA\\OdinHangFire\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -34,8 +34,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
-                "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj"
               }
             }
           }
@@ -77,14 +77,14 @@
         }
       }
     },
-    "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
       "version": "1.0.6",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
         "projectName": "OdinPlugs.OdinInject",
-        "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -107,8 +107,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj": {
-                "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj"
               }
             }
           }
@@ -162,6 +162,14 @@
             "DotNetCore.CAP.RabbitMQ": {
               "target": "Package",
               "version": "[5.1.1, )"
+            },
+            "IdentityModel": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[5.0.8, )"
             },
             "Microsoft.Extensions.Caching.Redis": {
               "target": "Package",
@@ -219,14 +227,14 @@
         }
       }
     },
-    "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj": {
-      "version": "1.0.5",
+    "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj": {
+      "version": "1.0.6",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj",
         "projectName": "OdinPlugs.OdinUtils",
-        "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\OdinPlugs.OdinUtils.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinUtils\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -277,6 +285,34 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Serilog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Sinks.Elasticsearch": {
+              "target": "Package",
+              "version": "[8.4.1, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Serilog.Sinks.MySQL": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
             "XC.RSAUtil": {
               "target": "Package",
               "version": "[1.3.6, )"
@@ -301,14 +337,14 @@
         }
       }
     },
-    "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
       "version": "1.0.5",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
         "projectName": "OdinPlugs.SnowFlake",
-        "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -331,8 +367,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
-                "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
               }
             }
           }
@@ -365,14 +401,14 @@
         }
       }
     },
-    "E:\\GitHub\\OdinMA\\odinplugs\\OdinPlugs.csproj": {
+    "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj": {
       "version": "1.0.5",
       "restore": {
-        "projectUniqueName": "E:\\GitHub\\OdinMA\\odinplugs\\OdinPlugs.csproj",
+        "projectUniqueName": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj",
         "projectName": "OdinPlugs",
-        "projectPath": "E:\\GitHub\\OdinMA\\odinplugs\\OdinPlugs.csproj",
+        "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\OdinPlugs.csproj",
         "packagesPath": "C:\\Users\\odinsam\\.nuget\\packages\\",
-        "outputPath": "E:\\GitHub\\OdinMA\\odinplugs\\obj\\",
+        "outputPath": "e:\\GitHub\\OdinMA\\OdinPlugs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -395,11 +431,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
-                "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.OdinInject\\OdinPlugs.OdinInject.csproj"
               },
-              "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
-                "projectPath": "E:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj"
+              "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj": {
+                "projectPath": "e:\\GitHub\\OdinMA\\OdinPlugs.SnowFlake\\OdinPlugs.SnowFlake.csproj"
               }
             }
           }
@@ -585,34 +621,6 @@
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[6.2.1, )"
-            },
-            "Serilog": {
-              "target": "Package",
-              "version": "[2.10.0, )"
-            },
-            "Serilog.AspNetCore": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
-            "Serilog.Extensions.Logging": {
-              "target": "Package",
-              "version": "[3.0.1, )"
-            },
-            "Serilog.Sinks.Console": {
-              "target": "Package",
-              "version": "[3.1.1, )"
-            },
-            "Serilog.Sinks.Elasticsearch": {
-              "target": "Package",
-              "version": "[8.4.1, )"
-            },
-            "Serilog.Sinks.File": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
-            "Serilog.Sinks.MySQL": {
-              "target": "Package",
-              "version": "[4.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
