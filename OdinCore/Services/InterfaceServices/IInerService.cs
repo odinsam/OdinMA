@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using OdinPlugs.OdinCore.Models;
 using OdinPlugs.OdinInject.InjectInterface;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
 
 namespace OdinCore.Services.InterfaceServices
 {

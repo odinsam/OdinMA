@@ -1,6 +1,6 @@
 using OdinCore.Models.OdinInterceptor;
-using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinMvcCore.ServicesCore.ServicesInterface.SqlSugar;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
+using OdinPlugs.OdinWebApi.OdinMvcCore.ServicesCore.ServicesInterface.SqlSugar;
 
 namespace OdinCore.Services.InterfaceServices
 {

@@ -1,7 +1,7 @@
+using OdinPlugs.OdinEFCore.OdinSqlSugar.SqlSugarExtends;
+using OdinPlugs.OdinEFCore.OdinSqlSugar.SqlSugarInterface;
 using OdinPlugs.OdinInject;
 using OdinPlugs.OdinInject.InjectCore;
-using OdinPlugs.OdinSqlSugar.SqlSugarExtends;
-using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
 using SqlSugar;
 

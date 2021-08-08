@@ -4,16 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinCore.Models.Aop;
-using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQSend;
-using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMvcCore.OdinExtensions;
-using OdinPlugs.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinMvcCore.OdinRoute;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
-using OdinPlugs.OdinMvcCore.OdinAttr;
 using SqlSugar;
 using AutoMapper;
 using SqlSugar.IOC;
@@ -23,6 +15,14 @@ using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
 using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinAttr;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinRoute;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinFilter;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
+using OdiOdinPlugs.OdinWebApinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinWebApi.OdinCore.Models.Aop;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
+using OdinPlugs.OdinNoSql.OdinRabbitMQ.RabbitMQSend;
 
 namespace OdinCore.Controllers
 {

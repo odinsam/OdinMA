@@ -1,8 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using OdinCore.Services.InterfaceServices;
-using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
 
 namespace OdinCore.Services.ImplServices
 {

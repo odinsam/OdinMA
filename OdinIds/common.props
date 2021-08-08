@@ -1,15 +1,14 @@
 <Project>
     <PropertyGroup>
+        <OdinVersion>1.0.0</OdinVersion>
         <OdinAuthors>odinSam</OdinAuthors>
         <OdinCompany>odinSam</OdinCompany>
         <OdinCopyright>版权所有 (c) odinsam 2021</OdinCopyright>
         <OdinProduct>odinSam</OdinProduct>
         <OdinRepositoryType>git</OdinRepositoryType>
-        <OdinPackageTags>utils;standard</OdinPackageTags>
         <OdinGitUrl>https://github.com/odinsam</OdinGitUrl>
-        <OdinIsPackable>true</OdinIsPackable>
-        <OdinPackageIcon>icon.png</OdinPackageIcon>
         <OdinGenerateDocumentationFile>true</OdinGenerateDocumentationFile>
         <NoWarn>CS1591</NoWarn>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 </Project>

@@ -2,8 +2,8 @@ using System;
 using System.Xml;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
-using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions;
+using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFExtensions;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
 
 namespace OdinCore.Services.ImplServices
 {

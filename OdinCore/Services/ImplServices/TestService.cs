@@ -1,24 +1,20 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using OdinPlugs.OdinCore.Models;
-using OdinPlugs.OdinCore.Models.ErrorCode;
-using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions;
-using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions.EFInterface;
-using OdinPlugs.OdinMAF.OdinRabbitMQ.RabbitMQReceive;
-using OdinPlugs.OdinMvcCore.MvcCore;
-using OdinPlugs.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinCore.Models;
 using OdinCore.Models.DbModels;
 using OdinCore.Services.InterfaceServices;
-using OdinCore.Models.OdinInterceptor;
-using OdinPlugs.OdinMvcCore.OdinExtensions;
-using OdinPlugs.OdinNetCore.WebApi.HttpClientHelper;
-using OdinPlugs.OdinInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMongoDbInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinRedisInject;
 using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFExtensions;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
+using OdinPlugs.OdinWebApi.OdinCore.Models;
+using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFInterface;
+using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinWebApi.OdinMvcCore.ServicesCore.ServicesExtensions;
+using OdinPlugs.OdinNoSql.OdinRabbitMQ.RabbitMQReceive;
 
 namespace OdinCore.Services.ImplServices
 {

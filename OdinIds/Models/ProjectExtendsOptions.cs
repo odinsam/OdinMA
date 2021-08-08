@@ -1,7 +1,6 @@
-
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
 
-namespace OdinCore.Models
+namespace OdinIds.Models
 {
     public class ProjectExtendsOptions : ConfigOptions
     {

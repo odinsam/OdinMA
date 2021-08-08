@@ -1,7 +1,7 @@
-using OdinPlugs.OdinMAF.OdinEF.EFCore.EFExtensions;
-using OdinPlugs.OdinNetCore.OdinAssembly;
-using OdinPlugs.OdinSqlSugar.SqlSugarInterface;
-using OdinPlugs.OdinSqlSugar.SqlSugarUtils;
+using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFExtensions;
+using OdinPlugs.OdinEFCore.OdinSqlSugar.SqlSugarInterface;
+using OdinPlugs.OdinEFCore.OdinSqlSugar.SqlSugarUtils;
+using OdinPlugs.OdinWebApi.OdinNetCore.OdinAssembly;
 using SqlSugar;
 using SqlSugar.IOC;
 

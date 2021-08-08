@@ -5,7 +5,6 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>OdinCore</AssemblyName>
     <RootNamespace>OdinCore</RootNamespace>
-    
     <PackageId>$(OdinPackageId)</PackageId>
     <Authors>$(OdinAuthors)</Authors>
     <Company>$(OdinCompany)</Company>
@@ -22,13 +21,31 @@
     <PackageIcon>icon.png</PackageIcon>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(OdinNoWarn)</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.ApiLinkMonitor\OdinPlugs.ApiLinkMonitor.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs\OdinPlugs.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinEFCore\OdinPlugs.OdinEFCore.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinNoSql\OdinPlugs.OdinNoSql.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    
+    <PackageReference Include="JWT" Version="8.2.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="IGeekFan.AspNetCore.RapiDoc" Version="0.0.3" />
+    <PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.8" />
+
+
+    <PackageReference Include="Ocelot" Version="17.0.0" />
+    <PackageReference Include="Ocelot.Cache.CacheManager" Version="17.0.0" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="17.0.0" />
+    <PackageReference Include="Ocelot.Provider.Polly" Version="17.0.0" />
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="logs\" />
