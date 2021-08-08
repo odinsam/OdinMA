@@ -102,7 +102,6 @@ namespace OdinCore
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
-                // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinMapsterTypeAdapter(opt =>
                 {
                     // opt.ForType<ErrorCode_DbModel, ErrorCode_Model>()
@@ -110,8 +109,6 @@ namespace OdinCore
                     //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 })
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
-            // services.AddSingleton<IOdinSnowFlake>(provider => new OdinSnowFlake(1, 1));
-            // services.AddTransient<OdinAspectCoreInterceptorAttribute>().ConfigureDynamicProxy();
             services.SetServiceProvider();
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
@@ -209,12 +206,12 @@ namespace OdinCore
 
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
-            {
-                opt.Filters.Add<HttpGlobalExceptionFilter>();
-                opt.Filters.Add<OdinModelValidationFilter>(1);
-                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                opt.Filters.Add<ApiInvokerResultFilter>();
-            })
+                {
+                    opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    opt.Filters.Add<OdinModelValidationFilter>(1);
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerResultFilter>();
+                })
                 .AddNewtonsoftJson(opt =>
                 {
                     var contractResolver = new DefaultContractResolver();
