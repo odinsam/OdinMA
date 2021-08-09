@@ -29,6 +29,7 @@ using OdinIds.Models.DbModels;
 using OdinPlugs.ApiLinkMonitor.OdinAspectCore.IOdinAspectCoreInterface;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
@@ -77,6 +78,7 @@ namespace OdinIds
             _Options = _iOptions.Value;
 
             services
+                .AddSingleton<ConfigOptions>(_Options)
                 .AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinInject(_Options)
@@ -141,12 +143,12 @@ namespace OdinIds
 
             Log.Logger.Information("启用【 mvc框架 】---开始配置 【  1.添加自定义过滤器\t2.controller返回json大小写控制 默认大小写 】 ");
             services.AddControllers(opt =>
-            {
-                opt.Filters.Add<HttpGlobalExceptionFilter>();
-                opt.Filters.Add<OdinModelValidationFilter>(1);
-                opt.Filters.Add<ApiInvokerFilterAttribute>(2);
-                opt.Filters.Add<ApiInvokerResultFilter>();
-            })
+                {
+                    opt.Filters.Add<HttpGlobalExceptionFilter>();
+                    opt.Filters.Add<OdinModelValidationFilter>(1);
+                    opt.Filters.Add<ApiInvokerFilterAttribute>(2);
+                    opt.Filters.Add<ApiInvokerResultFilter>();
+                })
                 .AddNewtonsoftJson(opt =>
                 {
                     var contractResolver = new DefaultContractResolver();
@@ -168,39 +170,39 @@ namespace OdinIds
 
             Log.Logger.Information("启用【 AspectCore 全局注入 】---开始配置");
             services.ConfigureDynamicProxy(config =>
-            {
-                // config.Interceptors.AddServiced<FoobarAttribute>();
-                // ~ 类型数注入
+                {
+                    // config.Interceptors.AddServiced<FoobarAttribute>();
+                    // ~ 类型数注入
 
-                // config.Interceptors.AddTyped<FoobarAttribute>();
+                    // config.Interceptors.AddTyped<FoobarAttribute>();
 
-                // ~ 带参数注入
-                // config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(new Object[] { "d" }, new AspectPredicate[] { });
+                    // ~ 带参数注入
+                    // config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(new Object[] { "d" }, new AspectPredicate[] { });
 
-                // ~ App1命名空间下的Service不会被代理
-                // config.NonAspectPredicates.AddNamespace("App1");
+                    // ~ App1命名空间下的Service不会被代理
+                    // config.NonAspectPredicates.AddNamespace("App1");
 
-                // ~ 最后一级为App1的命名空间下的Service不会被代理
-                // config.NonAspectPredicates.AddNamespace("*.App1");
+                    // ~ 最后一级为App1的命名空间下的Service不会被代理
+                    // config.NonAspectPredicates.AddNamespace("*.App1");
 
-                // ~ ICustomService接口不会被代理
-                // config.NonAspectPredicates.AddService("ICustomService");
+                    // ~ ICustomService接口不会被代理
+                    // config.NonAspectPredicates.AddService("ICustomService");
 
-                // ~ 后缀为Service的接口和类不会被代理
-                // config.NonAspectPredicates.AddService("*Service");
+                    // ~ 后缀为Service的接口和类不会被代理
+                    // config.NonAspectPredicates.AddService("*Service");
 
-                // ~ 命名为Query的方法不会被代理
-                // config.NonAspectPredicates.AddMethod("Query");
+                    // ~ 命名为Query的方法不会被代理
+                    // config.NonAspectPredicates.AddMethod("Query");
 
-                // ~ 后缀为Query的方法不会被代理
-                // config.NonAspectPredicates.AddMethod("*Query");
+                    // ~ 后缀为Query的方法不会被代理
+                    // config.NonAspectPredicates.AddMethod("*Query");
 
-                // ~ 带有Service后缀的类的全局拦截器
-                // config.Interceptors.AddTyped<CustomInterceptorAttribute>(method => method.Name.EndsWith("MethodName"));
+                    // ~ 带有Service后缀的类的全局拦截器
+                    // config.Interceptors.AddTyped<CustomInterceptorAttribute>(method => method.Name.EndsWith("MethodName"));
 
-                // ~ 使用通配符的特定全局拦截器
-                config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(Predicates.ForService("*Service"));
-            });
+                    // ~ 使用通配符的特定全局拦截器
+                    config.Interceptors.AddTyped<OdinAspectCoreInterceptorAttribute>(Predicates.ForService("*Service"));
+                });
 
             Log.Logger.Information("启用【 AspectCore 依赖注入 和 代理注册 】---开始配置");
             // ! OdinAspectCoreInterceptorAttribute 需要继承  AbstractInterceptorAttribute

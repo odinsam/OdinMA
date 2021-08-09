@@ -2,7 +2,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinInject.InjectCore;
+using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.OdinJson.ContractResolver;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
@@ -64,8 +66,8 @@ namespace OdinCore.Controllers
             Console.WriteLine("student info");
             Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
             // throw new Exception("test exception");
-            // return this.GetDIServices<ITestService>().show(id);
-            return this.OdinResult(stu);
+            return this.GetDIServices<ITestService>().show(id);
+            // return this.OdinResultOk();
 
             // return this.OdinResult(stu);
             // this.GetDIServices<ITestService>().show(id);

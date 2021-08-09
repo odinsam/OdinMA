@@ -35,12 +35,12 @@ using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
-using OdinPlugs.OdinInject.Models.ErrorCodeModels;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinInject;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog.Models;
@@ -101,7 +101,8 @@ namespace OdinCore
                     //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
                     //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 })
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.OdinNoSql"));
+            // .AddOdinTransientInject(Assembly.Load("OdinPlugs"))
             services.SetServiceProvider();
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
