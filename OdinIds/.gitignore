@@ -1,9 +1,0 @@
-node_modules
-[Bb]in/
-[Oo]bj/
-
-[Ll]og/
-[Ll]ogs/
-
-package-lock.json
-
