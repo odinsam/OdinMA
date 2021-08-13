@@ -312,16 +312,16 @@ namespace OdinCore
 
             // services.AddTransient<FoobarAttribute>().ConfigureDynamicProxy();
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-                {
-                    options.Authority = "http://127.0.0.1:20505";
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
-                });
+            // services.AddAuthentication("Bearer")
+            //     .AddJwtBearer("Bearer", options =>
+            //     {
+            //         options.Authority = "http://127.0.0.1:20505";
+            //         options.RequireHttpsMetadata = false;
+            //         options.TokenValidationParameters = new TokenValidationParameters
+            //         {
+            //             ValidateAudience = false
+            //         };
+            //     });
 
             services.SetServiceProvider();
 

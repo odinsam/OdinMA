@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinPlugs.OdinNoSql", "..\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinIds", "OdinIds\OdinIds.csproj", "{9F4C464B-7383-452E-AC97-A514CD14E473}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinPlugs.OdinMQ", "..\OdinPlugs.OdinMQ\OdinPlugs.OdinMQ.csproj", "{15C6808B-2F8E-4B05-82F5-16440C8C3557}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{9F4C464B-7383-452E-AC97-A514CD14E473}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F4C464B-7383-452E-AC97-A514CD14E473}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F4C464B-7383-452E-AC97-A514CD14E473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C6808B-2F8E-4B05-82F5-16440C8C3557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C6808B-2F8E-4B05-82F5-16440C8C3557}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C6808B-2F8E-4B05-82F5-16440C8C3557}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C6808B-2F8E-4B05-82F5-16440C8C3557}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{6EE6E428-4ECC-415E-81BE-3CC09160BFFE} = {AE741564-8468-4840-9CC0-41D863BC2A70}
 		{61B8BF5E-E4A1-46A2-96D2-39EEE0BBDB3D} = {AE741564-8468-4840-9CC0-41D863BC2A70}
 		{9F4C464B-7383-452E-AC97-A514CD14E473} = {26A51029-E028-4EEF-A917-38042BF44132}
+		{15C6808B-2F8E-4B05-82F5-16440C8C3557} = {AE741564-8468-4840-9CC0-41D863BC2A70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3A34ACF-D4DC-4A19-89AD-ECE62EA75AD5}

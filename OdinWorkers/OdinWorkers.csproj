@@ -4,14 +4,11 @@
     <UserSecretsId>dotnet-OdinWorkers-DC36F221-6E9F-4C63-AE48-80A623D2BF59</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OdinPlugs.OdinMQ\OdinPlugs.OdinMQ.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs.ApiLinkMonitor\OdinPlugs.ApiLinkMonitor.csproj" />
-    <!-- <ProjectReference Include="..\..\OdinPlugs\OdinPlugs.csproj" /> -->
-    <ProjectReference Include="..\..\OdinPlugs.OdinHostedService\OdinPlugs.OdinHostedService.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj" />
-    <ProjectReference Include="..\..\OdinPlugs.OdinNoSql\OdinPlugs.OdinNoSql.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinUtils\OdinPlugs.OdinUtils.csproj" />
-    
+    <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinHostedService\OdinPlugs.OdinHostedService.csproj" />
   </ItemGroup>
 </Project>

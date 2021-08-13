@@ -29,6 +29,9 @@
     <ProjectReference Include="..\..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinEFCore\OdinPlugs.OdinEFCore.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinNoSql\OdinPlugs.OdinNoSql.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinMQ\OdinPlugs.OdinMQ.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />

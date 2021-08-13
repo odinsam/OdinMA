@@ -14,7 +14,7 @@ using OdinPlugs.OdinWebApi.OdinCore.Models;
 using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFInterface;
 using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMvcCore.ServicesCore.ServicesExtensions;
-using OdinPlugs.OdinNoSql.OdinRabbitMQ.RabbitMQReceive;
+using OdinPlugs.OdinMQ.OdinRabbitMQ.RabbitMQReceive;
 
 namespace OdinCore.Services.ImplServices
 {

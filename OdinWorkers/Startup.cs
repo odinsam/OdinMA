@@ -17,13 +17,10 @@ using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinInject;
-using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog;
-using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog.Models;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
 using SqlSugar;
 using SqlSugar.IOC;
 namespace OdinWorkers

@@ -22,7 +22,7 @@ using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
 using OdiOdinPlugs.OdinWebApinPlugs.OdinMvcCore.MvcCore;
 using OdinPlugs.OdinWebApi.OdinCore.Models.Aop;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
-using OdinPlugs.OdinNoSql.OdinRabbitMQ.RabbitMQSend;
+using OdinPlugs.OdinMQ.OdinRabbitMQ.RabbitMQSend;
 
 namespace OdinCore.Controllers
 {
