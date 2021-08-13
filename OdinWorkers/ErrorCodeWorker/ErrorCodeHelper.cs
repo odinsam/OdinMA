@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using OdinPlugs.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCanalInject;
 using OdinPlugs.OdinInject.Models.CanalModels;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
+using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 
 namespace OdinWorkers.ErrorCodeWork
 {
@@ -27,20 +27,20 @@ namespace OdinWorkers.ErrorCodeWork
                             {
                                 flag = cacheManager.Cover(model.ErrorCode, model);
                                 if (flag)
-                                    System.Console.WriteLine($"cacheManager add-Cover success:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}\r\n");
+                                    System.Console.WriteLine($"cacheManager add-Cover success:\r\n{model.ToJson(enumStringFormat.Json)}\r\n");
                                 else
                                 {
-                                    System.Console.WriteLine($"cacheManager add-Cover fail:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}");
+                                    System.Console.WriteLine($"cacheManager add-Cover fail:\r\n{model.ToJson(enumStringFormat.Json)}");
                                 }
                             }
                             else
                             {
                                 flag = cacheManager.Add(model.ErrorCode, model);
                                 if (flag)
-                                    System.Console.WriteLine($"cacheManager add success:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}\r\n");
+                                    System.Console.WriteLine($"cacheManager add success:\r\n{model.ToJson(enumStringFormat.Json)}\r\n");
                                 else
                                 {
-                                    System.Console.WriteLine($"cacheManager add fail:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}");
+                                    System.Console.WriteLine($"cacheManager add fail:\r\n{model.ToJson(enumStringFormat.Json)}");
                                 }
                             }
                         }
@@ -53,10 +53,10 @@ namespace OdinWorkers.ErrorCodeWork
                         {
                             var flag = cacheManager.Cover<ErrorCode_Model>(model.ErrorCode, model);
                             if (flag)
-                                System.Console.WriteLine($"cacheManager Cover success:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}\r\n");
+                                System.Console.WriteLine($"cacheManager Cover success:\r\n{model.ToJson(enumStringFormat.Json)}\r\n");
                             else
                             {
-                                System.Console.WriteLine($"cacheManager Cover fail:\r\n{JsonConvert.SerializeObject(model).ToJsonFormatString()}");
+                                System.Console.WriteLine($"cacheManager Cover fail:\r\n{model.ToJson(enumStringFormat.Json)}");
                             }
                         }
                     }

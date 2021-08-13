@@ -215,12 +215,21 @@ namespace OdinIds
 
             // 启用 Identity 服务 添加指定的用户和角色类型的默认标识系统配置
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddOdinIds(opts =>
-            {
-                opts.RsaFilePath = "rsaCers/odin_ids.rsa";
-                opts.MySqlConnectionString = _Options.DbEntity.ConnectionString;
-                opts.MigrationsAssemblyName = migrationsAssembly;
-            });
+            services
+                .AddOdinIds(opts =>
+                {
+                    opts.RsaFilePath = "rsaCers/odin_ids.rsa";
+                    opts.MySqlConnectionString = _Options.DbEntity.ConnectionString;
+                    opts.MigrationsAssemblyName = migrationsAssembly;
+                })
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+
+            services
+                .AddIdsContext(opts =>
+                {
+                    opts.MySqlConnectionString = _Options.DbEntity.ConnectionString;
+                    opts.MigrationsAssemblyName = migrationsAssembly;
+                });
 
             services.AddControllers(opt =>
                 {
@@ -260,10 +269,10 @@ namespace OdinIds
             //     Log.Logger.Information("ids 秘钥文件已存在。");
             //     ids = ids.AddDeveloperSigningCredential(filename: "rsaCers/odin_ids.rsa");
             // }
-            // // 客户端和资源的数据库存储
-            // // ConfigurationDbContext
-            // // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
-            // // dotnet ef database update -c ConfigurationDbContext
+            // 客户端和资源的数据库存储
+            // ConfigurationDbContext
+            // dotnet ef migrations add ConfigDbContext -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfiguragtionDb
+            // dotnet ef database update -c ConfigurationDbContext
             // ids.AddConfigurationStore(opt =>
             //     {
             //         opt.ConfigureDbContext = context =>
@@ -271,10 +280,10 @@ namespace OdinIds
             //             context.UseMySQL(_Options.DbEntity.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
             //         };
             //     })
-            //     // 令牌和授权码的数据库存储
-            //     // PersistedGrantDbContext
-            //     // dotnet ef migrations add OperationContext -c PersistedGrantDbContext  -o Data/Migrations/IdentityServer/OperationDb
-            //     // dotnet ef database update -c PersistedGrantDbContext
+            // 令牌和授权码的数据库存储
+            // PersistedGrantDbContext
+            // dotnet ef migrations add OperationContext -c PersistedGrantDbContext  -o Data/Migrations/IdentityServer/OperationDb
+            // dotnet ef database update -c PersistedGrantDbContext
             //     .AddOperationalStore(opt =>
             //     {
             //         opt.ConfigureDbContext = context =>

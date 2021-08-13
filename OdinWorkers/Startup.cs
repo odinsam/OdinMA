@@ -11,14 +11,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using OdinPlugs.OdinCore.ConfigModel.Utils;
 using OdinPlugs.OdinHostedService.BgServiceInject;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
-using OdinPlugs.OdinMAF.OdinInject;
-using OdinPlugs.OdinMAF.OdinSerilog;
-using OdinPlugs.OdinMAF.OdinSerilog.Models;
+using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinWebApi.OdinMAF.OdinInject;
+using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog;
+using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog.Models;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;
 using Serilog;
@@ -63,8 +63,8 @@ namespace OdinWorkers
 
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
+                .AddOdinInject(_Options)
                 // .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinMapsterTypeAdapter(opt =>
                 {
@@ -72,7 +72,9 @@ namespace OdinWorkers
                     //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
                     //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 })
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs")); ;
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.OdinNoSql"))
+                ;
+            // .AddOdinTransientInject(Assembly.Load("OdinPlugs"));
             services.SetServiceProvider();
 
             // Log.Logger.Information("启用【 数据库配置 】---开始配置");
@@ -107,11 +109,6 @@ namespace OdinWorkers
                 .MinimumLevel.Override("System", LogEventLevel.Information)
                 // 日志调用类命名空间如果以 Microsoft 开头，覆盖日志输出最小级别为 Information
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .OdinWriteLog(
-                    new LogWriteFileModel { },
-                    new LogWriteToConsoleModel { ConsoleTheme = SystemConsoleTheme.Colored },
-                    new LogWriteMySqlModel { LogLevels = new int[] { 1, 3, 4, 5 }, ConnectionString = _Options.DbEntity.ConnectionString }
-                )
                 .CreateLogger();
             #endregion
 

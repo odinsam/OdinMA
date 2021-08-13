@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinPlugs.OdinUtils", "..\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinPlugs.ApiLinkMonitor.Dashboard", "..\OdinPlugs.ApiLinkMonitor.Dashboard\OdinPlugs.ApiLinkMonitor.Dashboard.csproj", "{29828A53-39D0-49BB-9B70-1DD8438AE1E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinPlugs.OdinHostedService", "..\OdinPlugs.OdinHostedService\OdinPlugs.OdinHostedService.csproj", "{981F1A32-B016-4716-92AE-11E9DFAA309A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinPlugs.OdinHostedService", "..\OdinPlugs.OdinHostedService\OdinPlugs.OdinHostedService.csproj", "{981F1A32-B016-4716-92AE-11E9DFAA309A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdinPlugs.OdinWebApi", "..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj", "{88D4D97D-B27D-49C6-8AAF-895D8C6BC19E}"
 EndProject

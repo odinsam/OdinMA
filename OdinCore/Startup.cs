@@ -385,7 +385,7 @@ namespace OdinCore
         {
             var errorCodes = DbScoped.Sugar.Queryable<ErrorCode_DbModel>().ToList();
             var errorCodelst = errorCodes
-                .OdinTypeAdapterBuilder<ErrorCode_DbModel, ErrorCode_Model, List<ErrorCode_Model>>(
+                .OdinCollectionAdapter<ErrorCode_DbModel, ErrorCode_Model, List<ErrorCode_Model>>(
                     opt =>
                     {
                         opt.Map(dest => dest.Id, src => src.Id.ToString());

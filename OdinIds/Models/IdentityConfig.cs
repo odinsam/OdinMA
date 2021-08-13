@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
 using OdinIds.Models.DbModels;
@@ -14,7 +15,8 @@ namespace OdinIds.Models
         {
             return new IdentityServer4.Models.IdentityResource[]
             {
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
             };
         }
         public static IEnumerable<IdentityServer4.Models.ApiScope> ApiScopes =>
@@ -43,9 +45,10 @@ namespace OdinIds.Models
                     {
                         new IdentityServer4.Models.Secret("secret".Sha256())
                     },
-                     AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    // AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1",IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile }
                 }
             };
         }
