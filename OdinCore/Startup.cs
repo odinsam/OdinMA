@@ -8,7 +8,6 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using AspectCore.Configuration;
 using AspectCore.Extensions.DependencyInjection;
-using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +21,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
@@ -36,7 +35,10 @@ using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
+using OdinPlugs.OdinUtils.OdinJson.ContractResolver;
+using OdinPlugs.OdinUtils.OdinJson.ContractResolver.DateTimeContractResolver;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
 using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
@@ -89,10 +91,9 @@ namespace OdinCore
             _iOptions = services.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
             services.AddSingleton<ConfigOptions>(_Options);
-
+            System.Console.WriteLine(_Options.ToJson(enumStringFormat.Json));
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
-                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
                 .AddOdinInject(_Options)
                 .AddOdinHttpClient("OdinClient")
                 .AddOdinMapsterTypeAdapter(opt =>
@@ -101,6 +102,8 @@ namespace OdinCore
                     //         .Map(dest => dest.ShowMessage, src => src.CodeShowMessage)
                     //         .Map(dest => dest.ErrorMessage, src => src.CodeErrorMessage);
                 })
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.ApiLinkMonitor"))
+                .AddOdinTransientInject(Assembly.Load("OdinPlugs.OdinMQ"))
                 .AddOdinTransientInject(Assembly.Load("OdinPlugs.OdinNoSql"));
             // .AddOdinTransientInject(Assembly.Load("OdinPlugs"))
             services.SetServiceProvider();
@@ -153,10 +156,10 @@ namespace OdinCore
                 .CreateLogger();
             #endregion
 
-            Log.Logger.Information("启用【 Ocelot 】---开始配置");
-            var ocelotBuilder = services.AddOcelot(Configuration);
-            if (_Options.Consul.Enable)
+            Log.Logger.Information("启用【 Consul 】---开始配置");
+            if (_Options.Consul != null && _Options.Consul.Enable)
             {
+                var ocelotBuilder = services.AddOcelot(Configuration);
                 ocelotBuilder.AddConsul().AddPolly();
             }
 
@@ -208,17 +211,15 @@ namespace OdinCore
                 })
                 .AddNewtonsoftJson(opt =>
                 {
-                    var contractResolver = new DefaultContractResolver();
-                    // contractResolver.ResolveContract(typeof(JsonConverterLongContractResolver));
-                    // opt.SerializerSettings.ContractResolver = contractResolver;
                     // 原样输出，后台属性怎么写的，返回的 json 就是怎样的
-                    // opt.SerializerSettings.ContractResolver = new JsonConverterLongContractResolver();
-                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                    // 驼峰命名法，首字母小写
-                    // opt.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-                    // 自定义扩展，属性全为小写
-                    // opt.SerializerSettings.ContractResolver = new OdinPlugs.Models.JsonExtends.ToLowerPropertyNamesContractResolver();
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                    opt.SerializerSettings.ContractResolver = OdinJsonConverter.SetOdinJsonConverter(enumOdinJsonConverter.Default);
+                    // 如字段为null值，该字段不会返回到前端
+                    opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    // 添加时间转换规则
+                    opt.SerializerSettings.Converters.Add(new DateTimeConverter("yyyy-MM-dd HH:mm:ss"));
+                    opt.SerializerSettings.Converters.Add(new DateTimeNullableConverter("yyyy-MM-dd HH:mm:ss"));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .ConfigureApiBehaviorOptions(o =>
                 {
                     // 关闭框架自带的模型验证
@@ -312,24 +313,30 @@ namespace OdinCore
 
             // services.AddTransient<FoobarAttribute>().ConfigureDynamicProxy();
 
-            // services.AddAuthentication("Bearer")
-            //     .AddJwtBearer("Bearer", options =>
-            //     {
-            //         options.Authority = "http://127.0.0.1:20505";
-            //         options.RequireHttpsMetadata = false;
-            //         options.TokenValidationParameters = new TokenValidationParameters
-            //         {
-            //             ValidateAudience = false
-            //         };
-            //     });
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://127.0.0.1:20505";
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
 
             services.SetServiceProvider();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, ILoggerFactory loggerFactory,
-            IOptionsSnapshot<ProjectExtendsOptions> _iOptions, IActionDescriptorCollectionProvider actionProvider, IHttpContextAccessor svp)
+        public void Configure(
+            IApplicationBuilder app,
+            IHttpContextAccessor httpContextAccessor,
+            IWebHostEnvironment env,
+            ILoggerFactory loggerFactory,
+            IOptionsSnapshot<ProjectExtendsOptions> _iOptions,
+            IActionDescriptorCollectionProvider actionProvider,
+            IHttpContextAccessor svp)
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;

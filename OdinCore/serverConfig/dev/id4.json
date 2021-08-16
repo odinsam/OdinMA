@@ -1,0 +1,9 @@
+{
+    "ProjectConfigOptions": {
+        "IdentityServer": {
+            "Authority": "http://127.0.0.1:20505",
+            "RequireHttpsMetadata": false,
+            "ValidateAudience": false
+        }
+    }
+}
