@@ -15,7 +15,7 @@ using OdinPlugs.OdinHostedService.BgServiceInject;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
-using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
+using OdinPlugs.OdinWebApi.OdinCore.Utils;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinInject;
 using OdinWorkers.Models;
 using OdinWorkers.Workers.RabbitMQWorker;

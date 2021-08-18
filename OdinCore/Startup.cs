@@ -17,12 +17,14 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using OdinCore.Models;
@@ -34,15 +36,16 @@ using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinMapsterInject;
+using OdinPlugs.OdinModels.ConfigModel;
+using OdinPlugs.OdinModels.ErrorCode;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.OdinJson.ContractResolver;
 using OdinPlugs.OdinUtils.OdinJson.ContractResolver.DateTimeContractResolver;
 using OdinPlugs.OdinUtils.Utils.OdinFiles;
-using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
-using OdinPlugs.OdinWebApi.OdinCore.ConfigModel.Utils;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
+using OdinPlugs.OdinWebApi.OdinCore.Utils;
+using OdinPlugs.OdinWebApi.OdinMAF.OdinConsulInject;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinInject;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog;
 using OdinPlugs.OdinWebApi.OdinMAF.OdinSerilog.Models;
@@ -90,8 +93,11 @@ namespace OdinCore
             services.SetServiceProvider();
             _iOptions = services.GetService<IOptionsSnapshot<ProjectExtendsOptions>>();
             _Options = _iOptions.Value;
+            services.AddSingleton<ProjectExtendsOptions>(_Options);
             services.AddSingleton<ConfigOptions>(_Options);
-            System.Console.WriteLine(_Options.ToJson(enumStringFormat.Json));
+            services.AddSingleton<IOptionsSnapshot<ProjectExtendsOptions>>(_iOptions);
+            services.AddSingleton<IOptionsSnapshot<ConfigOptions>>(_iOptions);
+
             services
                 .AddOdinTransientInject(this.GetType().Assembly)
                 .AddOdinInject(_Options)
@@ -156,7 +162,7 @@ namespace OdinCore
                 .CreateLogger();
             #endregion
 
-            Log.Logger.Information("启用【 Consul 】---开始配置");
+            Log.Logger.Information("启用【 Ocelot 】---开始配置");
             if (_Options.Consul != null && _Options.Consul.Enable)
             {
                 var ocelotBuilder = services.AddOcelot(Configuration);
@@ -336,11 +342,11 @@ namespace OdinCore
             ILoggerFactory loggerFactory,
             IOptionsSnapshot<ProjectExtendsOptions> _iOptions,
             IActionDescriptorCollectionProvider actionProvider,
+            IHostApplicationLifetime appLifttime,
             IHttpContextAccessor svp)
         {
             MvcContext.httpContextAccessor = svp;
             var options = _iOptions.Value;
-
             app.UseStaticFiles();
             app.UseOdinApiLinkMonitor(
                 // 添加需要过滤 无需链路监控的RequestPath
@@ -357,7 +363,18 @@ namespace OdinCore
 
             loggerFactory.AddSerilog();
 
+            // app.UseOcelot();
             app.UseRouting();
+
+            // ~ 按需加载 consul 服务"
+            if (_Options.Consul.Enable)
+            {
+                Log.Logger.Information("Consul【 服务注册 】----");
+                string consulServiceId = ConsulRegister.OdinConsulRegister(_Options.Consul, _Options.Domain);
+
+                Log.Logger.Information("Consul【 服务注销 】----");
+                ConsulUnRegister.OdinConsulUnRegister(appLifttime, _Options.Consul, consulServiceId);
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();

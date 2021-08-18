@@ -1,19 +1,25 @@
+using System.Security;
 using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OdinCore.Services.InterfaceServices;
 using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinInject.InjectPlugs;
+using OdinPlugs.OdinModels.ErrorCode;
+using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinString;
 using OdinPlugs.OdinUtils.OdinJson.ContractResolver;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinFilter;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinValidate.ApiParamsValidate;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinWebHost;
 using OdinPlugs.SnowFlake.SnowFlakePlugs.ISnowFlake;
+using Microsoft.AspNetCore.Authorization;
+using OdinCore.Models;
+using Microsoft.Extensions.Options;
+using OdinPlugs.OdinModels.ConfigModel;
 
 namespace OdinCore.Controllers
 {
@@ -34,9 +40,10 @@ namespace OdinCore.Controllers
         [OdinActionRoute("TestAction_v1_in_v2", "1.0")]
         [HttpPost]
         [Consumes("application/json")]
+        [AllowAnonymous]
         public IActionResult PostTestActionV2([FromBody][Required] ErrorCode_Model error, [FromRoute][Required][OdinSnowFlakeValidation] long id)
         {
-            return this.OdinResult("2.0");
+            return this.OdinResultOk();
         }
 
         /// <summary>
@@ -54,20 +61,21 @@ namespace OdinCore.Controllers
         [Consumes("multipart/form-data")]
         [OdinAuthorize]
         [ProducesResponseType(typeof(Stu), 200)]
+        [AllowAnonymous]
         public IActionResult Show([FromForm][Required] EnumTest error, [FromQuery][Required] long id)
         {
             //return this.OdinResult(OdinInjectCore.GetService<IOdinCacheManager>().Get<ErrorCode_Model>("sys-allowip"));
-
-            var stu = new Stu
-            {
-                id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),
-                name = "odinsam",
-                age = 20
-            };
-            Console.WriteLine("student info");
-            Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
-            // throw new Exception("test exception");
-            return this.GetDIServices<ITestService>().show(id);
+            return this.OdinResult(OdinInjectCore.GetService<IOptionsSnapshot<ConfigOptions>>().Value);
+            // var stu = new Stu
+            // {
+            //     id = OdinInjectCore.GetService<IOdinSnowFlake>().CreateSnowFlakeId(),
+            //     name = "odinsam",
+            //     age = 20
+            // };
+            // Console.WriteLine("student info");
+            // Console.WriteLine(JsonConvert.SerializeObject(stu).ToJsonFormatString());
+            // // throw new Exception("test exception");
+            // return this.GetDIServices<ITestService>().show(id);
             // return this.OdinResultOk();
 
             // return this.OdinResult(stu);

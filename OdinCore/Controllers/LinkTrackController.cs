@@ -20,12 +20,15 @@ using OdinPlugs.OdinInject.InjectCore;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinAttr;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinRoute;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinFilter;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinValidate.ApiParamsValidate;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinInject.WebApi;
 using OdiOdinPlugs.OdinWebApinPlugs.OdinMvcCore.MvcCore;
+using OdinPlugs.OdinModels.ErrorCode;
+using OdinPlugs.OdinWebApi.OdinMvcCore.OdinWebHost;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
 namespace OdinCore.Controllers
 {
@@ -74,11 +77,13 @@ namespace OdinCore.Controllers
         [NoApiSecurityFilter] // 跳过 api result 加密
         [ApiFilter]
         [OdinActionRoute("TestAction_v2_in_v1/{errorCode}/{id}", "2.0")]
-        [HttpPost]
+        [HttpPut]
         [Consumes("application/json")]
         public IActionResult PostTestAction(
-                    [FromBody][Required] ErrorCode_Model error, [FromRoute][Required][OdinSnowFlakeValidation] long id)
+                    [FromBody][Required] ErrorCode_Model error)
         {
+            var config = OdinInjectCore.GetService<IConfiguration>() as IConfigurationRoot;
+            config.Reload();
             return this.OdinResult("1.0");
         }
 

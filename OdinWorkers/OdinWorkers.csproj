@@ -10,5 +10,6 @@
     <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinWebApi\OdinPlugs.OdinWebApi.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinHostedService\OdinPlugs.OdinHostedService.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinModels\OdinPlugs.OdinModels.csproj" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
+using OdinPlugs.OdinModels.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMvcCore.ServicesCore.ServicesInterface.SqlSugar;
 
 namespace OdinCore.Services.InterfaceServices

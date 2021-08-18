@@ -1,4 +1,5 @@
-using OdinPlugs.OdinWebApi.OdinCore.ConfigModel;
+
+using OdinPlugs.OdinModels.ConfigModel;
 
 namespace OdinIds.Models
 {

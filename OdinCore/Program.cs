@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using AspectCore.Extensions.DependencyInjection;
-using AspectCore.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -44,7 +43,7 @@ namespace OdinCore
                 .AddEnvironmentVariables();
             if (File.Exists("serverConfig/cnf.json"))
             {
-                builderRoot = builderRoot.Add(new JsonConfigurationSource { Path = "serverConfig/cnf.json", Optional = false, ReloadOnChange = true });
+                builderRoot = builderRoot.Add(new JsonConfigurationSource { Path = "serverConfig/cnf.json", Optional = false, ReloadOnChange = true }).AddEnvironmentVariables();
             }
             var builder = builderRoot.Build();
             var iHostBuilder = Host.CreateDefaultBuilder(args);

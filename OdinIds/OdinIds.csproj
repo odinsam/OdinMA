@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\OdinPlugs.SnowFlake\OdinPlugs.SnowFlake.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinInject\OdinPlugs.OdinInject.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.ApiLinkMonitor\OdinPlugs.ApiLinkMonitor.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinModels\OdinPlugs.OdinModels.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.4" />

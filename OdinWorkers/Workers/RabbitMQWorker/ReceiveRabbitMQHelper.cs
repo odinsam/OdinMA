@@ -4,7 +4,6 @@ using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCanalInject;
 using OdinPlugs.OdinMQ.OdinRabbitMQ.Models.RabbitMQModel;
 using OdinPlugs.OdinMQ.OdinRabbitMQ.RabbitMQReceive;
-using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinAdapterMapper;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinTime;
 using OdinPlugs.OdinUtils.Utils.OdinTime;
 using OdinWorkers.ErrorCodeWork;
@@ -31,7 +30,7 @@ namespace OdinWorkers.Workers.RabbitMQWorker
         {
             Log.Information($"ReceiveRabbitMQ:【 Run 】\tTime:【{DateTime.Now.ToString("yyyy-dd-MM hh:mm:ss")} 】");
             rabbitMQReceiveServer.ReceiveJsonMessage(
-                apiOptions.RabbitMQ.OdinAdapter<OdinPlugs.OdinWebApi.OdinCore.ConfigModel.RabbitMQConfigModel.RabbitMQOptions, OdinPlugs.OdinMQ.OdinRabbitMQ.Models.RabbitMQConfigModel.RabbitMQOptions>(),
+                apiOptions.RabbitMQ,
                 new RabbitMQReceivedModel[]
                 {
                     new RabbitMQReceivedModel{

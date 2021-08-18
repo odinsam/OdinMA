@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCacheManagerInject;
 using OdinPlugs.OdinInject.InjectPlugs.OdinCanalInject;
 using OdinPlugs.OdinInject.Models.CanalModels;
+using OdinPlugs.OdinModels.ErrorCode;
 using OdinPlugs.OdinUtils.OdinExtensions.BasicExtensions.OdinObject;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 
 namespace OdinWorkers.ErrorCodeWork
 {

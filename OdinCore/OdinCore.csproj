@@ -30,6 +30,7 @@
     <ProjectReference Include="..\..\OdinPlugs.OdinEFCore\OdinPlugs.OdinEFCore.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinNoSql\OdinPlugs.OdinNoSql.csproj" />
     <ProjectReference Include="..\..\OdinPlugs.OdinMQ\OdinPlugs.OdinMQ.csproj" />
+    <ProjectReference Include="..\..\OdinPlugs.OdinModels\OdinPlugs.OdinModels.csproj" />
   </ItemGroup>
   <ItemGroup>
     

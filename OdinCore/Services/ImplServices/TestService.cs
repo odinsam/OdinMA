@@ -12,9 +12,9 @@ using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFExtensions;
 using OdinPlugs.OdinWebApi.OdinMvcCore.OdinExtensions;
 using OdinPlugs.OdinWebApi.OdinCore.Models;
 using OdinPlugs.OdinEFCore.EntityFrameworkExtensions.EFInterface;
-using OdinPlugs.OdinWebApi.OdinCore.Models.ErrorCode;
 using OdinPlugs.OdinWebApi.OdinMvcCore.ServicesCore.ServicesExtensions;
 using OdinPlugs.OdinMQ.OdinRabbitMQ.RabbitMQReceive;
+using OdinPlugs.OdinModels.ErrorCode;
 
 namespace OdinCore.Services.ImplServices
 {
